@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -13,7 +14,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.ComboBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
 	<top>
@@ -119,8 +119,8 @@
             <AnchorPane fx:id="anchorpane_centers" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                <children>
                	  <Button fx:id="button_add_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#AddCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="הוסף שיעור חדש" />
-                  <Button fx:id="button_back_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" visible="false" onAction="#BackCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="חזור" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="358.0" />
-                  <Button fx:id="button_delete_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" visible="false" onAction="#DeleteCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק שיעור" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="400.0" /> 
+                  <Button fx:id="button_back_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#BackCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="חזור" visible="false" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="358.0" />
+                  <Button fx:id="button_delete_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#DeleteCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק שיעור" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="400.0" /> 
                   <TextField fx:id="textfield_center_classname" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="120.0" />
                   <TextField fx:id="textfield_center_price" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="160.0" />
                   <ComboBox fx:id="combobox_center_trainers" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="200.0" />
@@ -138,6 +138,7 @@
 							</columnResizePolicy>
                   </TableView>
                </children></AnchorPane>
+            <AnchorPane fx:id="anchorpane_lists" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
 			</children>
 			<BorderPane.margin>
 				<Insets left="5.0" top="5.0" />

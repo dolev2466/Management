@@ -32,7 +32,7 @@ public class MainController extends BaseController
 {
 	private String title;
 	
-	private String[] window = { "מאמנים", "מרכזים" };
+	private String[] window = { "מאמנים", "מרכזים","רשימות" };
 //------------------------------------------------------------------trainer anchor pane variables-----------------------------------------------//	
 	private @FXML AnchorPane anchorpane_trainers;
 	
@@ -150,18 +150,22 @@ public class MainController extends BaseController
 	
 	private int center_pr_key;
 	
-	
-	
-	
 //-------------------------------------------------------------end->center anchor pane variables-------------------------------------------//
 
 
-	//-------------------------------------------------------------DataBase Fields-----------------------------------------------------//
+//-------------------------------------------------------------lists anchor pane variables-------------------------------------------//	
+	private @FXML AnchorPane anchorpane_lists;
+
+//-------------------------------------------------------------end->lists anchor pane variables-------------------------------------------//
+
+//-------------------------------------------------------------DataBase Fields-----------------------------------------------------//
 	Connection conn;
 	Statement s;
 	ResultSet rs;
 	String temp; 
-	//-------------------------------------------------------------end-> DataBase Fields-----------------------------------------------------//
+//-------------------------------------------------------------end-> DataBase Fields-----------------------------------------------------//
+
+
 //---------------------------------------------------------------Initialize Functions-------------------------------------------------//
 	
 	@Override
@@ -352,6 +356,7 @@ public class MainController extends BaseController
 			case "מאמנים":
 				anchorpane_trainers.setVisible(true);
 				anchorpane_centers.setVisible(false);
+				anchorpane_lists.setVisible(false);
 				TrainersTabInitialize();
 				SetInvisableTrainerTab();
 			break;
@@ -359,10 +364,17 @@ public class MainController extends BaseController
 			case "מרכזים":
 				anchorpane_trainers.setVisible(false);
 				anchorpane_centers.setVisible(true);
+				anchorpane_lists.setVisible(false);
 				SetCenterTabInVisable();
 
 			break;
 
+			case "רשימות":
+					anchorpane_trainers.setVisible(false);
+					anchorpane_centers.setVisible(false);
+					anchorpane_lists.setVisible(true);
+			
+			break;		
 			default:
 				return false;
 		}

@@ -3,6 +3,9 @@ package boundaries;
 public class CenterRow 
 {
 	// region Fields
+	
+		private int pr_key;
+		
 		private String classname;
 		
 		private String price;
@@ -14,9 +17,10 @@ public class CenterRow
 
 		// region Constructors
 
-		public CenterRow(String m_classname,String m_price,String m_trainer)
+		public CenterRow(int m_pr_key,String m_classname,String m_price,String m_trainer)
 		{
 			super();
+			this.pr_key=m_pr_key;
 			classname = m_classname;
 			price =m_price;
 			trainer =m_trainer;
@@ -37,6 +41,10 @@ public class CenterRow
 			return trainer;
 		}
 		
+		public int getPr_key() {
+			return pr_key;
+		}
+		
 		// end region -> Getters
 
 		
@@ -52,6 +60,10 @@ public class CenterRow
 
 		public void setTrainer(String m_trainer) {
 			this.trainer = m_trainer;
+		}
+		
+		public void setPr_key(int m_pr_key) {
+			this.pr_key=m_pr_key;
 		}
 
 		// end region -> Setters

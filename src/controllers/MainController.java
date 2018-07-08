@@ -130,6 +130,10 @@ public class MainController extends BaseController
 	
 	private @FXML Button button_add_center;
 	
+	private @FXML Button button_back_center;
+	
+	private @FXML Button button_delete_center;
+	
 	private @FXML TextField textfield_center_classname;
 	
 	private @FXML TextField textfield_center_price;
@@ -143,6 +147,8 @@ public class MainController extends BaseController
 	private @FXML ComboBox<String> combobox_center_trainers;
 	
 	private ObservableList<String> center_trainer_list = FXCollections.observableArrayList();
+	
+	private int center_pr_key;
 	
 	
 	
@@ -299,7 +305,12 @@ public class MainController extends BaseController
 					if (rowData.getClassname() == " ") {
 						return;
 					}
-					showAlertMessage("Work", AlertType.ERROR);
+					center_pr_key=rowData.getPr_key();
+					SetCenterTabVisable();
+					textfield_center_classname.setText(rowData.getClassname());
+					textfield_center_price.setText(rowData.getPrice());
+					combobox_center_trainers.setValue(rowData.getTrainer());
+					button_add_center.setText("ערוך שיעור");
 				}
 
 			});
@@ -341,12 +352,14 @@ public class MainController extends BaseController
 			case "מאמנים":
 				anchorpane_trainers.setVisible(true);
 				anchorpane_centers.setVisible(false);
-				TrainersTabInitialize();	
+				TrainersTabInitialize();
+				SetInvisableTrainerTab();
 			break;
 
 			case "מרכזים":
 				anchorpane_trainers.setVisible(false);
 				anchorpane_centers.setVisible(true);
+				SetCenterTabInVisable();
 
 			break;
 
@@ -377,6 +390,35 @@ public class MainController extends BaseController
 
 	}
 	
+	public ResultSet GetFromDataBase(String table_name,DataBaseAction action,String title,String paramter)
+	{
+		String command;
+		switch(action)
+		{
+		case Get:
+					command="select * from "+table_name+ " where "+title+ " = " + paramter;
+					break;
+		case GetAll:
+					command="select * from "+table_name;
+					break;
+		case Delete:
+					command="delete from "+table_name+ " where "+title+ " = " + paramter;
+					break;
+		default:
+				return null;				
+		}
+		try {
+			s.execute(command);
+			ResultSet resulte=s.getResultSet();
+			return resulte;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}	
+		
+
+	}
 //------------------------------------------------------------end->Override Functions---------------------------------------------//
 
 //-----------------------------------------------------------TrainerTab Functions--------------------------------------------------//	
@@ -628,13 +670,16 @@ public class MainController extends BaseController
 	
 //------------------------------------------------------------end->Trainer tab Functions-------------------------------------------//
 
+//-----------------------------------------------------------------Center tab Functions-------------------------------------------//
+	
+	
 	public void CenterTableBuilder(ResultSet set)
 	{
 		center_row.clear();
 		try {
 			while((set!=null) && (set.next()))
 			{
-			   CenterRow temp=new CenterRow(set.getString(3), set.getString(1), set.getString(2));
+			   CenterRow temp=new CenterRow(set.getInt(4), set.getString(3), set.getString(1), set.getString(2));
 			   center_row.add(temp);   
 			}
 		} catch (SQLException e) 
@@ -647,10 +692,14 @@ public class MainController extends BaseController
 	@FXML
 	public void AddCenterButtonClick (ActionEvent event)
 	{
-		if(center_table.isVisible())
-			SetCenterTabVisable();
-		else
+		if(button_add_center.getText()=="ערוך שיעור")
 		{
+			String command="delete from Centers where pr_key ="+center_pr_key;
+			try {
+				s.execute(command);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			if(textfield_center_classname.getText().equals("")||textfield_center_price.getText().equals("")||
 					combobox_center_trainers.getValue().equals(""))
 			{
@@ -662,12 +711,35 @@ public class MainController extends BaseController
 						,combobox_center_trainers.getValue()))
 					SetCenterTabInVisable();
 			}
+					
+		}
+		else
+		{
+			if(center_table.isVisible())
+				SetCenterTabVisable();
+			else
+			{
+				if(textfield_center_classname.getText().equals("")||textfield_center_price.getText().equals("")||
+						combobox_center_trainers.getValue().equals(""))
+				{
+					showAlertMessage("אתה חייב למלא את כל השדות", AlertType.ERROR);
+				}
+				else
+				{
+					if(AddNewCenter(textfield_center_classname.getText(),textfield_center_price.getText()
+							,combobox_center_trainers.getValue()))
+						SetCenterTabInVisable();
+				}
+			}
 		}
 	}
 	
 	public void SetCenterTabVisable()
 	{
 		center_table.setVisible(false);
+		button_back_center.setVisible(true);
+		button_add_center.setLayoutX(310);
+		button_delete_center.setVisible(true);
 		textfield_center_classname.setVisible(true);
 		textfield_center_price.setVisible(true);
 		label_center_classname.setVisible(true);
@@ -692,6 +764,10 @@ public class MainController extends BaseController
 	public void SetCenterTabInVisable()
 	{
 		center_table.setVisible(true);
+		button_delete_center.setVisible(false);
+		button_back_center.setVisible(false);
+		button_add_center.setLayoutX(420);
+		button_add_center.setText("הוסף שיעור חדש");
 		textfield_center_classname.setVisible(false);
 		textfield_center_price.setVisible(false);
 		label_center_classname.setVisible(false);
@@ -705,36 +781,6 @@ public class MainController extends BaseController
 		CenterTabInitialize();
 	}
 	
-	public ResultSet GetFromDataBase(String table_name,DataBaseAction action,String title,String paramter)
-	{
-		String command;
-		switch(action)
-		{
-		case Get:
-					command="select * from "+table_name+ " where "+title+ " = " + paramter;
-					break;
-		case GetAll:
-					command="select * from "+table_name;
-					break;
-		case Delete:
-					command="delete from "+table_name+ " where "+title+ " = " + paramter;
-					break;
-		default:
-				return null;				
-		}
-		try {
-			s.execute(command);
-			ResultSet resulte=s.getResultSet();
-			return resulte;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}	
-		
-
-	}
-
 	public boolean AddNewCenter(String classname,String price,String trainer)
 	{
 		String command="INSERT into Centers(classname,price,trainer)"+
@@ -748,4 +794,27 @@ public class MainController extends BaseController
 		}
 		return true;
 	}
+
+	@FXML
+	public void BackCenterButtonClick(ActionEvent event)
+	{
+		SetCenterTabInVisable();
+	}
+	
+	@FXML
+	public void DeleteCenterButtonClick(ActionEvent event)
+	{
+		String command="delete from Centers where pr_key ="+center_pr_key;
+		try {
+			s.execute(command);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		SetCenterTabInVisable();
+	}
+
+//---------------------------------------------------------end->Center tab Functions------------------------------------------------//
+
+
+
 }

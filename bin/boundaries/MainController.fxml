@@ -119,12 +119,14 @@
             <AnchorPane fx:id="anchorpane_centers" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                <children>
                	  <Button fx:id="button_add_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#AddCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="הוסף שיעור חדש" />
-                  <TextField fx:id="textfield_center_classname" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="60.0" />
-                  <TextField fx:id="textfield_center_price" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="100.0" />
-                  <ComboBox fx:id="combobox_center_trainers" layoutX="93.0" layoutY="139.0" prefWidth="350.0" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="140.0" />
-                  <Label fx:id="label_center_classname" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם השיעור:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="60.0" />
-				  <Label fx:id="label_center_price" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="מחיר:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="100.0" />
-				  <Label fx:id="label_center_trainer" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="140.0" />
+                  <Button fx:id="button_back_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" visible="false" onAction="#BackCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="חזור" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="358.0" />
+                  <Button fx:id="button_delete_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" visible="false" onAction="#DeleteCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק שיעור" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="400.0" /> 
+                  <TextField fx:id="textfield_center_classname" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="120.0" />
+                  <TextField fx:id="textfield_center_price" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="160.0" />
+                  <ComboBox fx:id="combobox_center_trainers" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="200.0" />
+                  <Label fx:id="label_center_classname" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם השיעור:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="120.0" />
+				  <Label fx:id="label_center_price" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="מחיר:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="160.0" />
+				  <Label fx:id="label_center_trainer" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="200.0" />
                   <TableView fx:id="center_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
                     <columns>
                       <TableColumn fx:id="tablecolumn_trainer" editable="false" minWidth="50.0" sortable="false" text="מדריך" />

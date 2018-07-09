@@ -139,6 +139,23 @@
                   </TableView>
                </children></AnchorPane>
             <AnchorPane fx:id="anchorpane_lists" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
+            <AnchorPane fx:id="anchorpane_trainee" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <TableView fx:id="trainee_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+					<columns>
+						<TableColumn fx:id="tablecolumn_trainee_subscription_end_date" editable="false" minWidth="50.0" sortable="false" text="תאריך סיום" />
+						<TableColumn fx:id="tablecolumn_trainee_register_date" editable="false" minWidth="50.0" sortable="false" text="תאריך הרשמה" />
+						<TableColumn fx:id="tablecolumn_trainee_group" editable="false" minWidth="50.0" sortable="false" text="קבוצה" />
+						<TableColumn fx:id="tablecolumn_trainee_center" editable="false" minWidth="50.0" sortable="false" text="מרכז" />
+						<TableColumn fx:id="tablecolumn_trainee_last_name" editable="false" minWidth="112.5" sortable="false" text="שם משפחה" />
+						<TableColumn fx:id="tablecolumn_trainee_name" editable="false" minWidth="112.5" sortable="false" text="שם" />
+						<TableColumn fx:id="tablecolumn_trainee_id" editable="false" minWidth="50.0" sortable="false" text="תז" />					
+					</columns>
+						<columnResizePolicy>
+							<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+						</columnResizePolicy>
+                 </TableView>
+               </children></AnchorPane>
 			</children>
 			<BorderPane.margin>
 				<Insets left="5.0" top="5.0" />

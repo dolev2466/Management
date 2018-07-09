@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.sql.*;
 
 import boundaries.CenterRow;
+import boundaries.TraineesRow;
 import boundaries.TrainersRow;
 import controllers.Enums.DataBaseAction;
 import javafx.application.Platform;
@@ -32,7 +33,7 @@ public class MainController extends BaseController
 {
 	private String title;
 	
-	private String[] window = { "מאמנים", "מרכזים","רשימות" };
+	private String[] window = { "מאמנים", "מרכזים","רשימות","ספורטאים" };
 //------------------------------------------------------------------trainer anchor pane variables-----------------------------------------------//	
 	private @FXML AnchorPane anchorpane_trainers;
 	
@@ -158,6 +159,35 @@ public class MainController extends BaseController
 
 //-------------------------------------------------------------end->lists anchor pane variables-------------------------------------------//
 
+//-------------------------------------------------------------trainee anchor pane variables-------------------------------------------//	
+		private @FXML AnchorPane anchorpane_trainee;
+		
+		private @FXML TableView<TraineesRow> trainee_table;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_id;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_name;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_last_name;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_phone;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_gender;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_center;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_group;
+		
+		private @FXML TableColumn<TraineesRow,Date> tablecolumn_trainee_register_date;
+		
+		private @FXML TableColumn<TraineesRow,Date> tablecolumn_trainee_subscription_end_date;
+		
+		private ObservableList<TraineesRow> trainee_row = FXCollections.observableArrayList();
+		
+		
+
+//-------------------------------------------------------------end->trainee anchor pane variables-------------------------------------------//
+	
 //-------------------------------------------------------------DataBase Fields-----------------------------------------------------//
 	Connection conn;
 	Statement s;
@@ -205,7 +235,7 @@ public class MainController extends BaseController
         	//------------------Open Connection to Access Data Base--------------------------------
         	
         			conn=DriverManager.getConnection(
-        	        "jdbc:ucanaccess://C:\\Users\\Dolev\\eclipse-workspace\\Managment\\src\\Database.accdb");
+        	        "jdbc:ucanaccess://C:\\Users\\Dolev\\Desktop\\Management\\src\\Database.accdb");
         			 s = conn.createStatement();
         }
         			catch(Exception ex)
@@ -343,6 +373,32 @@ public class MainController extends BaseController
 			center_table.refresh();
 		});
 	}
+
+	public void TraineeTabInitialize()
+	{
+		tablecolumn_trainee_id.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("id"));
+		tablecolumn_trainee_name.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("name"));
+		tablecolumn_trainee_last_name.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("last_name"));
+		tablecolumn_trainee_center.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("center"));
+		tablecolumn_trainee_group.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("group"));
+		tablecolumn_trainee_register_date.setCellValueFactory(new PropertyValueFactory<TraineesRow, Date>("register_date"));
+		tablecolumn_trainee_subscription_end_date.setCellValueFactory(new PropertyValueFactory<TraineesRow, Date>("subscription_end_date"));
+		trainee_row = FXCollections.observableArrayList();
+		try {
+				String selTable = "SELECT * FROM Trainees";
+				s.execute(selTable);
+				rs = s.getResultSet();
+			}catch(Exception ex)
+			 {
+				System.out.println(ex.getStackTrace());
+			 }
+		
+		TraineeTableBuilder(rs);
+		Platform.runLater(() -> {
+			trainee_table.setItems(trainee_row);
+			trainee_table.refresh();
+		});
+	}
 //---------------------------------------------------------------end->Initialize Functions-------------------------------------------------//
 
 //------------------------------------------------------------------Override Functions---------------------------------------------//
@@ -359,6 +415,7 @@ public class MainController extends BaseController
 				anchorpane_lists.setVisible(false);
 				TrainersTabInitialize();
 				SetInvisableTrainerTab();
+				anchorpane_trainee.setVisible(false);
 			break;
 
 			case "מרכזים":
@@ -366,6 +423,7 @@ public class MainController extends BaseController
 				anchorpane_centers.setVisible(true);
 				anchorpane_lists.setVisible(false);
 				SetCenterTabInVisable();
+				anchorpane_trainee.setVisible(false);
 
 			break;
 
@@ -373,8 +431,17 @@ public class MainController extends BaseController
 					anchorpane_trainers.setVisible(false);
 					anchorpane_centers.setVisible(false);
 					anchorpane_lists.setVisible(true);
+					anchorpane_trainee.setVisible(false);
 			
-			break;		
+			break;	
+			
+			case "ספורטאים":
+				anchorpane_trainers.setVisible(false);
+				anchorpane_centers.setVisible(false);
+				anchorpane_lists.setVisible(false);
+				anchorpane_trainee.setVisible(true);
+				TraineeTabInitialize();
+				break;
 			default:
 				return false;
 		}
@@ -827,6 +894,22 @@ public class MainController extends BaseController
 
 //---------------------------------------------------------end->Center tab Functions------------------------------------------------//
 
+	
+	
+	public void TraineeTableBuilder(ResultSet set)
+	{
+		trainee_row.clear();
+		try {
+			while((set!=null) && (set.next()))
+			{
+			   TraineesRow temp=new TraineesRow(set.getString(13), set.getString(1), set.getString(2), set.getString(10),set.getString(11),set.getDate(14),set.getDate(15));
+			   trainee_row.add(temp);   
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 
 
 }

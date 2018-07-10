@@ -18,10 +18,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -184,7 +186,109 @@ public class MainController extends BaseController
 		
 		private ObservableList<TraineesRow> trainee_row = FXCollections.observableArrayList();
 		
+		private ObservableList<String> trainee_level = FXCollections.observableArrayList();
 		
+		private @FXML Button button_add_trainee;
+		
+		private @FXML Button button_back_trainee;
+		
+		private @FXML Button button_delete_trainee;
+		
+		private @FXML Label label_trainee_id;
+		
+		private @FXML Label label_trainee_name;
+		
+		private @FXML Label label_trainee_lastname;
+		
+		private @FXML Label label_trainee_birthday;
+		
+		private @FXML Label label_trainee_city;
+		
+		private @FXML Label label_trainee_address;
+		
+		private @FXML Label label_trainee_postcode;
+		
+		private @FXML Label label_trainee_phone;
+		
+		private @FXML Label label_trainee_cellphone;
+		
+		private @FXML Label label_trainee_email;
+		
+		private @FXML Label label_trainee_gender;
+		
+		private @FXML Label label_trainee_center;
+		
+		private @FXML Label label_trainee_level;
+		
+		private @FXML Label label_trainee_hight;
+		
+		private @FXML Label label_trainee_weight;
+		
+		private @FXML Label label_trainee_start_date;
+		
+		private @FXML Label label_trainee_end_date;
+		
+		private @FXML Label label_trainee_comments;
+		
+		private @FXML TextField textfield_trainee_id;
+		
+		private @FXML TextField textfield_trainee_name;
+		
+		private @FXML TextField textfield_trainee_lastname;
+		
+		private @FXML TextField textfield_trainee_birthday;
+		
+		private @FXML TextField textfield_trainee_city;
+		
+		private @FXML TextField textfield_trainee_address;
+		
+		private @FXML TextField textfield_trainee_postcode;
+		
+		private @FXML TextField textfield_trainee_phone;
+		
+		private @FXML TextField textfield_trainee_cellphone;
+		
+		private @FXML TextField textfield_trainee_email;
+		
+		private @FXML TextField textfield_trainee_hight;
+		
+		private @FXML TextField textfield_trainee_weight;
+		
+		private @FXML TextArea textarea_trainee_comments;
+		
+		private @FXML ComboBox<String> combobox_trainee_gender;
+		
+		private @FXML ComboBox<String> combobox_trainee_center;
+		
+		private @FXML ComboBox<String> combobox_trainee_level;
+		
+		private @FXML DatePicker datepicker_trainee_start;
+		
+		private @FXML DatePicker datepicker_trainee_end;
+		
+		private @FXML ImageView image_trainee_id;
+		
+		private @FXML ImageView image_trainee_name;
+		
+		private @FXML ImageView image_trainee_lastname;
+		
+		private @FXML ImageView image_trainee_birthday;
+		
+		private @FXML ImageView image_trainee_city;
+		
+		private @FXML ImageView image_trainee_address;
+		
+		private @FXML ImageView image_trainee_postcode;
+		
+		private @FXML ImageView image_trainee_phone;
+		
+		private @FXML ImageView image_trainee_cellphone;
+		
+		private @FXML ImageView image_trainee_email;
+		
+		private @FXML ImageView image_trainee_gender;
+		
+
 
 //-------------------------------------------------------------end->trainee anchor pane variables-------------------------------------------//
 	
@@ -205,6 +309,7 @@ public class MainController extends BaseController
 		InitalizeTrainerTable();
 		CenterTabInitialize();
 		InitalizeCenterTable();
+		InitalizeLevelList();
 	}
 	
 	private void TrainersTabInitialize()
@@ -252,59 +357,75 @@ public class MainController extends BaseController
 		if (view != null) {
 			Image = new Image(view);
 			image_id.setImage(Image);
+			image_trainee_id.setImage(Image);
 		}
 			view = getClass().getResourceAsStream("/boundaries/images/name.jpg");
 			if (view != null) {
 				Image = new Image(view);
 				image_name.setImage(Image);
+				image_trainee_name.setImage(Image);
 			}
 		
 		view = getClass().getResourceAsStream("/boundaries/images/family.jpg");
 		if (view != null) {
 			Image = new Image(view);
 			image_lastname.setImage(Image);
+			image_trainee_lastname.setImage(Image);
 		}
 		
 		view = getClass().getResourceAsStream("/boundaries/images/birthday.jpg");
 		if (view != null) {
 			Image = new Image(view);
 			image_birthday.setImage(Image);
+			image_trainee_birthday.setImage(Image);
 		}
 		
 		view = getClass().getResourceAsStream("/boundaries/images/city.jpg");
 		if (view != null) {
 			Image = new Image(view);
 			image_city.setImage(Image);
+			image_trainee_city.setImage(Image);
 		}
 		
 		view = getClass().getResourceAsStream("/boundaries/images/address.png");
 		if (view != null) {
 			Image = new Image(view);
 			image_address.setImage(Image);
+			image_trainee_address.setImage(Image);
 		}
 		
 		view = getClass().getResourceAsStream("/boundaries/images/postcode.jpg");
 		if (view != null) {
 			Image = new Image(view);
 			image_postcode.setImage(Image);
+			image_trainee_postcode.setImage(Image);
 		}
 		
 		view = getClass().getResourceAsStream("/boundaries/images/phone.jpg");
 		if (view != null) {
 			Image = new Image(view);
 			image_phone.setImage(Image);
+			image_trainee_phone.setImage(Image);
 		}
 		
 		view = getClass().getResourceAsStream("/boundaries/images/cellphone.jpg");
 		if (view != null) {
 			Image = new Image(view);
 			image_cellphone.setImage(Image);
+			image_trainee_cellphone.setImage(Image);
 		}
 		
 		view = getClass().getResourceAsStream("/boundaries/images/email.jpg");
 		if (view != null) {
 			Image = new Image(view);
 			image_email.setImage(Image);
+			image_trainee_email.setImage(Image);
+		}
+		
+		view = getClass().getResourceAsStream("/boundaries/images/gender.png");
+		if (view != null) {
+			Image = new Image(view);
+			image_trainee_gender.setImage(Image);
 		}
 	}
 	
@@ -399,6 +520,45 @@ public class MainController extends BaseController
 			trainee_table.refresh();
 		});
 	}
+
+	public void InitalizeLevelList()
+	{
+		trainee_level.add("קיו 1");
+		trainee_level.add("קיו 1+פס");
+		trainee_level.add("קיו 1+2פסים");
+		trainee_level.add("קיו 2");
+		trainee_level.add("קיו 2+פס");
+		trainee_level.add("קיו 2+2פסים");
+		trainee_level.add("קיו 3");
+		trainee_level.add("קיו 3+פס");
+		trainee_level.add("קיו 3+2פסים");
+		trainee_level.add("קיו 4");
+		trainee_level.add("קיו 4+פס");
+		trainee_level.add("קיו 4+2פסים");
+		trainee_level.add("קיו 5");
+		trainee_level.add("קיו 5+פס");
+		trainee_level.add("קיו 5+2פסים");
+		trainee_level.add("קיו 6");
+		trainee_level.add("קיו 6+פס");
+		trainee_level.add("קיו 6+2פסים");
+		trainee_level.add("קיו 7");
+		trainee_level.add("קיו 7+פס");
+		trainee_level.add("קיו 7+2פסים");
+		trainee_level.add("קיו 8");
+		trainee_level.add("קיו 8+פס");
+		trainee_level.add("קיו 8+2פסים");
+		trainee_level.add("קיו 9");
+		trainee_level.add("קיו 9+פס");
+		trainee_level.add("קיו 9+2פסים");
+		trainee_level.add("דאן 1");
+		trainee_level.add("דאן 2");
+		trainee_level.add("דאן 3");
+		trainee_level.add("דאן 4");
+		trainee_level.add("דאן 5");
+		trainee_level.add("דאן 6");
+		trainee_level.add("דאן 7");
+		trainee_level.add("דאן 8");
+	}
 //---------------------------------------------------------------end->Initialize Functions-------------------------------------------------//
 
 //------------------------------------------------------------------Override Functions---------------------------------------------//
@@ -441,6 +601,7 @@ public class MainController extends BaseController
 				anchorpane_lists.setVisible(false);
 				anchorpane_trainee.setVisible(true);
 				TraineeTabInitialize();
+				SetTraineeTabInVisable();
 				break;
 			default:
 				return false;
@@ -911,5 +1072,161 @@ public class MainController extends BaseController
 		}
 	}
 
+	@FXML
+	public void AddTraineeButtonClick(ActionEvent event)
+	{
+		//TODO
+		SetTraineeTabVisable();
+	}
+	
+	@FXML
+	public void BackTraineeButtonClick(ActionEvent event)
+	{
+		SetTraineeTabInVisable();
+	}
+	
+	@FXML
+	public void DeleteTraineeButtonClick(ActionEvent event)
+	{
+		//TODO
+	}
+	
+	public void SetTraineeTabVisable()
+	{
+		trainee_table.setVisible(false);
+		button_back_trainee.setVisible(true);
+		button_add_trainee.setLayoutX(310);
+		button_add_trainee.setLayoutY(519);
+		button_delete_trainee.setVisible(true);
+		label_trainee_id.setVisible(true);
+		label_trainee_name.setVisible(true);
+		label_trainee_lastname.setVisible(true);
+		label_trainee_birthday.setVisible(true);
+		label_trainee_city.setVisible(true);
+		label_trainee_address.setVisible(true);
+		label_trainee_postcode.setVisible(true);
+		label_trainee_phone.setVisible(true);
+		label_trainee_cellphone.setVisible(true);
+		label_trainee_email.setVisible(true);
+		label_trainee_gender.setVisible(true);
+		label_trainee_center.setVisible(true);
+		label_trainee_level.setVisible(true);
+		label_trainee_hight.setVisible(true);
+		label_trainee_weight.setVisible(true);
+		label_trainee_start_date.setVisible(true);
+		label_trainee_end_date.setVisible(true);
+		label_trainee_comments.setVisible(true);
+		textfield_trainee_id.setVisible(true);
+		textfield_trainee_name.setVisible(true);
+		textfield_trainee_lastname.setVisible(true);
+		textfield_trainee_birthday.setVisible(true);
+		textfield_trainee_city.setVisible(true);
+		textfield_trainee_address.setVisible(true);
+		textfield_trainee_postcode.setVisible(true);
+		textfield_trainee_phone.setVisible(true);
+		textfield_trainee_cellphone.setVisible(true);
+		textfield_trainee_email.setVisible(true);
+		textfield_trainee_hight.setVisible(true);
+		textfield_trainee_weight.setVisible(true);
+		textarea_trainee_comments.setVisible(true);
+		ObservableList<String> gender_list = FXCollections.observableArrayList();
+		gender_list.add("זכר");
+		gender_list.add("נקבה");
+		combobox_trainee_gender.setItems(gender_list);
+		combobox_trainee_gender.setVisible(true);
+		SetTraineeCenterComboBox();
+		combobox_trainee_center.setVisible(true);
+		combobox_trainee_level.setItems(trainee_level);
+		combobox_trainee_level.setVisible(true);
+		datepicker_trainee_start.setVisible(true);
+		datepicker_trainee_end.setVisible(true);
+		image_trainee_id.setVisible(true);
+		image_trainee_name.setVisible(true);
+		image_trainee_lastname.setVisible(true);
+		image_trainee_birthday.setVisible(true);
+		image_trainee_city.setVisible(true);
+		image_trainee_address.setVisible(true);
+		image_trainee_postcode.setVisible(true);
+		image_trainee_phone.setVisible(true);
+		image_trainee_cellphone.setVisible(true);
+		image_trainee_email.setVisible(true);
+		image_trainee_gender.setVisible(true);
+		
+	}
+	
+	public void SetTraineeTabInVisable()
+	{
+		trainee_table.setVisible(true);
+		button_back_trainee.setVisible(false);
+		button_add_trainee.setLayoutX(420);
+		button_add_trainee.setLayoutY(368);
+		button_delete_trainee.setVisible(false);
+		label_trainee_id.setVisible(false);
+		label_trainee_name.setVisible(false);
+		label_trainee_lastname.setVisible(false);
+		label_trainee_birthday.setVisible(false);
+		label_trainee_city.setVisible(false);
+		label_trainee_address.setVisible(false);
+		label_trainee_postcode.setVisible(false);
+		label_trainee_phone.setVisible(false);
+		label_trainee_cellphone.setVisible(false);
+		label_trainee_email.setVisible(false);
+		label_trainee_gender.setVisible(false);
+		label_trainee_center.setVisible(false);
+		label_trainee_level.setVisible(false);
+		label_trainee_hight.setVisible(false);
+		label_trainee_weight.setVisible(false);
+		label_trainee_start_date.setVisible(false);
+		label_trainee_end_date.setVisible(false);
+		label_trainee_comments.setVisible(false);
+		image_trainee_id.setVisible(false);
+		image_trainee_name.setVisible(false);
+		image_trainee_lastname.setVisible(false);
+		image_trainee_birthday.setVisible(false);
+		image_trainee_city.setVisible(false);
+		image_trainee_address.setVisible(false);
+		image_trainee_postcode.setVisible(false);
+		image_trainee_phone.setVisible(false);
+		image_trainee_cellphone.setVisible(false);
+		image_trainee_email.setVisible(false);
+		image_trainee_gender.setVisible(false);
+		textfield_trainee_id.setVisible(false);
+		textfield_trainee_name.setVisible(false);
+		textfield_trainee_lastname.setVisible(false);
+		textfield_trainee_birthday.setVisible(false);
+		textfield_trainee_city.setVisible(false);
+		textfield_trainee_address.setVisible(false);
+		textfield_trainee_postcode.setVisible(false);
+		textfield_trainee_phone.setVisible(false);
+		textfield_trainee_cellphone.setVisible(false);
+		textfield_trainee_email.setVisible(false);
+		textfield_trainee_hight.setVisible(false);
+		textfield_trainee_weight.setVisible(false);
+		textarea_trainee_comments.setVisible(false);
+		combobox_trainee_gender.setVisible(false);
+		combobox_trainee_center.setVisible(false);
+		combobox_trainee_level.setVisible(false);
+		datepicker_trainee_start.setVisible(false);
+		datepicker_trainee_end.setVisible(false);
 
+	}
+	
+	public void SetTraineeCenterComboBox()
+	{
+		ResultSet set=GetFromDataBase("Centers", DataBaseAction.GetAll, null, null);
+		ObservableList<String> trainee_center_list = FXCollections.observableArrayList();
+		try {
+			while((set!=null) && (set.next()))
+			{
+			   trainee_center_list.add(set.getString(3));   
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		combobox_trainee_center.setItems(trainee_center_list);
+	}
+	
+	
 }

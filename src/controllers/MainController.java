@@ -3,6 +3,9 @@ package controllers;
 import java.util.ArrayList;
 import java.io.InputStream;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import boundaries.CenterRow;
 import boundaries.TraineesRow;
@@ -164,6 +167,8 @@ public class MainController extends BaseController
 //-------------------------------------------------------------trainee anchor pane variables-------------------------------------------//	
 		private @FXML AnchorPane anchorpane_trainee;
 		
+		private static final DateFormat s_dateForamt = new SimpleDateFormat("dd-MM-yyyy");
+		
 		private @FXML TableView<TraineesRow> trainee_table;
 		
 		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_id;
@@ -187,6 +192,8 @@ public class MainController extends BaseController
 		private ObservableList<TraineesRow> trainee_row = FXCollections.observableArrayList();
 		
 		private ObservableList<String> trainee_level = FXCollections.observableArrayList();
+		
+		private ObservableList<String> trainee_group_list = FXCollections.observableArrayList();
 		
 		private @FXML Button button_add_trainee;
 		
@@ -230,6 +237,8 @@ public class MainController extends BaseController
 		
 		private @FXML Label label_trainee_comments;
 		
+		private @FXML Label label_trainee_group;
+		
 		private @FXML TextField textfield_trainee_id;
 		
 		private @FXML TextField textfield_trainee_name;
@@ -261,6 +270,8 @@ public class MainController extends BaseController
 		private @FXML ComboBox<String> combobox_trainee_center;
 		
 		private @FXML ComboBox<String> combobox_trainee_level;
+		
+		private @FXML ComboBox<String> combobox_trainee_group;
 		
 		private @FXML DatePicker datepicker_trainee_start;
 		
@@ -310,6 +321,7 @@ public class MainController extends BaseController
 		CenterTabInitialize();
 		InitalizeCenterTable();
 		InitalizeLevelList();
+		InitalizeTraineeTable();
 	}
 	
 	private void TrainersTabInitialize()
@@ -525,31 +537,31 @@ public class MainController extends BaseController
 	{
 		trainee_level.add("קיו 1");
 		trainee_level.add("קיו 1+פס");
-		trainee_level.add("קיו 1+2פסים");
+		trainee_level.add("קיו 2+1פסים");
 		trainee_level.add("קיו 2");
 		trainee_level.add("קיו 2+פס");
 		trainee_level.add("קיו 2+2פסים");
 		trainee_level.add("קיו 3");
 		trainee_level.add("קיו 3+פס");
-		trainee_level.add("קיו 3+2פסים");
+		trainee_level.add("קיו 2+3פסים");
 		trainee_level.add("קיו 4");
 		trainee_level.add("קיו 4+פס");
-		trainee_level.add("קיו 4+2פסים");
+		trainee_level.add("קיו 2+4פסים");
 		trainee_level.add("קיו 5");
 		trainee_level.add("קיו 5+פס");
-		trainee_level.add("קיו 5+2פסים");
+		trainee_level.add("קיו 2+5פסים");
 		trainee_level.add("קיו 6");
 		trainee_level.add("קיו 6+פס");
-		trainee_level.add("קיו 6+2פסים");
+		trainee_level.add("קיו 2+6פסים");
 		trainee_level.add("קיו 7");
 		trainee_level.add("קיו 7+פס");
-		trainee_level.add("קיו 7+2פסים");
+		trainee_level.add("קיו 2+7פסים");
 		trainee_level.add("קיו 8");
 		trainee_level.add("קיו 8+פס");
-		trainee_level.add("קיו 8+2פסים");
+		trainee_level.add("קיו 2+8פסים");
 		trainee_level.add("קיו 9");
 		trainee_level.add("קיו 9+פס");
-		trainee_level.add("קיו 9+2פסים");
+		trainee_level.add("קיו 2+9פסים");
 		trainee_level.add("דאן 1");
 		trainee_level.add("דאן 2");
 		trainee_level.add("דאן 3");
@@ -558,6 +570,26 @@ public class MainController extends BaseController
 		trainee_level.add("דאן 6");
 		trainee_level.add("דאן 7");
 		trainee_level.add("דאן 8");
+	}
+
+	public void InitalizeTraineeTable()
+	{
+		trainee_table.setRowFactory(param -> {
+			TableRow<TraineesRow> tableRow = new TableRow<>();
+			tableRow.setOnMouseClicked(event -> {
+				if (event.getClickCount() == 2 && (!tableRow.isEmpty())) {
+					 TraineesRow rowData = tableRow.getItem();
+
+					if (rowData.getName() == " ") {
+						return;
+					}
+					SetVisableEditTraineeTab(rowData);
+				}
+
+			});
+			return tableRow;
+		});
+		
 	}
 //---------------------------------------------------------------end->Initialize Functions-------------------------------------------------//
 
@@ -1055,7 +1087,7 @@ public class MainController extends BaseController
 
 //---------------------------------------------------------end->Center tab Functions------------------------------------------------//
 
-	
+//---------------------------------------------------------Trainee tab Functions------------------------------------------------//	
 	
 	public void TraineeTableBuilder(ResultSet set)
 	{
@@ -1075,8 +1107,49 @@ public class MainController extends BaseController
 	@FXML
 	public void AddTraineeButtonClick(ActionEvent event)
 	{
-		//TODO
+		if(trainee_table.isVisible())
 		SetTraineeTabVisable();
+		else
+		{
+			boolean flag= false;
+			ResultSet set=GetFromDataBase("Trainees", DataBaseAction.GetAll, null, null);
+			try {
+				while((set!=null) && (set.next()))
+				{
+					if(set.getString(13)==textfield_trainee_id.getText())
+						flag=true;
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(flag)
+			{
+				showAlertMessage("הספורטאי כבר קיים במערכת", AlertType.INFORMATION);
+			}
+			else
+			{
+				/*	String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,"
+									+ "email,group,gender,center,level,hight,weight,register_date,"
+									+ "subscription_end_date,commnts) "+
+						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"
+									+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+"','"
+									+ ""+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+
+										textfield_trainee_postcode.getText()+"','"+textfield_trainee_phone.getText()+"','"+
+										textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+"','"+combobox_trainee_group.getValue()+
+										"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+"','"+combobox_trainee_level.getValue()+"','"+
+										datepicker_trainee_start.getValue()+"','"+Date.valueOf(datepicker_trainee_end.getValue())+
+										"','"+textfield_trainee_hight.getText()+"','"+textfield_trainee_weight.getText()+"','"+textarea_trainee_comments.getText()+"')";
+				try {
+					s.execute(command);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					SetTraineeTabInVisable();
+				}*/
+			}
+				
+		}
 	}
 	
 	@FXML
@@ -1116,6 +1189,7 @@ public class MainController extends BaseController
 		label_trainee_start_date.setVisible(true);
 		label_trainee_end_date.setVisible(true);
 		label_trainee_comments.setVisible(true);
+		label_trainee_group.setVisible(true);
 		textfield_trainee_id.setVisible(true);
 		textfield_trainee_name.setVisible(true);
 		textfield_trainee_lastname.setVisible(true);
@@ -1138,6 +1212,9 @@ public class MainController extends BaseController
 		combobox_trainee_center.setVisible(true);
 		combobox_trainee_level.setItems(trainee_level);
 		combobox_trainee_level.setVisible(true);
+		SetTraineegroupCombobox();
+		combobox_trainee_group.setItems(trainee_group_list);
+		combobox_trainee_group.setVisible(true);
 		datepicker_trainee_start.setVisible(true);
 		datepicker_trainee_end.setVisible(true);
 		image_trainee_id.setVisible(true);
@@ -1160,6 +1237,7 @@ public class MainController extends BaseController
 		button_back_trainee.setVisible(false);
 		button_add_trainee.setLayoutX(420);
 		button_add_trainee.setLayoutY(368);
+		button_add_trainee.setText("הוסף ספורטאי חדש");
 		button_delete_trainee.setVisible(false);
 		label_trainee_id.setVisible(false);
 		label_trainee_name.setVisible(false);
@@ -1179,6 +1257,7 @@ public class MainController extends BaseController
 		label_trainee_start_date.setVisible(false);
 		label_trainee_end_date.setVisible(false);
 		label_trainee_comments.setVisible(false);
+		label_trainee_group.setVisible(false);
 		image_trainee_id.setVisible(false);
 		image_trainee_name.setVisible(false);
 		image_trainee_lastname.setVisible(false);
@@ -1206,9 +1285,9 @@ public class MainController extends BaseController
 		combobox_trainee_gender.setVisible(false);
 		combobox_trainee_center.setVisible(false);
 		combobox_trainee_level.setVisible(false);
+		combobox_trainee_group.setVisible(false);
 		datepicker_trainee_start.setVisible(false);
 		datepicker_trainee_end.setVisible(false);
-
 	}
 	
 	public void SetTraineeCenterComboBox()
@@ -1228,5 +1307,71 @@ public class MainController extends BaseController
 		combobox_trainee_center.setItems(trainee_center_list);
 	}
 	
+	public void SetVisableEditTraineeTab(TraineesRow trainee)
+	{
+		SetTraineeTabVisable();
+		button_add_trainee.setText("ערוך ספורטאי");
+		String id=trainee.getId();
+		ResultSet set =GetFromDataBase("Trainees", DataBaseAction.Get, "id", id);
+		try {
+			while((set!=null) && (set.next()))
+			{
+				textfield_trainee_id.setText(set.getString(13));
+				textfield_trainee_name.setText(set.getString(1));
+				textfield_trainee_lastname.setText(set.getString(2));
+				textfield_trainee_birthday.setText(set.getString(3));
+				textfield_trainee_city.setText(set.getString(4));
+				textfield_trainee_address.setText(set.getString(5));
+				textfield_trainee_postcode.setText(set.getString(6));
+				textfield_trainee_phone.setText(set.getString(7));
+				textfield_trainee_cellphone.setText(set.getString(8));
+				textfield_trainee_email.setText(set.getString(9));
+				textfield_trainee_hight.setText(set.getString(16));
+				textfield_trainee_weight.setText(set.getString(17));
+				textarea_trainee_comments.setText(set.getString(18));
+				datepicker_trainee_start.setValue(set.getDate(14).toLocalDate());
+				datepicker_trainee_end.setValue(set.getDate(15).toLocalDate());
+				combobox_trainee_group.setValue(set.getString(11));
+				combobox_trainee_gender.setValue(set.getString(12));
+				combobox_trainee_center.setValue(set.getString(10));
+				combobox_trainee_level.setValue(set.getString(19));
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
+		
+		
+		
+	}
+
+	public void SetTraineegroupCombobox()
+	{
+		//TODO-Add groups list
+		trainee_group_list.add("6");
+		trainee_group_list.add("5");
+		trainee_group_list.add("4");
+		trainee_group_list.add("3");
+		trainee_group_list.add("2");
+		trainee_group_list.add("1");
+	}
+	
+//---------------------------------------------------------end->Trainee tab Functions------------------------------------------------//	
+
+
+
+
+
 }

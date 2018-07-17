@@ -6,6 +6,7 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import boundaries.CenterRow;
 import boundaries.TraineesRow;
@@ -32,6 +33,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.StringConverter;
+import javafx.util.converter.LocalDateStringConverter;
 import jdk.nashorn.internal.ir.BreakableNode;
 
 public class MainController extends BaseController 
@@ -167,8 +170,8 @@ public class MainController extends BaseController
 //-------------------------------------------------------------trainee anchor pane variables-------------------------------------------//	
 		private @FXML AnchorPane anchorpane_trainee;
 		
-		private static final DateFormat s_dateForamt = new SimpleDateFormat("dd-MM-yyyy");
-		
+		private static final DateTimeFormatter s_dateForamt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				
 		private @FXML TableView<TraineesRow> trainee_table;
 		
 		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_id;
@@ -185,9 +188,9 @@ public class MainController extends BaseController
 		
 		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_group;
 		
-		private @FXML TableColumn<TraineesRow,Date> tablecolumn_trainee_register_date;
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_register_date;
 		
-		private @FXML TableColumn<TraineesRow,Date> tablecolumn_trainee_subscription_end_date;
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_trainee_subscription_end_date;
 		
 		private ObservableList<TraineesRow> trainee_row = FXCollections.observableArrayList();
 		
@@ -514,8 +517,8 @@ public class MainController extends BaseController
 		tablecolumn_trainee_last_name.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("last_name"));
 		tablecolumn_trainee_center.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("center"));
 		tablecolumn_trainee_group.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("group"));
-		tablecolumn_trainee_register_date.setCellValueFactory(new PropertyValueFactory<TraineesRow, Date>("register_date"));
-		tablecolumn_trainee_subscription_end_date.setCellValueFactory(new PropertyValueFactory<TraineesRow, Date>("subscription_end_date"));
+		tablecolumn_trainee_register_date.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("register_date"));
+		tablecolumn_trainee_subscription_end_date.setCellValueFactory(new PropertyValueFactory<TraineesRow,String>("subscription_end_date"));
 		trainee_row = FXCollections.observableArrayList();
 		try {
 				String selTable = "SELECT * FROM Trainees";
@@ -591,13 +594,14 @@ public class MainController extends BaseController
 		});
 		
 	}
+
 //---------------------------------------------------------------end->Initialize Functions-------------------------------------------------//
 
 //------------------------------------------------------------------Override Functions---------------------------------------------//
 
 
 	@Override
-	protected boolean onSelection(String title) 
+ 	protected boolean onSelection(String title) 
 	{
 		this.title = title;
 		switch (title) {
@@ -684,7 +688,6 @@ public class MainController extends BaseController
 			ResultSet resulte=s.getResultSet();
 			return resulte;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}	
@@ -871,7 +874,6 @@ public class MainController extends BaseController
 					}
 				}
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		
@@ -924,7 +926,6 @@ public class MainController extends BaseController
 				}
 			}
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	
@@ -935,7 +936,6 @@ public class MainController extends BaseController
 		try {
 			s.execute(delete);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -1095,7 +1095,7 @@ public class MainController extends BaseController
 		try {
 			while((set!=null) && (set.next()))
 			{
-			   TraineesRow temp=new TraineesRow(set.getString(13), set.getString(1), set.getString(2), set.getString(10),set.getString(11),set.getDate(14),set.getDate(15));
+			   TraineesRow temp=new TraineesRow(set.getString(13), set.getString(1), set.getString(2), set.getString(10),set.getString(11),set.getString(18),set.getString(19));
 			   trainee_row.add(temp);   
 			}
 		} catch (SQLException e) 
@@ -1111,44 +1111,74 @@ public class MainController extends BaseController
 		SetTraineeTabVisable();
 		else
 		{
-			boolean flag= false;
-			ResultSet set=GetFromDataBase("Trainees", DataBaseAction.GetAll, null, null);
-			try {
-				while((set!=null) && (set.next()))
-				{
-					if(set.getString(13)==textfield_trainee_id.getText())
-						flag=true;
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if(flag)
+			if(button_add_trainee.getText().equals("ערוך ספורטאי"))
 			{
-				showAlertMessage("הספורטאי כבר קיים במערכת", AlertType.INFORMATION);
+				GetFromDataBase("Trainees", DataBaseAction.Delete, "id", textfield_trainee_id.getText());
+				String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,commnts) "+
+						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
+						   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
+						   "','"+textfield_trainee_phone.getText()+"','"+textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+
+						   "','"+combobox_trainee_group.getValue()+"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+
+						   "','"+combobox_trainee_level.getValue()+ "','"+textfield_trainee_hight.getText()+ "','"+textfield_trainee_weight.getText()+
+						   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+
+						   "','"+textarea_trainee_comments.getText()+"')";
+				try {
+					s.execute(command);
+					} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					}
+				SetTraineeTabInVisable();
 			}
 			else
 			{
-				/*	String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,"
-									+ "email,group,gender,center,level,hight,weight,register_date,"
-									+ "subscription_end_date,commnts) "+
-						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"
-									+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+"','"
-									+ ""+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+
-										textfield_trainee_postcode.getText()+"','"+textfield_trainee_phone.getText()+"','"+
-										textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+"','"+combobox_trainee_group.getValue()+
-										"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+"','"+combobox_trainee_level.getValue()+"','"+
-										datepicker_trainee_start.getValue()+"','"+Date.valueOf(datepicker_trainee_end.getValue())+
-										"','"+textfield_trainee_hight.getText()+"','"+textfield_trainee_weight.getText()+"','"+textarea_trainee_comments.getText()+"')";
+				boolean flag= false;
+				ResultSet set=GetFromDataBase("Trainees", DataBaseAction.GetAll, null, null);
 				try {
-					s.execute(command);
+					while((set!=null) && (set.next()))
+					{
+						if(set.getString(13).equals(textfield_trainee_id.getText()))
+							flag=true;
+					}
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+				if(flag)
+				{
+					showAlertMessage("הספורטאי כבר קיים במערכת", AlertType.INFORMATION);
+				}
+				else
+				{
+					if((textfield_trainee_id.getText().equals(""))||(textfield_trainee_name.getText().equals(""))||(textfield_trainee_lastname.getText().equals(""))||
+							(textfield_trainee_birthday.getText().equals(""))||textfield_trainee_address.getText().equals("")||textfield_trainee_city.getText().equals("")||
+							textfield_trainee_postcode.getText().equals("")||textfield_trainee_phone.getText().equals("")||textfield_trainee_cellphone.getText().equals("")
+							||textfield_trainee_email.getText().equals("")||combobox_trainee_gender.getValue()==null||combobox_trainee_group.getValue()==null
+							||combobox_trainee_center.getValue()==null||combobox_trainee_level.getValue()==null||textfield_trainee_hight.getText().equals("")
+							||textfield_trainee_weight.getText().equals("")||datepicker_trainee_start.getValue()==null||datepicker_trainee_end.getValue()==null)
+					{
+						showAlertMessage("אתה חייב למלא את כל השדות", AlertType.ERROR);
+				}
+				else
+					{
+					String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,commnts) "+
+							   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
+							   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
+							   "','"+textfield_trainee_phone.getText()+"','"+textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+
+							   "','"+combobox_trainee_group.getValue()+"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+
+							   "','"+combobox_trainee_level.getValue()+ "','"+textfield_trainee_hight.getText()+ "','"+textfield_trainee_weight.getText()+
+							   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+
+							   "','"+textarea_trainee_comments.getText()+"')";
+					try {
+						s.execute(command);
+						} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						}
 					SetTraineeTabInVisable();
-				}*/
-			}
-				
+					}
+				}
+			
+			}	
 		}
 	}
 	
@@ -1161,7 +1191,9 @@ public class MainController extends BaseController
 	@FXML
 	public void DeleteTraineeButtonClick(ActionEvent event)
 	{
-		//TODO
+		GetFromDataBase("Trainees", DataBaseAction.Delete, "id", textfield_trainee_id.getText());
+		SetTraineeTabInVisable();
+		
 	}
 	
 	public void SetTraineeTabVisable()
@@ -1281,13 +1313,38 @@ public class MainController extends BaseController
 		textfield_trainee_email.setVisible(false);
 		textfield_trainee_hight.setVisible(false);
 		textfield_trainee_weight.setVisible(false);
+		textfield_trainee_id.clear();
+		textfield_trainee_name.clear();
+		textfield_trainee_lastname.clear();
+		textfield_trainee_birthday.clear();
+		textfield_trainee_city.clear();
+		textfield_trainee_address.clear();
+		textfield_trainee_postcode.clear();
+		textfield_trainee_phone.clear();
+		textfield_trainee_cellphone.clear();
+		textfield_trainee_email.clear();
+		textfield_trainee_hight.clear();
+		textfield_trainee_weight.clear();
 		textarea_trainee_comments.setVisible(false);
+		textarea_trainee_comments.clear();
 		combobox_trainee_gender.setVisible(false);
+		combobox_trainee_gender.getItems().clear();
+		combobox_trainee_gender.setValue(null);
 		combobox_trainee_center.setVisible(false);
+		combobox_trainee_center.getItems().clear();
+		combobox_trainee_center.setValue(null);
 		combobox_trainee_level.setVisible(false);
+		combobox_trainee_level.getItems().clear();
+		combobox_trainee_level.setValue(null);
 		combobox_trainee_group.setVisible(false);
+		combobox_trainee_group.getItems().clear();
+		combobox_trainee_group.setValue(null);
 		datepicker_trainee_start.setVisible(false);
+		datepicker_trainee_start.setValue(null);
 		datepicker_trainee_end.setVisible(false);
+		datepicker_trainee_end.setValue(null);
+		textfield_trainee_id.setEditable(true);
+		TraineeTabInitialize();
 	}
 	
 	public void SetTraineeCenterComboBox()
@@ -1306,6 +1363,7 @@ public class MainController extends BaseController
 		
 		combobox_trainee_center.setItems(trainee_center_list);
 	}
+	
 	
 	public void SetVisableEditTraineeTab(TraineesRow trainee)
 	{
@@ -1326,36 +1384,23 @@ public class MainController extends BaseController
 				textfield_trainee_phone.setText(set.getString(7));
 				textfield_trainee_cellphone.setText(set.getString(8));
 				textfield_trainee_email.setText(set.getString(9));
-				textfield_trainee_hight.setText(set.getString(16));
-				textfield_trainee_weight.setText(set.getString(17));
-				textarea_trainee_comments.setText(set.getString(18));
-				datepicker_trainee_start.setValue(set.getDate(14).toLocalDate());
-				datepicker_trainee_end.setValue(set.getDate(15).toLocalDate());
+				textfield_trainee_hight.setText(set.getString(14));
+				textfield_trainee_weight.setText(set.getString(15));
+				textarea_trainee_comments.setText(set.getString(16));
+				datepicker_trainee_start.setValue(LocalDate.parse(set.getString(18), s_dateForamt));
+				datepicker_trainee_end.setValue(LocalDate.parse(set.getString(19), s_dateForamt));
 				combobox_trainee_group.setValue(set.getString(11));
 				combobox_trainee_gender.setValue(set.getString(12));
 				combobox_trainee_center.setValue(set.getString(10));
-				combobox_trainee_level.setValue(set.getString(19));
+				combobox_trainee_level.setValue(set.getString(17));
 			}
 		} catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-		
-		
-		
+		textfield_trainee_id.setEditable(false);
 	}
+	
 
 	public void SetTraineegroupCombobox()
 	{

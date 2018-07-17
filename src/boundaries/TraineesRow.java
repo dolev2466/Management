@@ -17,16 +17,16 @@ public class TraineesRow
 	
 	private String group;
 	
-	private Date register_date;
+	private String register_date;
 	
-	private Date subscription_end_date;
+	private String subscription_end_date;
 	
 	// end region -> Fields
 	
 	// region Constructors
 
 		public TraineesRow(String m_id,String m_name,String m_lastname,String m_center,String m_group
-							,Date m_register,Date m_end_date)
+							,String m_register,String m_end_date)
 		{
 			super();
 			id=m_id;
@@ -80,19 +80,19 @@ public class TraineesRow
 			this.group = group;
 		}
 
-		public Date getRegister_date() {
+		public String getRegister_date() {
 			return register_date;
 		}
 
-		public void setRegister_date(Date register_date) {
+		public void setRegister_date(String register_date) {
 			this.register_date = register_date;
 		}
 
-		public Date getSubscription_end_date() {
+		public String getSubscription_end_date() {
 			return subscription_end_date;
 		}
 
-		public void setSubscription_end_date(Date subscription_end_date) {
+		public void setSubscription_end_date(String subscription_end_date) {
 			this.subscription_end_date = subscription_end_date;
 		}
 		

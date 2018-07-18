@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import boundaries.CenterRow;
+import boundaries.ListsRow;
 import boundaries.TraineesRow;
 import boundaries.TrainersRow;
 import controllers.Enums.DataBaseAction;
@@ -306,6 +307,51 @@ public class MainController extends BaseController
 
 //-------------------------------------------------------------end->trainee anchor pane variables-------------------------------------------//
 	
+		
+//-------------------------------------------------------------Lists anchor pane variables-------------------------------------------//
+		private ObservableList<ListsRow> list_row = FXCollections.observableArrayList();
+		
+		private ObservableList<String> list_center = FXCollections.observableArrayList();
+		
+		private ObservableList<String> list_trainer = FXCollections.observableArrayList();
+		
+		private @FXML TableView<ListsRow> lists_table;
+		
+		private @FXML TableColumn<ListsRow,String> tablecolumn_list_center;
+		
+		private @FXML TableColumn<ListsRow,String> tablecolumn_list_males;
+		
+		private @FXML TableColumn<ListsRow,String> tablecolumn_list_females;
+		
+		private @FXML TableColumn<ListsRow,String> tablecolumn_list_trainer;
+		
+		private @FXML Button button_add_list;
+		
+		private @FXML Button button_delete_list;
+		
+		private @FXML Button button_back_list;
+			
+		private @FXML TextField textfield_list_males;
+		
+		private @FXML TextField textfield_list_females;
+		
+		private @FXML ComboBox<String> combobox_list_center;
+		
+		private @FXML ComboBox<String> combobox_list_trainers;
+		
+		private @FXML Label label_list_females;
+		
+		private @FXML Label label_list_males;
+		
+		private @FXML Label label_list_trainer;
+		
+		private @FXML Label label_list_center;
+		
+		private ListsRow correct_list;
+		
+//-------------------------------------------------------------end->Lists anchor pane variables-------------------------------------------//
+
+		
 //-------------------------------------------------------------DataBase Fields-----------------------------------------------------//
 	Connection conn;
 	Statement s;
@@ -594,7 +640,50 @@ public class MainController extends BaseController
 		});
 		
 	}
+	
+	public void InitializeListsTable()
+	{
+		tablecolumn_list_center.setCellValueFactory(new PropertyValueFactory<ListsRow, String>("center"));
+		tablecolumn_list_males.setCellValueFactory(new PropertyValueFactory<ListsRow, String>("males"));
+		tablecolumn_list_females.setCellValueFactory(new PropertyValueFactory<ListsRow, String>("females"));
+		tablecolumn_list_trainer.setCellValueFactory(new PropertyValueFactory<ListsRow, String>("trainer"));
+		list_row = FXCollections.observableArrayList();
+		try {
+				String selTable = "SELECT * FROM Lists";
+				s.execute(selTable);
+				rs = s.getResultSet();
+			}catch(Exception ex)
+			 {
+				System.out.println(ex.getStackTrace());
+			 }
+		
+		ListsTableBuilder(rs);
+		Platform.runLater(() -> {
+			lists_table.setItems(list_row);
+			lists_table.refresh();
+		});
+	}
 
+	public void ListsTableInitialize()
+	{
+		lists_table.setRowFactory(param -> {
+			TableRow<ListsRow> tableRow = new TableRow<>();
+			tableRow.setOnMouseClicked(event -> {
+				if (event.getClickCount() == 2 && (!tableRow.isEmpty())) {
+					 ListsRow rowData = tableRow.getItem();
+
+					if (rowData.getCenter() == " ") {
+						return;
+					}
+					SetVisableEditListTab(rowData);
+				}
+
+			});
+			return tableRow;
+		});
+	}
+	
+	
 //---------------------------------------------------------------end->Initialize Functions-------------------------------------------------//
 
 //------------------------------------------------------------------Override Functions---------------------------------------------//
@@ -628,6 +717,8 @@ public class MainController extends BaseController
 					anchorpane_centers.setVisible(false);
 					anchorpane_lists.setVisible(true);
 					anchorpane_trainee.setVisible(false);
+					InitializeListsTable();
+					ListsTableInitialize();
 			
 			break;	
 			
@@ -1114,6 +1205,17 @@ public class MainController extends BaseController
 			if(button_add_trainee.getText().equals("ערוך ספורטאי"))
 			{
 				GetFromDataBase("Trainees", DataBaseAction.Delete, "id", textfield_trainee_id.getText());
+				if((textfield_trainee_id.getText().equals(""))||(textfield_trainee_name.getText().equals(""))||(textfield_trainee_lastname.getText().equals(""))||
+						(textfield_trainee_birthday.getText().equals(""))||textfield_trainee_address.getText().equals("")||textfield_trainee_city.getText().equals("")||
+						textfield_trainee_postcode.getText().equals("")||textfield_trainee_phone.getText().equals("")||textfield_trainee_cellphone.getText().equals("")
+						||textfield_trainee_email.getText().equals("")||combobox_trainee_gender.getValue()==null||combobox_trainee_group.getValue()==null
+						||combobox_trainee_center.getValue()==null||combobox_trainee_level.getValue()==null||textfield_trainee_hight.getText().equals("")
+						||textfield_trainee_weight.getText().equals("")||datepicker_trainee_start.getValue()==null||datepicker_trainee_end.getValue()==null)
+				{
+					showAlertMessage("אתה חייב למלא את כל השדות", AlertType.ERROR);
+			}
+			else
+				{
 				String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,commnts) "+
 						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
 						   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
@@ -1129,6 +1231,7 @@ public class MainController extends BaseController
 					e.printStackTrace();
 					}
 				SetTraineeTabInVisable();
+				}
 			}
 			else
 			{
@@ -1334,7 +1437,6 @@ public class MainController extends BaseController
 		combobox_trainee_center.getItems().clear();
 		combobox_trainee_center.setValue(null);
 		combobox_trainee_level.setVisible(false);
-		combobox_trainee_level.getItems().clear();
 		combobox_trainee_level.setValue(null);
 		combobox_trainee_group.setVisible(false);
 		combobox_trainee_group.getItems().clear();
@@ -1415,8 +1517,196 @@ public class MainController extends BaseController
 	
 //---------------------------------------------------------end->Trainee tab Functions------------------------------------------------//	
 
+    public void ListsTableBuilder(ResultSet set)
+	 {
+		list_row.clear();
+		try {
+			while((set!=null) && (set.next()))
+			{
+			   ListsRow temp=new ListsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(4), set.getString(5));
+			   list_row.add(temp);   
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+	 }
 
+    @FXML
+    public void AddListButtonClick(ActionEvent event)
+    {
+    	if(lists_table.isVisible())
+    	{
+    		SetListsTabVisable();
+    	}
+    	else
+    	{
+    		if(button_add_list.getText().equals("ערוך רשימה"))
+    		{
+    			if(combobox_list_center.getValue()==null||combobox_list_trainers.getValue()==null)
+    			{
+    				showAlertMessage("אתה חייב למלא את כל השדות", AlertType.ERROR);
+    			}
+    			else
+    			{
+    				GetFromDataBase("Lists", DataBaseAction.Delete, "id", Integer.toString(correct_list.getPr_key()));
+    				String command="INSERT into Lists(center,males,females,trainer)"+
+    						"VALUES('"+combobox_list_center.getValue()+"','"+textfield_list_males.getText()+"','"
+    					   			  +textfield_list_females.getText()+"','"+combobox_list_trainers.getValue()+"')";
+    				try {
+    					s.execute(command);
+    				} catch (SQLException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}
+    				SetListsTabInVisable();
+    			}
+    		}
+    		else
+    		{
+    	
+    			if(combobox_list_center.getValue()==null||combobox_list_trainers.getValue()==null)
+    			{
+    				showAlertMessage("אתה חייב למלא את כל השדות", AlertType.ERROR);
+    			}
+    			else
+    			{
+    				String command="INSERT into Lists(center,males,females,trainer)"+
+    						"VALUES('"+combobox_list_center.getValue()+"','"+textfield_list_males.getText()+"','"
+    					   			  +textfield_list_females.getText()+"','"+combobox_list_trainers.getValue()+"')";
+    				try {
+    					s.execute(command);
+    				} catch (SQLException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}
+    				SetListsTabInVisable();
+    			}
+    			
+    		}
+    	}
+    }
 
+    public void SetListsTabVisable()
+    {
+    	button_add_list.setLayoutX(320);
+    	lists_table.setVisible(false);
+    	button_delete_list.setVisible(true);
+    	button_back_list.setVisible(true);
+    	label_list_trainer.setVisible(true);
+    	label_list_males.setVisible(true);
+    	label_list_females.setVisible(true);
+    	textfield_list_males.setVisible(true);
+    	textfield_list_females.setVisible(true);
+    	combobox_list_center.setVisible(true);
+    	combobox_list_trainers.setVisible(true);
+    	FillListCenterCombobox();
+    	combobox_list_center.setItems(list_center);
+    	FillListTrainerCombobox();
+    	combobox_list_trainers.setItems(list_trainer);
+    	label_list_center.setVisible(true);
+    }
+    
+    public void SetListsTabInVisable()
+    {
+    	button_add_list.setLayoutX(420);
+    	button_add_list.setText("הוסף רשימה חדשה");
+    	lists_table.setVisible(true);
+    	button_delete_list.setVisible(false);
+    	button_back_list.setVisible(false);
+    	label_list_trainer.setVisible(false);
+    	label_list_males.setVisible(false);
+    	label_list_females.setVisible(false);
+    	textfield_list_males.setVisible(false);
+    	textfield_list_females.setVisible(false);
+    	combobox_list_center.setVisible(false);
+    	combobox_list_trainers.setVisible(false);
+    	label_list_center.setVisible(false);
+    	textfield_list_females.clear();
+    	textfield_list_males.clear();
+    	combobox_list_center.setValue(null);
+    	InitializeListsTable();
+    	
+    }
+    
+    @FXML
+    public void DeleteListButtonClick(ActionEvent event)
+    {
+    	GetFromDataBase("Lists", DataBaseAction.Delete, "id", Integer.toString(correct_list.getPr_key()));
+    	SetListsTabInVisable();
+    }
 
+    public void BackListButtonClick(ActionEvent event)
+    {
+    	SetListsTabInVisable();
+    }
 
+    public void FillListCenterCombobox()
+    {
+    	ResultSet set=GetFromDataBase("Centers", DataBaseAction.GetAll, null, null);
+    	list_center.clear();
+		try {
+			while((set!=null) && (set.next()))
+			{
+			   String temp=set.getString(3);
+			   list_center.add(temp);   
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+    }
+
+    public void FillListTrainerCombobox()
+    {
+    	ResultSet set=GetFromDataBase("Trainers", DataBaseAction.GetAll, null, null);
+    	list_trainer.clear();
+		try {
+			while((set!=null) && (set.next()))
+			{
+			   String temp=set.getString(1)+" "+set.getString(2);
+			   list_trainer.add(temp);   
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+    }
+
+    @FXML
+    public void ListCenterComboClick(ActionEvent event)
+    {
+    	int male_counter=0;
+    	int female_counter=0;
+    	if(combobox_list_center.getValue()==null)  
+    		return;
+    	 ResultSet set=GetFromDataBase("Trainees", DataBaseAction.GetAll, null, null);
+    	 try {
+			while((set!=null) && (set.next()))
+				{
+					if(set.getString(10).equals(combobox_list_center.getValue()))
+					{
+						if(set.getString(12).equals("זכר"))
+							male_counter++;
+						else
+							female_counter++;
+					}
+				}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    		textfield_list_males.setText(Integer.toString(male_counter));
+    		textfield_list_females.setText(Integer.toString(female_counter));
+    }
+
+    public void SetVisableEditListTab(ListsRow list)
+    {
+    	correct_list=list;
+    	SetListsTabVisable();
+    	button_add_list.setText("ערוך רשימה");
+    	combobox_list_center.setValue(list.getCenter());
+    	combobox_list_trainers.setValue(list.getTrainer());
+    }
 }

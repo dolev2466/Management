@@ -140,7 +140,31 @@
 							</columnResizePolicy>
                   </TableView>
                </children></AnchorPane>
-            <AnchorPane fx:id="anchorpane_lists" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0" />
+            <AnchorPane fx:id="anchorpane_lists" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
+               <children>
+               	  <Button fx:id="button_add_list" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#AddListButtonClick" prefHeight="29.0" prefWidth="197.0" text="הוסף רשימה חדשה" />
+                  <Button fx:id="button_back_list" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#BackListButtonClick" prefHeight="29.0" prefWidth="197.0" text="חזור" visible="false" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="358.0" />
+                  <Button fx:id="button_delete_list" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#DeleteListButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק רשימה" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="400.0" /> 
+                  <TextField fx:id="textfield_list_females" editable="false" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="120.0" />
+                  <TextField fx:id="textfield_list_males" editable="false" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="160.0" />
+                  <ComboBox fx:id="combobox_list_trainers" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="200.0" />
+                  <ComboBox fx:id="combobox_list_center" layoutX="93.0" layoutY="139.0" onAction="#ListCenterComboClick" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="80.0" />
+                   <Label fx:id="label_list_center" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מרכז:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="80.0" />
+                  <Label fx:id="label_list_females" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="נשים:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="120.0" />
+				  <Label fx:id="label_list_males" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="גברים:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="160.0" />
+				  <Label fx:id="label_list_trainer" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="200.0" />
+                  <TableView fx:id="lists_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+					<columns>
+						<TableColumn fx:id="tablecolumn_list_trainer" editable="false" minWidth="50.0" sortable="false" text="מאמן" />
+						<TableColumn fx:id="tablecolumn_list_females" editable="false" minWidth="112.5" sortable="false" text="נשים" />
+						<TableColumn fx:id="tablecolumn_list_males" editable="false" minWidth="112.5" sortable="false" text="גברים" />
+						<TableColumn fx:id="tablecolumn_list_center" editable="false" minWidth="50.0" sortable="false" text="מרכז" />					
+					</columns>
+						<columnResizePolicy>
+							<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+						</columnResizePolicy>
+                 </TableView>
+               </children></AnchorPane>
             <AnchorPane fx:id="anchorpane_trainee" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                <children>
              	  <Button fx:id="button_add_trainee" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#AddTraineeButtonClick" prefHeight="29.0" prefWidth="197.0" text="הוסף ספורטאי חדש" />

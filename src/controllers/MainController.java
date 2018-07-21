@@ -1406,6 +1406,8 @@ public class MainController extends BaseController
 		}
 		SetCenterTabInVisable();
 	}
+	
+	//Trainee Functions
 
 //---------------------------------------------------------end->Center tab Functions------------------------------------------------//
 
@@ -1576,7 +1578,6 @@ public class MainController extends BaseController
 		combobox_trainee_center.setVisible(true);
 		combobox_trainee_level.setItems(trainee_level);
 		combobox_trainee_level.setVisible(true);
-		SetTraineegroupCombobox();
 		combobox_trainee_group.setItems(trainee_group_list);
 		combobox_trainee_group.setVisible(true);
 		datepicker_trainee_start.setVisible(true);
@@ -1735,15 +1736,34 @@ public class MainController extends BaseController
 
 	public void SetTraineegroupCombobox()
 	{
-		//TODO-Add groups list
-		trainee_group_list.add("6");
-		trainee_group_list.add("5");
-		trainee_group_list.add("4");
-		trainee_group_list.add("3");
-		trainee_group_list.add("2");
-		trainee_group_list.add("1");
+		ResultSet set=GetFromDataBase("Groups", DataBaseAction.GetAll, null, null);
+		trainee_group_list.clear();
+		try {
+			while((set!=null) && (set.next()))
+			{
+				if(set.getString(4).equals(combobox_trainee_center.getValue()))
+				{
+					trainee_group_list.add(set.getString(3));
+				}
+			     
+			}
+		} catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+
 	}
 	
+	@FXML
+	public void ComboBoxTraineeCenterSelect(ActionEvent event)
+	{
+		if(combobox_trainee_center.getValue()!=null)
+		{
+			SetTraineegroupCombobox();
+		}
+	}
+	
+	//Lists Functions
 //---------------------------------------------------------end->Trainee tab Functions------------------------------------------------//	
 
 //---------------------------------------------------------List tab Functions------------------------------------------------//	
@@ -1937,6 +1957,9 @@ public class MainController extends BaseController
     	combobox_list_center.setValue(list.getCenter());
     	combobox_list_trainers.setValue(list.getTrainer());
     }
+    
+    
+    //Group Functions
 
 //-------------------------------------------------------end->List tab Functions------------------------------------------------//	
 

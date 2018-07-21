@@ -6,9 +6,12 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import boundaries.CenterRow;
+import boundaries.GroupsRow;
 import boundaries.ListsRow;
 import boundaries.TraineesRow;
 import boundaries.TrainersRow;
@@ -25,6 +28,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -36,13 +42,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
+import javafx.util.converter.LocalTimeStringConverter;
 import jdk.nashorn.internal.ir.BreakableNode;
 
 public class MainController extends BaseController 
 {
 	private String title;
 	
-	private String[] window = { "מאמנים", "מרכזים","רשימות","ספורטאים" };
+	private String[] window = { "מאמנים", "מרכזים","רשימות","ספורטאים","פעילויות" };
 //------------------------------------------------------------------trainer anchor pane variables-----------------------------------------------//	
 	private @FXML AnchorPane anchorpane_trainers;
 	
@@ -304,7 +311,6 @@ public class MainController extends BaseController
 		private @FXML ImageView image_trainee_gender;
 		
 
-
 //-------------------------------------------------------------end->trainee anchor pane variables-------------------------------------------//
 	
 		
@@ -350,6 +356,71 @@ public class MainController extends BaseController
 		private ListsRow correct_list;
 		
 //-------------------------------------------------------------end->Lists anchor pane variables-------------------------------------------//
+
+//-------------------------------------------------------------Acticity anchor pane variables-------------------------------------------//
+		private @FXML AnchorPane anchorpane_groups;
+		
+		private @FXML TableView<GroupsRow> groups_table;
+			
+		private @FXML TableColumn<GroupsRow,String> tablecolumn_group_group;
+		
+		private @FXML TableColumn<GroupsRow,String> tablecolumn_group_activity_time;
+		
+		private @FXML TableColumn<GroupsRow,String> tablecolumn_group_trainer;
+		
+		private @FXML Button button_add_group;
+		
+		private @FXML Button button_back_group;
+		
+		private @FXML Button button_delete_group;
+		
+		private @FXML Label label_group_center;
+		
+		private @FXML Label label_group_name;
+		
+		private @FXML Label label_group_day;
+		
+		private @FXML Label label_group_trainer;
+		
+		private @FXML Label label_group_start;
+		
+		private @FXML Label label_group_end;
+		
+		private @FXML TextField textfield_group_name;
+		
+		private @FXML RadioButton radio_group_add;
+		
+		private @FXML ComboBox<String> combobox_group_center;
+		
+		private @FXML ComboBox<String> combobox_group_trainer;
+		
+		private @FXML ComboBox<String> combobox_group_days;
+		
+		private @FXML ComboBox<String> combobox_group_days2;
+		
+		private @FXML Spinner<LocalTime>spinner_group_start;
+		
+		private @FXML Spinner<LocalTime>spinner_group_end;
+		
+		private @FXML Spinner<LocalTime>spinner_group_start2;
+		
+		private @FXML Spinner<LocalTime>spinner_group_end2;
+		
+
+		private ObservableList<GroupsRow> group_list = FXCollections.observableArrayList();
+		
+		private ObservableList<String> group_center_list = FXCollections.observableArrayList();
+		
+		private ObservableList<String> group_days_list = FXCollections.observableArrayList();
+
+		private ObservableList<String> group_trainer_list = FXCollections.observableArrayList();
+		
+		private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		
+		private GroupsRow correct_group;
+		
+
+//-------------------------------------------------------------end->Acticity anchor pane variables-------------------------------------------//
 
 		
 //-------------------------------------------------------------DataBase Fields-----------------------------------------------------//
@@ -683,12 +754,156 @@ public class MainController extends BaseController
 		});
 	}
 	
-	
+	public void InitializeGroupTable()
+	{
+		tablecolumn_group_trainer.setCellValueFactory(new PropertyValueFactory<GroupsRow, String>("trainer"));
+		tablecolumn_group_group.setCellValueFactory(new PropertyValueFactory<GroupsRow, String>("group"));
+		tablecolumn_group_activity_time.setCellValueFactory(new PropertyValueFactory<GroupsRow, String>("activity_time"));
+		list_row = FXCollections.observableArrayList();
+		Platform.runLater(() -> {
+			lists_table.refresh();
+		});
+	}
+
+	public void InitializeTimeSpinner()
+	{
+
+		SpinnerValueFactory<LocalTime> value1=new SpinnerValueFactory<LocalTime>() {
+			{
+				 setConverter(new LocalTimeStringConverter(formatter,null));
+			}
+			@Override
+	        public void decrement(int steps) {
+	            if (getValue() == null)
+	                setValue(LocalTime.now());
+	            else {
+	                LocalTime time = (LocalTime) getValue();
+	                setValue(time.minusMinutes(steps));
+	            }
+	        }
+
+	        @Override
+	        public void increment(int steps) {
+	            if (this.getValue() == null)
+	                setValue(LocalTime.now());
+	            else {
+	                LocalTime time = (LocalTime) getValue();
+	                setValue(time.plusMinutes(steps));
+	            }
+	        }
+			
+				};
+		SpinnerValueFactory<LocalTime> value2=new SpinnerValueFactory<LocalTime>() {
+					{
+						 setConverter(new LocalTimeStringConverter(formatter,null));
+					}
+					@Override
+			        public void decrement(int steps) {
+			            if (getValue() == null)
+			                setValue(LocalTime.now());
+			            else {
+			                LocalTime time = (LocalTime) getValue();
+			                setValue(time.minusMinutes(steps));
+			            }
+			        }
+
+			        @Override
+			        public void increment(int steps) {
+			            if (this.getValue() == null)
+			                setValue(LocalTime.now());
+			            else {
+			                LocalTime time = (LocalTime) getValue();
+			                setValue(time.plusMinutes(steps));
+			            }
+			        }
+					
+						};		
+		SpinnerValueFactory<LocalTime> value3=new SpinnerValueFactory<LocalTime>() {
+							{
+								 setConverter(new LocalTimeStringConverter(formatter,null));
+							}
+							@Override
+					        public void decrement(int steps) {
+					            if (getValue() == null)
+					                setValue(LocalTime.now());
+					            else {
+					                LocalTime time = (LocalTime) getValue();
+					                setValue(time.minusMinutes(steps));
+					            }
+					        }
+
+					        @Override
+					        public void increment(int steps) {
+					            if (this.getValue() == null)
+					                setValue(LocalTime.now());
+					            else {
+					                LocalTime time = (LocalTime) getValue();
+					                setValue(time.plusMinutes(steps));
+					            }
+					        }
+							
+								};
+		SpinnerValueFactory<LocalTime> value4=new SpinnerValueFactory<LocalTime>() {
+									{
+										 setConverter(new LocalTimeStringConverter(formatter,null));
+									}
+									@Override
+							        public void decrement(int steps) {
+							            if (getValue() == null)
+							                setValue(LocalTime.now());
+							            else {
+							                LocalTime time = (LocalTime) getValue();
+							                setValue(time.minusMinutes(steps));
+							            }
+							        }
+
+							        @Override
+							        public void increment(int steps) {
+							            if (this.getValue() == null)
+							                setValue(LocalTime.now());
+							            else {
+							                LocalTime time = (LocalTime) getValue();
+							                setValue(time.plusMinutes(steps));
+							            }
+							        }
+									
+										};
+		spinner_group_start.setEditable(true);
+		spinner_group_end.setEditable(true);
+		spinner_group_start2.setEditable(true);
+		spinner_group_end2.setEditable(true);
+		spinner_group_start.setValueFactory(value1);
+		spinner_group_end.setValueFactory(value2);
+		spinner_group_start2.setValueFactory(value3);
+		spinner_group_end2.setValueFactory(value4);
+	}
 //---------------------------------------------------------------end->Initialize Functions-------------------------------------------------//
 
 //------------------------------------------------------------------Override Functions---------------------------------------------//
 
 
+	
+	public void GroupTabInitialize()
+	{
+		groups_table.setRowFactory(param -> {
+			TableRow<GroupsRow> tableRow = new TableRow<>();
+			tableRow.setOnMouseClicked(event -> {
+				if (event.getClickCount() == 2 && (!tableRow.isEmpty())) {
+					 GroupsRow rowData = tableRow.getItem();
+
+					if (rowData.getCenter() == " ") {
+						return;
+					}
+					correct_group=rowData;
+					SetVisableEditGroupTab(rowData);
+				}
+
+			});
+			return tableRow;
+		});
+	}
+//---------------------------------------------------------------------------------------------------------------------------------------//	
+	
 	@Override
  	protected boolean onSelection(String title) 
 	{
@@ -701,6 +916,7 @@ public class MainController extends BaseController
 				TrainersTabInitialize();
 				SetInvisableTrainerTab();
 				anchorpane_trainee.setVisible(false);
+				anchorpane_groups.setVisible(false);
 			break;
 
 			case "מרכזים":
@@ -709,6 +925,7 @@ public class MainController extends BaseController
 				anchorpane_lists.setVisible(false);
 				SetCenterTabInVisable();
 				anchorpane_trainee.setVisible(false);
+				anchorpane_groups.setVisible(false);
 
 			break;
 
@@ -717,6 +934,7 @@ public class MainController extends BaseController
 					anchorpane_centers.setVisible(false);
 					anchorpane_lists.setVisible(true);
 					anchorpane_trainee.setVisible(false);
+					anchorpane_groups.setVisible(false);
 					InitializeListsTable();
 					ListsTableInitialize();
 			
@@ -726,9 +944,22 @@ public class MainController extends BaseController
 				anchorpane_trainers.setVisible(false);
 				anchorpane_centers.setVisible(false);
 				anchorpane_lists.setVisible(false);
+				anchorpane_groups.setVisible(false);
 				anchorpane_trainee.setVisible(true);
 				TraineeTabInitialize();
 				SetTraineeTabInVisable();
+				break;
+			
+			case "פעילויות":
+				anchorpane_trainers.setVisible(false);
+				anchorpane_centers.setVisible(false);
+				anchorpane_lists.setVisible(false);
+				anchorpane_trainee.setVisible(false);
+				anchorpane_groups.setVisible(true);
+				InitializeGroupTable();
+				SetGroupTabInVisable();
+				InitializeTimeSpinner();
+				GroupTabInitialize();
 				break;
 			default:
 				return false;
@@ -1227,7 +1458,6 @@ public class MainController extends BaseController
 				try {
 					s.execute(command);
 					} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					}
 				SetTraineeTabInVisable();
@@ -1274,7 +1504,6 @@ public class MainController extends BaseController
 					try {
 						s.execute(command);
 						} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						}
 					SetTraineeTabInVisable();
@@ -1517,6 +1746,9 @@ public class MainController extends BaseController
 	
 //---------------------------------------------------------end->Trainee tab Functions------------------------------------------------//	
 
+//---------------------------------------------------------List tab Functions------------------------------------------------//	
+	
+	
     public void ListsTableBuilder(ResultSet set)
 	 {
 		list_row.clear();
@@ -1556,7 +1788,6 @@ public class MainController extends BaseController
     				try {
     					s.execute(command);
     				} catch (SQLException e) {
-    					// TODO Auto-generated catch block
     					e.printStackTrace();
     				}
     				SetListsTabInVisable();
@@ -1577,7 +1808,6 @@ public class MainController extends BaseController
     				try {
     					s.execute(command);
     				} catch (SQLException e) {
-    					// TODO Auto-generated catch block
     					e.printStackTrace();
     				}
     				SetListsTabInVisable();
@@ -1626,7 +1856,6 @@ public class MainController extends BaseController
     	textfield_list_males.clear();
     	combobox_list_center.setValue(null);
     	InitializeListsTable();
-    	
     }
     
     @FXML
@@ -1693,7 +1922,6 @@ public class MainController extends BaseController
 					}
 				}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -1709,4 +1937,263 @@ public class MainController extends BaseController
     	combobox_list_center.setValue(list.getCenter());
     	combobox_list_trainers.setValue(list.getTrainer());
     }
+
+//-------------------------------------------------------end->List tab Functions------------------------------------------------//	
+
+  //-------------------------------------------------------group tab Functions------------------------------------------------//	
+    
+   
+    //------------------------------------------------------------------------------------------------------------------------------------------//
+    @FXML
+    public void ComboboxCenterClick(ActionEvent event)
+    {
+    	if(combobox_group_center.getValue()==null)
+    		return;
+    	for ( int i = 0; i<groups_table.getItems().size(); i++) {
+    		groups_table.getItems().clear();
+    	}
+		ResultSet set= GetFromDataBase("Groups", DataBaseAction.GetAll, null, null);
+		try {
+				while((set!=null) && (set.next()))
+				{
+					if(set.getString(4).equals(combobox_group_center.getValue()))
+					{
+					GroupsRow temp=new GroupsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(5), set.getString(4));
+					group_list.add(temp);   
+					}
+				}
+				if(group_list.isEmpty())
+					showAlertMessage("אין קבוצות פעילות למרכז הנבחר", AlertType.INFORMATION);
+				groups_table.setItems(group_list);
+			}
+			catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+    	
+    }
+
+    public void SetGroupTabInVisable()
+    {
+    	groups_table.setVisible(true);
+    	FillGroupCenterCombobox();
+    	button_add_group.setLayoutX(420);
+    	button_back_group.setVisible(false);
+    	combobox_group_center.setItems(group_center_list);
+    	combobox_group_center.setVisible(true);
+    	label_group_center.setVisible(true);
+    	label_group_day.setVisible(false);
+    	label_group_name.setVisible(false);
+    	label_group_trainer.setVisible(false);
+    	label_group_start.setVisible(false);
+    	label_group_end.setVisible(false);
+    	textfield_group_name.setVisible(false);
+    	radio_group_add.setVisible(false);
+    	combobox_group_days.setVisible(false);
+    	combobox_group_trainer.setVisible(false);
+    	spinner_group_start.setVisible(false);
+    	spinner_group_end.setVisible(false);
+    	spinner_group_start2.setVisible(false);
+    	spinner_group_end2.setVisible(false);
+    	combobox_group_days2.setVisible(false);
+    	combobox_group_center.setValue(null);
+    	textfield_group_name.clear();
+    	for ( int i = 0; i<groups_table.getItems().size(); i++) {
+    		groups_table.getItems().clear();
+    	}
+       	button_delete_group.setVisible(false);
+       	radio_group_add.setSelected(false);
+       	RadioGroupButtonClick();
+    	
+    }
+  
+    public void SetGroupTabVisable()
+    {
+    	groups_table.setVisible(false);
+    	button_back_group.setVisible(true);
+    	button_add_group.setLayoutX(300);
+    	combobox_group_center.setVisible(false);
+    	label_group_center.setVisible(false);
+    	label_group_day.setVisible(true);
+    	label_group_name.setVisible(true);
+    	label_group_trainer.setVisible(true);
+    	label_group_start.setVisible(true);
+    	label_group_end.setVisible(true);
+    	textfield_group_name.setVisible(true);
+    	radio_group_add.setVisible(true);
+    	combobox_group_days.setVisible(true);
+    	FillGroupDaysList();
+    	combobox_group_days.setItems(group_days_list);
+    	combobox_group_trainer.setVisible(true);
+    	FillGroupTrainers();
+    	combobox_group_trainer.setItems(group_trainer_list);
+    	spinner_group_start.setVisible(true);
+    	spinner_group_end.setVisible(true);
+    	InitializeTimeSpinner();
+    	
+    }
+    
+    public void FillGroupCenterCombobox()
+   {
+    	group_center_list.clear();
+	   ResultSet set =GetFromDataBase("Centers", DataBaseAction.GetAll, null, null);
+	   try {
+	   while((set!=null) && (set.next()))
+		{
+			String temp= set.getString(3);
+			group_center_list.add(temp);   
+		}
+	   }catch(SQLException e) {
+			showAlertMessage("אין מרכזים במערכת", AlertType.INFORMATION);
+
+	   }
+   }
+  
+    @FXML
+    public void AddGroupButtonClick()
+    {
+    		if(groups_table.isVisible())
+    		{
+    			if(combobox_group_center.getValue()==null)
+    			{
+    				showAlertMessage("אתה חייב לבחור מרכז לפני שתוכל להוסיף שיעור", AlertType.ERROR);
+    				return;
+    			}
+    		SetGroupTabVisable();
+    		}
+    		else
+    		{
+    			if(button_add_group.getText().equals("הוסף שיעור חדש"))
+    			{
+    			if(textfield_group_name.getText().equals("")||combobox_group_trainer.getValue()==null||
+    					combobox_group_days.getValue()==null||spinner_group_start.getValue()==null||
+    					spinner_group_end.getValue()==null)
+    			{
+    				showAlertMessage("אתה חייב למלא את כל השדות", AlertType.ERROR);
+    			}
+    			else
+    			{
+    				if(radio_group_add.isSelected())
+    				{
+    					if(combobox_group_days.getValue()==null||spinner_group_start2.getValue()==null||
+    						spinner_group_end2.getValue()==null)
+    					{
+    						showAlertMessage("אתה חייב למלא את כל השדות או לכבות את הכפתור", AlertType.ERROR);
+    						return;
+    					}
+    				}
+    				
+    				String times="יום"+" "+combobox_group_days.getValue()+" "+"בשעה "+spinner_group_start.getValue().toString().substring(0, 5)+"-"+spinner_group_end.getValue().toString().substring(0, 5);
+    				if(radio_group_add.isSelected())
+    				{
+    					times=times+"\n"+
+    							"יום"+" "+combobox_group_days2.getValue()+" "+"בשעה "+spinner_group_start2.getValue().toString().substring(0, 5)+"-"+spinner_group_end2.getValue().toString().substring(0, 5);		
+    				}
+    				String command1="INSERT into Groups(trainer,group,activity_time,center)"+
+    						   "VALUES('"+combobox_group_trainer.getValue()+"','"+textfield_group_name.getText()+"','"+
+    						   			times+"','"+combobox_group_center.getValue()+"')";
+    				try {
+						s.execute(command1);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+    				SetGroupTabInVisable();
+    			}
+    			}
+    			else
+    			{
+    				GetFromDataBase("Groups", DataBaseAction.Delete, "id", Integer.toString(correct_group.getPr_key()));
+    				button_add_group.setText("הוסף שיעור חדש");
+    				AddGroupButtonClick();
+    				
+    			}
+    		}
+    }
+ 
+    @FXML
+    public void RadioGroupButtonClick()
+    {
+    	if(radio_group_add.isSelected())
+    	{
+    		combobox_group_days2.setVisible(true);
+    		spinner_group_end2.setVisible(true);
+    		spinner_group_start2.setVisible(true);
+    		combobox_group_days2.setItems(group_days_list);
+    	}
+    	else
+    	{
+    		combobox_group_days2.setVisible(false);
+    		spinner_group_end2.setVisible(false);
+    		spinner_group_start2.setVisible(false);
+    	}
+    }
+ 
+    public void FillGroupDaysList()
+    {
+    	group_days_list.clear();
+    	group_days_list.add("א");
+    	group_days_list.add("ב");
+    	group_days_list.add("ג");
+    	group_days_list.add("ד");
+    	group_days_list.add("ה");
+    	group_days_list.add("ו");
+    	group_days_list.add("ש");
+    }
+    
+    public void FillGroupTrainers()
+    {
+    	group_trainer_list.clear();
+    	ResultSet set=GetFromDataBase("Trainers", DataBaseAction.GetAll, null, null);
+    	
+    	try {
+    	while((set!=null) && (set.next()))
+		{
+			String temp=set.getString(1)+" "+set.getString(2); 
+			group_trainer_list.add(temp);
+		}
+    	}catch(SQLException e)
+    	{
+    		showAlertMessage("אין מאמנים במערכת", AlertType.INFORMATION);
+    	}
+    }
+   
+    @FXML
+    public void BackGroupButtonClick()
+    {
+    	SetGroupTabInVisable();
+    }
+ 
+    @FXML
+    public void DeleteGroupButtonClick(ActionEvent event)
+    {
+    	GetFromDataBase("Groups", DataBaseAction.Delete, "id",Integer.toString(correct_group.getPr_key()));
+    	SetGroupTabInVisable();
+    }
+   
+    public void SetVisableEditGroupTab(GroupsRow rowData)
+    {
+    	SetGroupTabVisable();
+    	DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
+    	button_add_group.setText("ערוך שיעור");
+    	button_delete_group.setVisible(true);
+    	textfield_group_name.setText(rowData.getGroup());
+    	combobox_group_trainer.setValue(rowData.getTrainer());
+    	combobox_group_days.setValue(rowData.getActivity_time().substring(4,5));	
+		spinner_group_start.getValueFactory().setValue(LocalTime.parse(rowData.getActivity_time().substring(11, 16), fmt));
+		spinner_group_end.getValueFactory().setValue(LocalTime.parse(rowData.getActivity_time().substring(17, 22), fmt));
+		if(rowData.getActivity_time().length()>23)
+		{
+			radio_group_add.setSelected(true);
+			RadioGroupButtonClick();
+			combobox_group_days2.setValue(rowData.getActivity_time().substring(27,28));
+			spinner_group_start2.getValueFactory().setValue(LocalTime.parse(rowData.getActivity_time().substring(34, 39), fmt));
+			spinner_group_end2.getValueFactory().setValue(LocalTime.parse(rowData.getActivity_time().substring(40, 45), fmt));
+		}
+    	
+    	
+    }
+    //----------------------------------------------------end->group tab Functions------------------------------------------------//	
+
+    
+    
 }

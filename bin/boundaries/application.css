@@ -316,3 +316,7 @@
     -fx-font-size: 0.75em;
     -fx-font-family: "Segoe UI Semibold", "Segoe UI", Helvetica, Arial, sans-serif;
 }
+.radio-button .dot {
+    -fx-background-radius: 15px;
+    -fx-padding: 8px;
+}

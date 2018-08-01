@@ -1,6 +1,5 @@
 package boundaries;
 
-import java.sql.Date;
 
 public class TraineesRow 
 {

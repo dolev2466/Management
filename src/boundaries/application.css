@@ -155,7 +155,6 @@
     -fx-background-insets: 0.0 0.0 -1.0 0.0, 0.0, 1.0, 2.0;    
     -fx-border-radius: 10.0 10.0 0.0 0.0;
   	-fx-background-radius: 10.0 10.0 0.0 0.0;
-  	-fx-alignment: center;
 }
 
 .combo-box-popup .list-view .list-cell {

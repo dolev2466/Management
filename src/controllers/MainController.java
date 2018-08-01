@@ -50,6 +50,8 @@ public class MainController extends BaseController
 	private String title;
 	
 	private String[] window = { "מאמנים", "מרכזים","רשימות","ספורטאים","פעילויות" };
+	
+	public static final String MY_SQL_DRIVER_NAME="net.ucanaccess.jdbc.UcanaccessDriver";
 //------------------------------------------------------------------trainer anchor pane variables-----------------------------------------------//	
 	private @FXML AnchorPane anchorpane_trainers;
 	
@@ -66,6 +68,14 @@ public class MainController extends BaseController
 	private @FXML Button button_back_trainer;
 	
 	private @FXML Button button_delete_trainer;
+	
+	private @FXML Button button_search_trainer;
+	
+	private @FXML Label label_search;
+	
+	private @FXML Label label_search_name;
+	
+	private @FXML Label label_search_lastname;
 	
 	private @FXML Label label_id;
 	
@@ -86,6 +96,10 @@ public class MainController extends BaseController
 	private @FXML Label label_cellphone;
 	
 	private @FXML Label label_email;
+	
+	private @FXML TextField textfield_search_name;
+	
+	private @FXML TextField textfield_search_lastname;
 	
 	private @FXML TextField textfield_id;
 	
@@ -151,15 +165,23 @@ public class MainController extends BaseController
 	
 	private @FXML Button button_delete_center;
 	
+	private @FXML Button button_search_center;
+	
 	private @FXML TextField textfield_center_classname;
 	
 	private @FXML TextField textfield_center_price;
+	
+	private @FXML TextField textfield_search_centername;
 	
 	private @FXML Label label_center_classname;
 	
 	private @FXML Label label_center_price;
 	
 	private @FXML Label label_center_trainer;
+	
+	private @FXML Label label_search_center;
+	
+	private @FXML Label label_search_centername;
 	
 	private @FXML ComboBox<String> combobox_center_trainers;
 	
@@ -212,6 +234,14 @@ public class MainController extends BaseController
 		
 		private @FXML Button button_delete_trainee;
 		
+		private @FXML Button button_search_trainee;
+		
+		private @FXML Label label_traineesearch;
+		
+		private @FXML Label label_search_traineeid;
+		
+		private @FXML Label label_search_traineename;
+		
 		private @FXML Label label_trainee_id;
 		
 		private @FXML Label label_trainee_name;
@@ -249,6 +279,10 @@ public class MainController extends BaseController
 		private @FXML Label label_trainee_comments;
 		
 		private @FXML Label label_trainee_group;
+		
+		private @FXML TextField textfield_search_traineeid;
+		
+		private @FXML TextField textfield_search_traineename;
 		
 		private @FXML TextField textfield_trainee_id;
 		
@@ -336,10 +370,16 @@ public class MainController extends BaseController
 		private @FXML Button button_delete_list;
 		
 		private @FXML Button button_back_list;
+		
+		private @FXML Button button_search_list;
 			
 		private @FXML TextField textfield_list_males;
 		
 		private @FXML TextField textfield_list_females;
+		
+		private @FXML TextField textfield_search_listname;
+		
+		private @FXML TextField textfield_search_listtrainername;
 		
 		private @FXML ComboBox<String> combobox_list_center;
 		
@@ -353,11 +393,17 @@ public class MainController extends BaseController
 		
 		private @FXML Label label_list_center;
 		
+		private @FXML Label label_listsearch;
+		
+		private @FXML Label label_search_listname;
+		
+		private @FXML Label label_search_listtrainer;
+		
 		private ListsRow correct_list;
 		
 //-------------------------------------------------------------end->Lists anchor pane variables-------------------------------------------//
 
-//-------------------------------------------------------------Acticity anchor pane variables-------------------------------------------//
+//-------------------------------------------------------------Group anchor pane variables-------------------------------------------//
 		private @FXML AnchorPane anchorpane_groups;
 		
 		private @FXML TableView<GroupsRow> groups_table;
@@ -374,6 +420,14 @@ public class MainController extends BaseController
 		
 		private @FXML Button button_delete_group;
 		
+		private @FXML Button button_search_group;
+		
+		private @FXML Label label_search_groupcenter;
+		
+		private @FXML Label label_search_grouptrainer;
+		
+		private @FXML Label label_groupsearch;
+		
 		private @FXML Label label_group_center;
 		
 		private @FXML Label label_group_name;
@@ -387,6 +441,10 @@ public class MainController extends BaseController
 		private @FXML Label label_group_end;
 		
 		private @FXML TextField textfield_group_name;
+		
+		private @FXML TextField textfield_search_groupcenter;
+		
+		private @FXML TextField textfield_search_grouptrainer;
 		
 		private @FXML RadioButton radio_group_add;
 		
@@ -420,8 +478,17 @@ public class MainController extends BaseController
 		private GroupsRow correct_group;
 		
 
-//-------------------------------------------------------------end->Acticity anchor pane variables-------------------------------------------//
+//-------------------------------------------------------------end->Group anchor pane variables-------------------------------------------//
+//-------------------------------------------------------------Payments anchor pane variables-------------------------------------------//
+		private @FXML AnchorPane anchorpane_payment;
 
+		private @FXML TableView<GroupsRow> payment_table;
+		
+		private @FXML TableColumn<GroupsRow,String> tablecolumn_payment_name;
+		
+		private @FXML TableColumn<GroupsRow,String> tablecolumn_payment_lastname;
+		
+		private @FXML TableColumn<GroupsRow,String> tablecolumn_payment_start_date;
 		
 //-------------------------------------------------------------DataBase Fields-----------------------------------------------------//
 	Connection conn;
@@ -467,21 +534,27 @@ public class MainController extends BaseController
 	}
 	private void IntializeDataBaseConnection()
 	{
+		String path="";
         try
         {
-        	//------------------Open Connection to Access Data Base--------------------------------
-        	
-        			conn=DriverManager.getConnection(
-        	        "jdbc:ucanaccess://C:\\Users\\Dolev\\Desktop\\Management\\src\\Database.accdb");
+        	//------------------Open Connection to Access Data Base--------------------------------	
+        		//path.substring(0, path.indexOf("gggggg"))+"Database.accdb" enter this into path;	
+        		//jdbc:ucanaccess://C:\\Users\\Dolev\\Desktop\\Management\\src\\Database.accdb"
+        		Class.forName(MY_SQL_DRIVER_NAME).newInstance();
+        	path = this.getClass().getResource("").toString().substring(9);
+        	path = "C:\\Users\\Dolev\\Desktop\\Management\\src\\Database.accdb";
+        		conn=DriverManager.getConnection(
+        			"jdbc:ucanaccess://" + path);
         			 s = conn.createStatement();
         }
         			catch(Exception ex)
         	        {
         	            ex.printStackTrace();
+        	            showAlertMessage(path, AlertType.ERROR);
         	        }
             //------------------------------------------------------------------------------------
 	}
-	
+
 	private void Initialize_pictures()
 	{
 		InputStream view = getClass().getResourceAsStream("/boundaries/images/numbers12.jpg");
@@ -902,6 +975,9 @@ public class MainController extends BaseController
 			return tableRow;
 		});
 	}
+	
+	
+	
 //---------------------------------------------------------------------------------------------------------------------------------------//	
 	
 	@Override
@@ -966,6 +1042,14 @@ public class MainController extends BaseController
 		}
 		return true;
 	}
+	
+	
+	public String substring(String string)
+	{
+		int index=string.indexOf("ggggggg");
+		string.substring(0, index);
+		return string;
+	}
 
 	@Override
 	protected String[] getSideButtonsNames()
@@ -1020,6 +1104,10 @@ public class MainController extends BaseController
 
 //-----------------------------------------------------------TrainerTab Functions--------------------------------------------------//	
 	
+	
+	
+	
+
 	@FXML
 	public void AddTrainerButtonClick(ActionEvent event)
 	{	if(button_add_trainer.getText().equals("ערוך מאמן"))
@@ -1085,6 +1173,12 @@ public class MainController extends BaseController
 	public void SetVisableTrainerTab()
 	{
 		trainier_table.setVisible(false);
+		label_search.setVisible(false);
+		button_search_trainer.setVisible(false);;
+		label_search_name.setVisible(false);;
+		label_search_lastname.setVisible(false);
+		textfield_search_name.setVisible(false);
+		textfield_search_lastname.setVisible(false);
 		button_add_trainer.setLayoutY(500.0);
 		button_add_trainer.setLayoutX(300.0);
 		button_back_trainer.setVisible(true);
@@ -1118,11 +1212,15 @@ public class MainController extends BaseController
 		image_phone.setVisible(true);
 		image_cellphone.setVisible(true);
 		image_email.setVisible(true);
-	}
-	
-	
+	}	
 	public void SetInvisableTrainerTab()
 	{
+		label_search.setVisible(true);
+		button_search_trainer.setVisible(true);;
+		label_search_name.setVisible(true);;
+		label_search_lastname.setVisible(true);
+		textfield_search_name.setVisible(true);
+		textfield_search_lastname.setVisible(true);
 		trainier_table.setVisible(true);
 		button_add_trainer.setLayoutY(368);
 		button_add_trainer.setLayoutX(420.0);
@@ -1267,6 +1365,51 @@ public class MainController extends BaseController
 //-----------------------------------------------------------------Center tab Functions-------------------------------------------//
 	
 	
+	@FXML
+	public void SearchTrainerButtonClick(ActionEvent event)
+	{
+		String command="";
+		if(textfield_search_name.getText().equals("")&&textfield_search_lastname.getText().equals(""))
+		{
+			command="select * from Trainers";
+		}
+		else if(textfield_search_name.getText().equals(""))
+			{
+			 command="select * from Trainers where lastname = " +"\"" +textfield_search_lastname.getText()+"\"";
+			}
+			else
+				if(textfield_search_lastname.getText().equals(""))
+				{
+					command="select * from Trainers where name = " + "\""+textfield_search_name.getText()+"\"";
+				}
+				else
+				{
+					command="select * from Trainers where name = " + "\""+textfield_search_name.getText()+"\""+" "+"And lastname = "+"\""+textfield_search_lastname.getText()+"\"";
+				}
+			try {
+				s.execute(command);
+				ResultSet set=s.getResultSet();
+			
+				for ( int i = 0; i<trainier_table.getItems().size(); i++) {
+					trainier_table.getItems().clear();
+				}
+			
+				while((set!=null) && (set.next()))
+				{
+					TrainersRow temp=new TrainersRow(set.getString(1), set.getString(2), set.getString(8));
+					trainer_row.add(temp);
+				}
+				trainier_table.setItems(trainer_row);
+				trainier_table.refresh();
+			
+			} catch (SQLException e) {
+				showAlertMessage("המאמן לא נימצא במערכת", AlertType.INFORMATION);
+				e.printStackTrace();
+				return;
+			}
+		
+	}
+	
 	public void CenterTableBuilder(ResultSet set)
 	{
 		center_row.clear();
@@ -1331,6 +1474,10 @@ public class MainController extends BaseController
 	public void SetCenterTabVisable()
 	{
 		center_table.setVisible(false);
+		label_search_center.setVisible(false);
+		label_search_centername.setVisible(false);
+		textfield_search_centername.setVisible(false);
+		button_search_center.setVisible(false);
 		button_back_center.setVisible(true);
 		button_add_center.setLayoutX(310);
 		button_delete_center.setVisible(true);
@@ -1358,10 +1505,14 @@ public class MainController extends BaseController
 	public void SetCenterTabInVisable()
 	{
 		center_table.setVisible(true);
+		label_search_center.setVisible(true);
+		label_search_centername.setVisible(true);
+		textfield_search_centername.setVisible(true);
+		button_search_center.setVisible(true);
 		button_delete_center.setVisible(false);
 		button_back_center.setVisible(false);
 		button_add_center.setLayoutX(420);
-		button_add_center.setText("הוסף שיעור חדש");
+		button_add_center.setText("הוסף מרכז חדש");
 		textfield_center_classname.setVisible(false);
 		textfield_center_price.setVisible(false);
 		label_center_classname.setVisible(false);
@@ -1406,6 +1557,39 @@ public class MainController extends BaseController
 		}
 		SetCenterTabInVisable();
 	}
+	@FXML
+	public void SearchCenterButtonClick(ActionEvent event)
+	{
+		String command="";
+		if(textfield_search_centername.getText().equals(""))
+		{
+			command="select * from Centers";
+		}
+		else 
+					command="select * from Centers where classname = " + "\""+textfield_search_centername.getText()+"\"";
+			try {
+				s.execute(command);
+				ResultSet set=s.getResultSet();
+			
+				for ( int i = 0; i<center_table.getItems().size(); i++) {
+					center_table.getItems().clear();
+				}
+			
+				while((set!=null) && (set.next()))
+				{
+					CenterRow temp=new CenterRow(set.getInt(4), set.getString(3), set.getString(1), set.getString(2));
+					center_row.add(temp);
+				}
+				center_table.setItems(center_row);
+				center_table.refresh();
+			
+			} catch (SQLException e) {
+				showAlertMessage("המרכז לא נמצא במערכת", AlertType.INFORMATION);
+				e.printStackTrace();
+				return;
+			}
+	}
+	
 	
 	//Trainee Functions
 
@@ -1533,6 +1717,12 @@ public class MainController extends BaseController
 	public void SetTraineeTabVisable()
 	{
 		trainee_table.setVisible(false);
+		label_search_traineeid.setVisible(false);
+		label_search_traineename.setVisible(false);
+		label_traineesearch.setVisible(false);
+		textfield_search_traineename.setVisible(false);
+		textfield_search_traineeid.setVisible(false);
+		button_search_trainee.setVisible(false);
 		button_back_trainee.setVisible(true);
 		button_add_trainee.setLayoutX(310);
 		button_add_trainee.setLayoutY(519);
@@ -1599,6 +1789,12 @@ public class MainController extends BaseController
 	public void SetTraineeTabInVisable()
 	{
 		trainee_table.setVisible(true);
+		label_search_traineeid.setVisible(true);
+		label_search_traineename.setVisible(true);
+		label_traineesearch.setVisible(true);
+		textfield_search_traineename.setVisible(true);
+		textfield_search_traineeid.setVisible(true);
+		button_search_trainee.setVisible(true);
 		button_back_trainee.setVisible(false);
 		button_add_trainee.setLayoutX(420);
 		button_add_trainee.setLayoutY(368);
@@ -1694,9 +1890,7 @@ public class MainController extends BaseController
 		}
 		
 		combobox_trainee_center.setItems(trainee_center_list);
-	}
-	
-	
+	}	
 	public void SetVisableEditTraineeTab(TraineesRow trainee)
 	{
 		SetTraineeTabVisable();
@@ -1731,9 +1925,7 @@ public class MainController extends BaseController
 			e.printStackTrace();
 		}
 		textfield_trainee_id.setEditable(false);
-	}
-	
-
+	}	
 	public void SetTraineegroupCombobox()
 	{
 		ResultSet set=GetFromDataBase("Groups", DataBaseAction.GetAll, null, null);
@@ -1762,6 +1954,50 @@ public class MainController extends BaseController
 			SetTraineegroupCombobox();
 		}
 	}
+	@FXML
+	public void SearchTraineeButtonClick(ActionEvent event)
+	{
+		String command="";
+		if(textfield_search_traineeid.getText().equals("")&&textfield_search_traineename.getText().equals(""))
+		{
+			command="select * from Trainees";
+		}
+		else if(textfield_search_traineeid.getText().equals(""))
+			{
+			 command="select * from Trainees where name = " +"\"" +textfield_search_traineename.getText()+"\"";
+			}
+			else
+				if(textfield_search_traineename.getText().equals(""))
+				{
+					command="select * from Trainees where id = " + "\""+textfield_search_traineeid.getText()+"\"";
+				}
+				else
+				{
+					command="select * from Trainees where id = " + "\""+textfield_search_traineeid.getText()+"\""+" "+"And name = "+"\""+textfield_search_traineename.getText()+"\"";
+				}
+			try {
+				s.execute(command);
+				ResultSet set=s.getResultSet();
+			
+				for ( int i = 0; i<trainee_table.getItems().size(); i++) {
+					trainee_table.getItems().clear();
+				}
+			
+				while((set!=null) && (set.next()))
+				{
+					TraineesRow temp=new TraineesRow(set.getString(13), set.getString(1), set.getString(2), set.getString(10),set.getString(11),set.getString(18),set.getString(19));
+					trainee_row.add(temp);
+				}
+				trainee_table.setItems(trainee_row);
+				trainee_table.refresh();
+			
+			} catch (SQLException e) {
+				showAlertMessage("המאמן לא נימצא במערכת", AlertType.INFORMATION);
+				e.printStackTrace();
+				return;
+			}
+	}
+	
 	
 	//Lists Functions
 //---------------------------------------------------------end->Trainee tab Functions------------------------------------------------//	
@@ -1841,6 +2077,12 @@ public class MainController extends BaseController
     {
     	button_add_list.setLayoutX(320);
     	lists_table.setVisible(false);
+    	label_listsearch.setVisible(false);
+    	label_search_listname.setVisible(false);
+    	label_search_listtrainer.setVisible(false);
+    	textfield_search_listname.setVisible(false);
+    	textfield_search_listtrainername.setVisible(false);
+    	button_search_list.setVisible(false);
     	button_delete_list.setVisible(true);
     	button_back_list.setVisible(true);
     	label_list_trainer.setVisible(true);
@@ -1862,6 +2104,12 @@ public class MainController extends BaseController
     	button_add_list.setLayoutX(420);
     	button_add_list.setText("הוסף רשימה חדשה");
     	lists_table.setVisible(true);
+    	label_listsearch.setVisible(true);
+    	label_search_listname.setVisible(true);
+    	label_search_listtrainer.setVisible(true);
+    	textfield_search_listname.setVisible(true);
+    	textfield_search_listtrainername.setVisible(true);
+    	button_search_list.setVisible(true);
     	button_delete_list.setVisible(false);
     	button_back_list.setVisible(false);
     	label_list_trainer.setVisible(false);
@@ -1958,6 +2206,49 @@ public class MainController extends BaseController
     	combobox_list_trainers.setValue(list.getTrainer());
     }
     
+    @FXML
+    public void SearchListButtonClick(ActionEvent event)
+    {
+    	String command="";
+		if(textfield_search_listname.getText().equals("")&&textfield_search_listtrainername.getText().equals(""))
+		{
+			command="select * from Lists";
+		}
+		else if(textfield_search_listname.getText().equals(""))
+			{
+			 command="select * from Lists where trainer = " +"\"" +textfield_search_listtrainername.getText()+"\"";
+			}
+			else
+				if(textfield_search_listtrainername.getText().equals(""))
+				{
+					command="select * from Lists where center = " + "\""+textfield_search_listname.getText()+"\"";
+				}
+				else
+				{
+					command="select * from Lists where center = " + "\""+textfield_search_listname.getText()+"\""+" "+"And trainer = "+"\""+textfield_search_listtrainername.getText()+"\"";
+				}
+			try {
+				s.execute(command);
+				ResultSet set=s.getResultSet();
+			
+				for ( int i = 0; i<lists_table.getItems().size(); i++) {
+					lists_table.getItems().clear();
+				}
+			
+				while((set!=null) && (set.next()))
+				{
+					ListsRow temp=new ListsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(4), set.getString(5));
+					list_row.add(temp);
+				}
+				lists_table.setItems(list_row);
+				lists_table.refresh();
+			
+			} catch (SQLException e) {
+				showAlertMessage("הרשימה לא נימצא במערכת", AlertType.INFORMATION);
+				e.printStackTrace();
+				return;
+			}
+    }
     
     //Group Functions
 
@@ -1999,6 +2290,12 @@ public class MainController extends BaseController
     public void SetGroupTabInVisable()
     {
     	groups_table.setVisible(true);
+    	label_groupsearch.setVisible(true);
+    	label_search_groupcenter.setVisible(true);
+    	label_search_grouptrainer.setVisible(true);
+    	textfield_search_groupcenter.setVisible(true);
+    	textfield_search_grouptrainer.setVisible(true);
+    	button_search_group.setVisible(true);
     	FillGroupCenterCombobox();
     	button_add_group.setLayoutX(420);
     	button_back_group.setVisible(false);
@@ -2033,6 +2330,12 @@ public class MainController extends BaseController
     public void SetGroupTabVisable()
     {
     	groups_table.setVisible(false);
+    	label_groupsearch.setVisible(false);
+    	label_search_groupcenter.setVisible(false);
+    	label_search_grouptrainer.setVisible(false);
+    	textfield_search_groupcenter.setVisible(false);
+    	textfield_search_grouptrainer.setVisible(false);
+    	button_search_group.setVisible(false);
     	button_back_group.setVisible(true);
     	button_add_group.setLayoutX(300);
     	combobox_group_center.setVisible(false);
@@ -2216,7 +2519,51 @@ public class MainController extends BaseController
     	
     }
     //----------------------------------------------------end->group tab Functions------------------------------------------------//	
-
-    
+    @FXML
+    public void SearchGroupButtonClick(ActionEvent event)
+    {
+    	String command="";
+		if(textfield_search_groupcenter.getText().equals("")&&textfield_search_grouptrainer.getText().equals(""))
+		{
+			command="select * from Groups where center = "+"\""+combobox_group_center.getValue()+"\"";
+		}
+		else if(textfield_search_groupcenter.getText().equals(""))
+			{
+			 showAlertMessage("אתה חייב למלא את השדה מרכז", AlertType.ERROR);
+			 return;
+			}
+			else
+				if(textfield_search_grouptrainer.getText().equals(""))
+				{
+					 showAlertMessage("אתה חייב למלא את השדה מאמן", AlertType.ERROR);
+					 return;
+				}
+				else
+				{
+					command="select * from Groups where center = " + "\""+textfield_search_groupcenter.getText()+"\""+" "+"And trainer = "+"\""+textfield_search_grouptrainer.getText()+"\"";
+				}
+			try {
+				s.execute(command);
+				ResultSet set=s.getResultSet();
+			
+				for ( int i = 0; i<groups_table.getItems().size(); i++) {
+					groups_table.getItems().clear();
+				}
+			
+				while((set!=null) && (set.next()))
+				{
+					GroupsRow temp=new GroupsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(5), set.getString(4));
+					group_list.add(temp);
+				}
+				groups_table.setItems(group_list);
+				groups_table.refresh();
+			
+			} catch (SQLException e) {
+				showAlertMessage("הרשימה לא נימצא במערכת", AlertType.INFORMATION);
+				e.printStackTrace();
+				return;
+			}
+    }
+    	
     
 }

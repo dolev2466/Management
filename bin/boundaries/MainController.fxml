@@ -31,16 +31,16 @@
 			</left>
 			<right>
 				<VBox>
-					<Button onAction="#onLogoutButtonPressed" text="Logout">
+					<Button onAction="#onLogoutButtonPressed" text="Logout" visible="false">
 						<graphic>
 							<ImageView fx:id="imageview_logout_button" fitHeight="24" fitWidth="24" pickOnBounds="true" preserveRatio="true" />
 						</graphic>
-					</Button>
-					<Button onAction="#onAccountButtonPressed" text="Account">
+					</Button>					<Button onAction="#onAccountButtonPressed" text="Account" visible="false">
 						<graphic>
 							<ImageView fx:id="imageview_account_button" fitHeight="24" fitWidth="24" pickOnBounds="true" preserveRatio="true" />
 						</graphic>
 					</Button>
+
 				</VBox>
 			</right>
 		</BorderPane>
@@ -52,7 +52,7 @@
 		<AnchorPane BorderPane.alignment="TOP_LEFT">
 			<children>
 				<AnchorPane fx:id="anchorpane_welcome" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
-					<ImageView fx:id="imageview_welcome" fitHeight="300" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+					<ImageView fx:id="imageview_welcome" fitHeight="300" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="50.0" />
 					<VBox styleClass="content-section-label" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
 						<Label text="Welcome">
 							<font>
@@ -76,6 +76,12 @@
 						<Button fx:id="button_add_trainer" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#AddTrainerButtonClick" prefHeight="29.0" prefWidth="197.0" text="הוסף מדריך חדש" />
 						<Button fx:id="button_back_trainer" layoutX="175.0" layoutY="368.0" mnemonicParsing="false" onAction="#BackTrainerButtonClick" prefHeight="29.0" prefWidth="197.0" text="חזור" visible="false" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="490.0" />
 						<Button fx:id="button_delete_trainer" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#DeleteTrainerButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק מדריך " visible="false" AnchorPane.leftAnchor="390.0" AnchorPane.topAnchor="530.0" />
+						<Button fx:id="button_search_trainer" layoutX="15.0" layoutY="457.0" mnemonicParsing="false" onAction="#SearchTrainerButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" />
+						<Label fx:id="label_search" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="חיפוש:" visible="true" AnchorPane.leftAnchor="970.0" AnchorPane.topAnchor="400.0" />
+						<Label fx:id="label_search_name" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="true" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="450.0" />
+						<Label fx:id="label_search_lastname" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם משפחה:" visible="true" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_name" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_lastname" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="198.0" AnchorPane.topAnchor="450.0" />
 						<TextField fx:id="textfield_id" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="60.0" />
 						<ImageView fx:id="image_id" fitHeight="24.0" fitWidth="82.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="60.0" />
 						<TextField fx:id="textfield_name" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="100.0" />
@@ -122,20 +128,24 @@
 				</AnchorPane>
             <AnchorPane fx:id="anchorpane_centers" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
                <children>
-               	  <Button fx:id="button_add_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#AddCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="הוסף שיעור חדש" />
+               	  <Button fx:id="button_add_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#AddCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="הוסף מרכז חדש" />
                   <Button fx:id="button_back_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#BackCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="חזור" visible="false" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="358.0" />
-                  <Button fx:id="button_delete_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#DeleteCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק שיעור" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="400.0" /> 
+                  <Button fx:id="button_delete_center" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#DeleteCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק מרכז" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="400.0" /> 
                   <TextField fx:id="textfield_center_classname" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="120.0" />
                   <TextField fx:id="textfield_center_price" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="160.0" />
                   <ComboBox fx:id="combobox_center_trainers" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="200.0" />
-                  <Label fx:id="label_center_classname" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם השיעור:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="120.0" />
+                  <Label fx:id="label_center_classname" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם המרכז:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="120.0" />
 				  <Label fx:id="label_center_price" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="מחיר:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="160.0" />
 				  <Label fx:id="label_center_trainer" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="200.0" />
+                  <Button fx:id="button_search_center" visible="true" layoutX="250.0" layoutY="455.0" mnemonicParsing="false" onAction="#SearchCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" />
+						<Label fx:id="label_search_center" layoutX="246.0" layoutY="15.0" prefHeight="17.0" prefWidth="184.0" text="חיפוש:" visible="true" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="400.0" />
+						<Label fx:id="label_search_centername" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="true" AnchorPane.leftAnchor="810.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_centername" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="450.0" />                    
                   <TableView fx:id="center_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
                     <columns>
                       <TableColumn fx:id="tablecolumn_trainer" editable="false" minWidth="50.0" sortable="false" text="מדריך" />
                       <TableColumn fx:id="tablecolumn_price" editable="false" minWidth="112.5" sortable="false" text="מחיר" />
-                        <TableColumn fx:id="tablecolumn_classname" editable="false" minWidth="112.5" sortable="false" text="שיעור" />
+                        <TableColumn fx:id="tablecolumn_classname" editable="false" minWidth="112.5" sortable="false" text="מרכז" />
                     </columns>
                     		<columnResizePolicy>
 								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -155,6 +165,12 @@
                   <Label fx:id="label_list_females" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="נשים:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="120.0" />
 				  <Label fx:id="label_list_males" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="גברים:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="160.0" />
 				  <Label fx:id="label_list_trainer" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="200.0" />
+                  <Button fx:id="button_search_list" layoutX="15.0" layoutY="457.0" mnemonicParsing="false" onAction="#SearchListButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" />
+						<Label fx:id="label_listsearch" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="חיפוש:" visible="true" AnchorPane.leftAnchor="970.0" AnchorPane.topAnchor="400.0" />
+						<Label fx:id="label_search_listname" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מרכז:" visible="true" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="450.0" />
+						<Label fx:id="label_search_listtrainer" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="true" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_listname" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_listtrainername" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="198.0" AnchorPane.topAnchor="450.0" />
                   <TableView fx:id="lists_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
 					<columns>
 						<TableColumn fx:id="tablecolumn_list_trainer" editable="false" minWidth="50.0" sortable="false" text="מאמן" />
@@ -212,7 +228,7 @@
 						<TextField fx:id="textfield_trainee_email" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="370.0" />
 						<ImageView fx:id="image_trainee_email" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="370.0" />
 						<ComboBox fx:id="combobox_trainee_gender" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="450.0" />
-						<ComboBox fx:id="combobox_trainee_center" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" onAction="#ComboBoxTraineeCenterSelect" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="410.0" />
+						<ComboBox fx:id="combobox_trainee_center" layoutX="93.0" layoutY="139.0" onAction="#ComboBoxTraineeCenterSelect" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="410.0" />
 						<ImageView fx:id="image_trainee_gender" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="450.0" />                  		
  						<ComboBox fx:id="combobox_trainee_group" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="10.0" />
 						<ComboBox fx:id="combobox_trainee_level" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
@@ -221,6 +237,13 @@
 						<DatePicker fx:id="datepicker_trainee_start" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="170.0" />                
 						<DatePicker fx:id="datepicker_trainee_end" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="210.0" />                  
 						<TextArea fx:id="textarea_trainee_comments" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="270.0" />                  
+ 						<Button fx:id="button_search_trainee" layoutX="15.0" layoutY="457.0" mnemonicParsing="false" onAction="#SearchTraineeButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" />
+						<Label fx:id="label_traineesearch" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="חיפוש:" visible="true" AnchorPane.leftAnchor="970.0" AnchorPane.topAnchor="400.0" />
+						<Label fx:id="label_search_traineeid" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="ת''ז:" visible="true" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="450.0" />
+						<Label fx:id="label_search_traineename" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="true" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_traineeid" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_traineename" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="198.0" AnchorPane.topAnchor="450.0" />                 
+                  
                   <TableView fx:id="trainee_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
 					<columns>
 						<TableColumn fx:id="tablecolumn_trainee_subscription_end_date" editable="false" minWidth="50.0" sortable="false" text="תאריך סיום" />
@@ -256,7 +279,13 @@
                    <Label fx:id="label_group_trainer" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="170.0" />
                    <TextField fx:id="textfield_group_name" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="130.0" />
                    <Label fx:id="label_group_name" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="שם השיעור:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="130.0" />
-                   <RadioButton fx:id="radio_group_add" layoutY="185.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="300.0" onAction="#RadioGroupButtonClick" text="" visible="false" AnchorPane.leftAnchor="800.0" AnchorPane.topAnchor="240.0" />
+                   <RadioButton fx:id="radio_group_add" layoutY="185.0" mnemonicParsing="false" onAction="#RadioGroupButtonClick" prefHeight="100.0" prefWidth="300.0" text="" visible="false" AnchorPane.leftAnchor="800.0" AnchorPane.topAnchor="240.0" />
+                  <Button fx:id="button_search_group" layoutX="15.0" layoutY="457.0" mnemonicParsing="false" onAction="#SearchGroupButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" />
+						<Label fx:id="label_groupsearch" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="חיפוש:" visible="true" AnchorPane.leftAnchor="970.0" AnchorPane.topAnchor="400.0" />
+						<Label fx:id="label_search_groupcenter" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מרכז:" visible="true" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="450.0" />
+						<Label fx:id="label_search_grouptrainer" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="true" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_groupcenter" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_grouptrainer" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="198.0" AnchorPane.topAnchor="450.0" />                 
                    <TableView fx:id="groups_table" editable="true" layoutX="104.0" layoutY="170.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
 					<columns>
 						<TableColumn fx:id="tablecolumn_group_activity_time" editable="false" minWidth="50.0" sortable="false" text="שעות פעילות" />
@@ -285,7 +314,7 @@
 				</Label>
 			</center>
 			<right>
-				<Circle fx:id="circle_connection_status" fill="GREY" radius="12" stroke="BLACK" strokeType="INSIDE">
+				<Circle fx:id="circle_connection_status" fill="GREY" radius="12" stroke="BLACK" strokeType="INSIDE" visible="false">
 					<effect>
 						<DropShadow color="#00000084" />
 					</effect>

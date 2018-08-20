@@ -114,7 +114,7 @@
 						<Label fx:id="label_email" layoutX="245.0" layoutY="350.0" prefHeight="17.0" prefWidth="184.0" text="אימייל:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="420.0" />
 						<Label layoutX="128.0" layoutY="277.0" prefHeight="17.0" prefWidth="184.0" text="Specialist analysis:" visible="false" AnchorPane.leftAnchor="10.0" />
 						<Label layoutX="29.0" layoutY="30.0" prefHeight="17.0" prefWidth="154.0" text="Survey id:" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="420" />
-						<TableView fx:id="trainier_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+						<TableView fx:id="trainier_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0">
 							<columns>
 								<TableColumn fx:id="tablecolumn_phone" editable="false" minWidth="50.0" sortable="false" text="טלפון" />
 								<TableColumn fx:id="tablecolumn_last_name" editable="false" minWidth="112.5" sortable="false" text="שם משפחה" />
@@ -137,11 +137,11 @@
                   <Label fx:id="label_center_classname" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם המרכז:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="120.0" />
 				  <Label fx:id="label_center_price" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="מחיר:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="160.0" />
 				  <Label fx:id="label_center_trainer" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="false" AnchorPane.leftAnchor="660.0" AnchorPane.topAnchor="200.0" />
-                  <Button fx:id="button_search_center" visible="true" layoutX="250.0" layoutY="455.0" mnemonicParsing="false" onAction="#SearchCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" />
+                  <Button fx:id="button_search_center" layoutX="250.0" layoutY="455.0" mnemonicParsing="false" onAction="#SearchCenterButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" visible="true" />
 						<Label fx:id="label_search_center" layoutX="246.0" layoutY="15.0" prefHeight="17.0" prefWidth="184.0" text="חיפוש:" visible="true" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="400.0" />
 						<Label fx:id="label_search_centername" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="true" AnchorPane.leftAnchor="810.0" AnchorPane.topAnchor="450.0" />
 						<TextField fx:id="textfield_search_centername" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="450.0" />                    
-                  <TableView fx:id="center_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                  <TableView fx:id="center_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0">
                     <columns>
                       <TableColumn fx:id="tablecolumn_trainer" editable="false" minWidth="50.0" sortable="false" text="מדריך" />
                       <TableColumn fx:id="tablecolumn_price" editable="false" minWidth="112.5" sortable="false" text="מחיר" />
@@ -171,7 +171,7 @@
 						<Label fx:id="label_search_listtrainer" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="true" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="450.0" />
 						<TextField fx:id="textfield_search_listname" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="450.0" />
 						<TextField fx:id="textfield_search_listtrainername" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="198.0" AnchorPane.topAnchor="450.0" />
-                  <TableView fx:id="lists_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                  <TableView fx:id="lists_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0">
 					<columns>
 						<TableColumn fx:id="tablecolumn_list_trainer" editable="false" minWidth="50.0" sortable="false" text="מאמן" />
 						<TableColumn fx:id="tablecolumn_list_females" editable="false" minWidth="112.5" sortable="false" text="נשים" />
@@ -187,64 +187,105 @@
                <children>
              	  <Button fx:id="button_add_trainee" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#AddTraineeButtonClick" prefHeight="29.0" prefWidth="197.0" text="הוסף ספורטאי חדש" />
                   <Button fx:id="button_back_trainee" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#BackTraineeButtonClick" prefHeight="29.0" prefWidth="197.0" text="חזור" visible="false" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="508.0" />
-                  <Button fx:id="button_delete_trainee" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#DeleteTraineeButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק ספורטאי" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="550.0" /> 
-                  <Label fx:id="label_trainee_id" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="ת''ז:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="10.0" />
-						<Label fx:id="label_trainee_name" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="50.0" />
-						<Label fx:id="label_trainee_lastname" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="שם משפחה:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="90.0" />
-						<Label fx:id="label_trainee_birthday" layoutX="246.0" layoutY="169.0" prefHeight="17.0" prefWidth="184.0" text="תאריך לידה:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="130.0" />
-						<Label fx:id="label_trainee_city" layoutX="246.0" layoutY="199.0" prefHeight="17.0" prefWidth="184.0" text="עיר:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="170.0" />
-						<Label fx:id="label_trainee_address" layoutX="245.0" layoutY="228.0" prefHeight="17.0" prefWidth="184.0" text="רחוב:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="210.0" />
-						<Label fx:id="label_trainee_postcode" layoutX="245.0" layoutY="260.0" prefHeight="17.0" prefWidth="184.0" text="מיקוד:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="250.0" />
-						<Label fx:id="label_trainee_phone" layoutX="245.0" layoutY="290.0" prefHeight="17.0" prefWidth="184.0" text="טלפון:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="290.0" />
-						<Label fx:id="label_trainee_cellphone" layoutX="245.0" layoutY="320.0" prefHeight="17.0" prefWidth="184.0" text="פלאפון:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="330.0" />
-						<Label fx:id="label_trainee_email" layoutX="245.0" layoutY="350.0" prefHeight="17.0" prefWidth="184.0" text="אימייל:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="370.0" />
-						<Label fx:id="label_trainee_gender" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מין:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="450.0" />
-						<Label fx:id="label_trainee_center" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="קבוצה:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="10.0" />
-						<Label fx:id="label_trainee_level" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="דרגה:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="50.0" />
-						<Label fx:id="label_trainee_hight" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="גובה:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="90.0" />
-						<Label fx:id="label_trainee_weight" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="משקל:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="130.0" />
-						<Label fx:id="label_trainee_start_date" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="תאריך הרשמה:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="170.0" />
-						<Label fx:id="label_trainee_end_date" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="תאריך סיום:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="210.0" />
-						<Label fx:id="label_trainee_comments" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="הערות:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="265.0" />
-						<Label fx:id="label_trainee_group" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מרכז:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="410.0" />
-						<TextField fx:id="textfield_trainee_id" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="10.0" />
+                  <Button fx:id="button_delete_trainee" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" onAction="#DeleteTraineeButtonClick" prefHeight="29.0" prefWidth="197.0" text="מחק ספורטאי" visible="false" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="550.0" /> 
+                  <Button fx:id="button_payment_trainee" layoutX="310.0" layoutY="561.0" mnemonicParsing="false" onAction="#SetPaymentTabVisable" prefHeight="29.0" prefWidth="197.0" text="תשלומים" visible="false" /> 
+                  <Button fx:id="button_paymentback_trainee" layoutX="200.0" layoutY="561.0" mnemonicParsing="false" onAction="#BackPaymentButtonClick" prefHeight="29.0" prefWidth="197.0" text="חזור" visible="false" />
+                  <Button fx:id="button_add_image" layoutX="973.0" layoutY="230.0" mnemonicParsing="false" onAction="#AddImageButtonClick" prefHeight="29.0" prefWidth="100.0" text="הוסף תמונה" />
+                 		<Label fx:id="label_trainee_id" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="ת''ז:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="10.0" />
+						<Label fx:id="label_trainee_name" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="50.0" />
+						<Label fx:id="label_trainee_lastname" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="שם משפחה:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="90.0" />
+						<Label fx:id="label_trainee_birthday" layoutX="246.0" layoutY="169.0" prefHeight="17.0" prefWidth="184.0" text="תאריך לידה:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="130.0" />
+						<Label fx:id="label_trainee_city" layoutX="246.0" layoutY="199.0" prefHeight="17.0" prefWidth="184.0" text="עיר:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="170.0" />
+						<Label fx:id="label_trainee_address" layoutX="245.0" layoutY="228.0" prefHeight="17.0" prefWidth="184.0" text="רחוב:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="210.0" />
+						<Label fx:id="label_trainee_postcode" layoutX="245.0" layoutY="260.0" prefHeight="17.0" prefWidth="184.0" text="מיקוד:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="250.0" />
+						<Label fx:id="label_trainee_phone" layoutX="245.0" layoutY="290.0" prefHeight="17.0" prefWidth="184.0" text="טלפון:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="290.0" />
+						<Label fx:id="label_trainee_cellphone" layoutX="245.0" layoutY="320.0" prefHeight="17.0" prefWidth="184.0" text="פלאפון:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="330.0" />
+						<Label fx:id="label_trainee_email" layoutX="245.0" layoutY="350.0" prefHeight="17.0" prefWidth="184.0" text="אימייל:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="370.0" />
+						<Label fx:id="label_trainee_gender" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מין:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="450.0" />
+						<Label fx:id="label_trainee_center" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="קבוצה:" visible="false" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="10.0" />
+						<Label fx:id="label_trainee_level" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="דרגה:" visible="false" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="50.0" />
+						<Label fx:id="label_trainee_hight" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="גובה:" visible="false" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="90.0" />
+						<Label fx:id="label_trainee_weight" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="משקל:" visible="false" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="130.0" />
+						<Label fx:id="label_trainee_start_date" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="תאריך הרשמה:" visible="false" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="170.0" />
+						<Label fx:id="label_trainee_end_date" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="תאריך סיום:" visible="false" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="210.0" />
+						<Label fx:id="label_trainee_comments" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="הערות:" visible="false" AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="265.0" />
+						<Label fx:id="label_trainee_group" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מרכז:" visible="false" AnchorPane.leftAnchor="790.0" AnchorPane.topAnchor="410.0" />
+						<Label fx:id="label_trainee_sum" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="סכום לתשלום:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="20.0" />
+						<Label fx:id="label_trainee_cheksnum" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מספר תשלומים:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="100.0" />
+						<Label fx:id="label_trainee_chek1" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק1:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="150.0" />
+						<Label fx:id="label_trainee_chek2" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק2:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="180.0" />
+						<Label fx:id="label_trainee_chek3" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק3:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="210.0" />
+						<Label fx:id="label_trainee_chek4" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק4:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="240.0" />
+						<Label fx:id="label_trainee_chek5" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק5:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="270.0" />
+						<Label fx:id="label_trainee_chek6" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק6:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="300.0" />
+						<Label fx:id="label_trainee_chek7" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק7:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="330.0" />
+						<Label fx:id="label_trainee_chek8" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק8:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="360.0" />
+						<Label fx:id="label_trainee_chek9" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק9:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="390.0" />
+						<Label fx:id="label_trainee_chek10" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק10:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="420.0" />
+						<Label fx:id="label_trainee_chek11" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק11:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="450.0" />
+						<Label fx:id="label_trainee_chek12" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="צק12:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="480.0" />
+						<Label fx:id="label_trainee_bank" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="בנק:" visible="false" AnchorPane.leftAnchor="800.0" AnchorPane.topAnchor="120.0" />
+						<Label fx:id="label_trainee_factory" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="סניף:" visible="false" AnchorPane.leftAnchor="640.0" AnchorPane.topAnchor="120.0" />
+						<Label fx:id="label_trainee_number" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מספר צק:" visible="false" AnchorPane.leftAnchor="350.0" AnchorPane.topAnchor="120.0" />
+						<Label fx:id="label_trainee_eachsum" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="סכום לכל תשלום:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="100.0" />
+						<TextField fx:id="textfield_trainee_bank" layoutX="500.0" layoutY="76.0" prefWidth="100.0" visible="false" AnchorPane.leftAnchor="770.0" AnchorPane.topAnchor="150.0" />
+						<TextField fx:id="textfield_trainee_factory" layoutX="500.0" layoutY="76.0" prefWidth="100.0" visible="false" AnchorPane.leftAnchor="610.0" AnchorPane.topAnchor="150.0" />
+						<TextField fx:id="textfield_trainee_chek1" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="150.0" />
+						<TextField fx:id="textfield_trainee_chek2" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="180.0" />
+						<TextField fx:id="textfield_trainee_chek3" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="210.0" />
+						<TextField fx:id="textfield_trainee_chek4" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="240.0" />
+						<TextField fx:id="textfield_trainee_chek5" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="270.0" />
+						<TextField fx:id="textfield_trainee_chek6" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="300.0" />
+						<TextField fx:id="textfield_trainee_chek7" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="330.0" />
+						<TextField fx:id="textfield_trainee_chek8" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="360.0" />
+						<TextField fx:id="textfield_trainee_chek9" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="390.0" />
+						<TextField fx:id="textfield_trainee_chek10" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="420.0" />
+						<TextField fx:id="textfield_trainee_chek11" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_trainee_chek12" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="480.0" />
+						<TextField fx:id="textfield_trainee_id" layoutX="500.0" layoutY="76.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="10.0" />
 						<ImageView fx:id="image_trainee_id" fitHeight="24.0" fitWidth="82.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="10.0" />
-						<TextField fx:id="textfield_trainee_name" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="50.0" />
+						<TextField fx:id="textfield_trainee_name" layoutY="107.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="50.0" />
 						<ImageView fx:id="image_trainee_name" fitHeight="24.0" fitWidth="82.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="50.0" />
-						<TextField fx:id="textfield_trainee_lastname" layoutX="93.0" layoutY="139.0" prefWidth="350.0" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="90.0" />
+						<TextField fx:id="textfield_trainee_lastname" layoutX="93.0" layoutY="139.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="90.0" />
 						<ImageView fx:id="image_trainee_lastname" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="90.0" />
-						<TextField fx:id="textfield_trainee_birthday" layoutX="93.0" layoutY="170.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="130.0" />
+						<TextField fx:id="textfield_trainee_birthday" layoutX="93.0" layoutY="170.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="130.0" />
 						<ImageView fx:id="image_trainee_birthday" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="130.0" />	
-						<TextField fx:id="textfield_trainee_city" layoutX="93.0" layoutY="200.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="170.0" />
+						<TextField fx:id="textfield_trainee_city" layoutX="93.0" layoutY="200.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="170.0" />
 						<ImageView fx:id="image_trainee_city" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="522.0" AnchorPane.topAnchor="170.0" />
-						<TextField fx:id="textfield_trainee_address" layoutX="93.0" layoutY="230.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="210.0" />
+						<TextField fx:id="textfield_trainee_address" layoutX="93.0" layoutY="230.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="210.0" />
 						<ImageView fx:id="image_trainee_address" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="210.0" />
-						<TextField fx:id="textfield_trainee_postcode" layoutX="93.0" layoutY="260.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="250.0" />
+						<TextField fx:id="textfield_trainee_postcode" layoutX="93.0" layoutY="260.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="250.0" />
 						<ImageView fx:id="image_trainee_postcode" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="250.0" />
-						<TextField fx:id="textfield_trainee_phone" layoutX="93.0" layoutY="290.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="290.0" />
+						<TextField fx:id="textfield_trainee_phone" layoutX="93.0" layoutY="290.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="290.0" />
 						<ImageView fx:id="image_trainee_phone" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="290.0" />
-						<TextField fx:id="textfield_trainee_cellphone" layoutX="93.0" layoutY="320.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="330.0" />
+						<TextField fx:id="textfield_trainee_cellphone" layoutX="93.0" layoutY="320.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="330.0" />
 						<ImageView fx:id="image_trainee_cellphone" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="330.0" />
-						<TextField fx:id="textfield_trainee_email" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="370.0" />
+						<TextField fx:id="textfield_trainee_email" layoutX="93.0" layoutY="350.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="370.0" />
 						<ImageView fx:id="image_trainee_email" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="370.0" />
-						<ComboBox fx:id="combobox_trainee_gender" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="450.0" />
-						<ComboBox fx:id="combobox_trainee_center" layoutX="93.0" layoutY="139.0" onAction="#ComboBoxTraineeCenterSelect" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="410.0" />
+						<ComboBox fx:id="combobox_trainee_gender" layoutX="93.0" layoutY="139.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="450.0" />
+						<ComboBox fx:id="combobox_trainee_center" layoutX="93.0" layoutY="139.0" onAction="#ComboBoxTraineeCenterSelect" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="410.0" />
 						<ImageView fx:id="image_trainee_gender" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="450.0" />                  		
- 						<ComboBox fx:id="combobox_trainee_group" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="10.0" />
-						<ComboBox fx:id="combobox_trainee_level" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
-						<TextField fx:id="textfield_trainee_hight" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="90.0" />
-						<TextField fx:id="textfield_trainee_weight" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="130.0" />
-						<DatePicker fx:id="datepicker_trainee_start" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="170.0" />                
-						<DatePicker fx:id="datepicker_trainee_end" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="210.0" />                  
-						<TextArea fx:id="textarea_trainee_comments" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="270.0" />                  
+ 						<ComboBox fx:id="combobox_trainee_group" layoutX="93.0" layoutY="139.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="10.0" />
+						<ComboBox fx:id="combobox_trainee_level" layoutX="93.0" layoutY="139.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
+						<ComboBox fx:id="combobox_trainee_paymentnum" layoutX="93.0" layoutY="139.0" onAction="#ComboboxPaymentNumSelect" prefWidth="150.0" visible="false" AnchorPane.leftAnchor="770.0" AnchorPane.topAnchor="100.0" />
+						<RadioButton fx:id="radio_trainee_chekpayment" layoutX="697.0" layoutY="185.0" mnemonicParsing="false" onAction="#RadioTraineeChekPaymentClick" prefHeight="35.0" prefWidth="153.0" text="שקים" visible="false" AnchorPane.leftAnchor="700.0" AnchorPane.topAnchor="60.0" />
+						<RadioButton fx:id="radio_trainee_cashpayment" layoutX="541.0" layoutY="185.0" mnemonicParsing="false" onAction="#RadioTraineeCashPaymentClick" prefHeight="35.0" prefWidth="109.0" text="מזומן" visible="false" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="60.0" />
+						<RadioButton fx:id="radio_trainee_creditpayment" layoutX="312.0" layoutY="185.0" mnemonicParsing="false" onAction="#RadioTraineeCreditPaymentClick" prefHeight="40.0" prefWidth="138.0" text="אשראי" visible="false" AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="60.0" />
+						<TextField fx:id="textfield_trainee_sum" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="560.0" AnchorPane.topAnchor="20.0" />						
+						<TextField fx:id="textfield_trainee_eachsum" editable="false" layoutX="93.0" layoutY="350.0" prefWidth="100.0" visible="false" AnchorPane.leftAnchor="290.0" AnchorPane.topAnchor="100.0" />
+						<TextField fx:id="textfield_trainee_hight" layoutX="93.0" layoutY="350.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="90.0" />
+						<TextField fx:id="textfield_trainee_weight" layoutX="93.0" layoutY="350.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="130.0" />
+						<DatePicker fx:id="datepicker_trainee_start" layoutX="93.0" layoutY="350.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="170.0" />                
+						<DatePicker fx:id="datepicker_trainee_end" layoutX="93.0" layoutY="350.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="210.0" />                  
+						<TextArea fx:id="textarea_trainee_comments" layoutX="93.0" layoutY="350.0" prefWidth="200.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="270.0" />                  
  						<Button fx:id="button_search_trainee" layoutX="15.0" layoutY="457.0" mnemonicParsing="false" onAction="#SearchTraineeButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" />
 						<Label fx:id="label_traineesearch" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="חיפוש:" visible="true" AnchorPane.leftAnchor="970.0" AnchorPane.topAnchor="400.0" />
 						<Label fx:id="label_search_traineeid" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="ת''ז:" visible="true" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="450.0" />
 						<Label fx:id="label_search_traineename" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="true" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="450.0" />
 						<TextField fx:id="textfield_search_traineeid" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="450.0" />
 						<TextField fx:id="textfield_search_traineename" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="198.0" AnchorPane.topAnchor="450.0" />                 
-                  
-                  <TableView fx:id="trainee_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                  	    <ImageView fx:id="image_trainee_mainimage" fitHeight="150.0" fitWidth="150.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="930.0" AnchorPane.topAnchor="20.0" />
+                  <TableView fx:id="trainee_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0">
 					<columns>
 						<TableColumn fx:id="tablecolumn_trainee_subscription_end_date" editable="false" minWidth="50.0" sortable="false" text="תאריך סיום" />
 						<TableColumn fx:id="tablecolumn_trainee_register_date" editable="false" minWidth="50.0" sortable="false" text="תאריך הרשמה" />
@@ -286,7 +327,7 @@
 						<Label fx:id="label_search_grouptrainer" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מאמן:" visible="true" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="450.0" />
 						<TextField fx:id="textfield_search_groupcenter" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="450.0" />
 						<TextField fx:id="textfield_search_grouptrainer" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="198.0" AnchorPane.topAnchor="450.0" />                 
-                   <TableView fx:id="groups_table" editable="true" layoutX="104.0" layoutY="170.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="50.0">
+                   <TableView fx:id="groups_table" editable="true" layoutX="104.0" layoutY="170.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0">
 					<columns>
 						<TableColumn fx:id="tablecolumn_group_activity_time" editable="false" minWidth="50.0" sortable="false" text="שעות פעילות" />
 						<TableColumn fx:id="tablecolumn_group_group" editable="false" minWidth="50.0" sortable="false" text="קבוצה" />
@@ -298,6 +339,90 @@
                  </TableView>
                   
                </children></AnchorPane>
+               
+               
+               <AnchorPane fx:id="anchorpane_expiried" styleClass="content-section" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="0.0">
+               <children>
+             	  <Button fx:id="button_add_expiried" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="197.0" text="הוסף ספורטאי חדש" visible="false" />
+                  <Button fx:id="button_back_expiried" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="197.0" text="חזור" visible="false" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="508.0" />
+                  <Button fx:id="button_delete_expiried" layoutX="420.0" layoutY="368.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="197.0" text="מחק ספורטאי" visible="false" AnchorPane.leftAnchor="400.0" AnchorPane.topAnchor="550.0" /> 
+                  <Label fx:id="label_expiried_id" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="ת''ז:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="10.0" />
+						<Label fx:id="label_expiried_name" layoutX="246.0" layoutY="106.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="50.0" />
+						<Label fx:id="label_expiried_lastname" layoutX="246.0" layoutY="138.0" prefHeight="17.0" prefWidth="184.0" text="שם משפחה:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="90.0" />
+						<Label fx:id="label_expiried_birthday" layoutX="246.0" layoutY="169.0" prefHeight="17.0" prefWidth="184.0" text="תאריך לידה:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="130.0" />
+						<Label fx:id="label_expiried_city" layoutX="246.0" layoutY="199.0" prefHeight="17.0" prefWidth="184.0" text="עיר:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="170.0" />
+						<Label fx:id="label_expiried_address" layoutX="245.0" layoutY="228.0" prefHeight="17.0" prefWidth="184.0" text="רחוב:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="210.0" />
+						<Label fx:id="label_expiried_postcode" layoutX="245.0" layoutY="260.0" prefHeight="17.0" prefWidth="184.0" text="מיקוד:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="250.0" />
+						<Label fx:id="label_expiried_phone" layoutX="245.0" layoutY="290.0" prefHeight="17.0" prefWidth="184.0" text="טלפון:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="290.0" />
+						<Label fx:id="label_expiried_cellphone" layoutX="245.0" layoutY="320.0" prefHeight="17.0" prefWidth="184.0" text="פלאפון:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="330.0" />
+						<Label fx:id="label_expiried_email" layoutX="245.0" layoutY="350.0" prefHeight="17.0" prefWidth="184.0" text="אימייל:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="370.0" />
+						<Label fx:id="label_expiried_gender" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מין:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="450.0" />
+						<Label fx:id="label_expiried_center" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="קבוצה:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="10.0" />
+						<Label fx:id="label_expiried_level" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="דרגה:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="50.0" />
+						<Label fx:id="label_expiried_hight" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="גובה:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="90.0" />
+						<Label fx:id="label_expiried_weight" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="משקל:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="130.0" />
+						<Label fx:id="label_expiried_start_date" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="תאריך הרשמה:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="170.0" />
+						<Label fx:id="label_expiried_end_date" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="תאריך סיום:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="210.0" />
+						<Label fx:id="label_expiried_comments" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="הערות:" visible="false" AnchorPane.leftAnchor="410.0" AnchorPane.topAnchor="265.0" />
+						<Label fx:id="label_expiried_group" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="מרכז:" visible="false" AnchorPane.leftAnchor="940.0" AnchorPane.topAnchor="410.0" />
+						<TextField fx:id="textfield_expiried_id" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="10.0" />
+						<ImageView fx:id="image_expiried_id" fitHeight="24.0" fitWidth="82.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="10.0" />
+						<TextField fx:id="textfield_expiried_name" layoutY="107.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="50.0" />
+						<ImageView fx:id="image_expiried_name" fitHeight="24.0" fitWidth="82.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="50.0" />
+						<TextField fx:id="textfield_expiried_lastname" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="90.0" />
+						<ImageView fx:id="image_expiried_lastname" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="90.0" />
+						<TextField fx:id="textfield_expiried_birthday" layoutX="93.0" layoutY="170.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="130.0" />
+						<ImageView fx:id="image_expiried_birthday" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="130.0" />	
+						<TextField fx:id="textfield_expiried_city" layoutX="93.0" layoutY="200.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="170.0" />
+						<ImageView fx:id="image_expiried_city" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="522.0" AnchorPane.topAnchor="170.0" />
+						<TextField fx:id="textfield_expiried_address" layoutX="93.0" layoutY="230.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="210.0" />
+						<ImageView fx:id="image_expiried_address" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="210.0" />
+						<TextField fx:id="textfield_expiried_postcode" layoutX="93.0" layoutY="260.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="250.0" />
+						<ImageView fx:id="image_expiried_postcode" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="250.0" />
+						<TextField fx:id="textfield_expiried_phone" layoutX="93.0" layoutY="290.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="290.0" />
+						<ImageView fx:id="image_expiried_phone" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="290.0" />
+						<TextField fx:id="textfield_expiried_cellphone" layoutX="93.0" layoutY="320.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="330.0" />
+						<ImageView fx:id="image_expiried_cellphone" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="330.0" />
+						<TextField fx:id="textfield_expiried_email" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="370.0" />
+						<ImageView fx:id="image_expiried_email" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="370.0" />
+						<ComboBox fx:id="combobox_expiried_gender" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="450.0" />
+						<ComboBox fx:id="combobox_expiried_center" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="580.0" AnchorPane.topAnchor="410.0" />
+						<ImageView fx:id="image_expiried_gender" fitHeight="24.0" fitWidth="500.0" layoutX="215.0" layoutY="74.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.leftAnchor="530.0" AnchorPane.topAnchor="450.0" />                  		
+ 						<ComboBox fx:id="combobox_expiried_group" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="10.0" />
+						<ComboBox fx:id="combobox_expiried_level" layoutX="93.0" layoutY="139.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="50.0" />
+						<TextField fx:id="textfield_expiried_hight" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="90.0" />
+						<TextField fx:id="textfield_expiried_weight" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="130.0" />
+						<DatePicker fx:id="datepicker_expiried_start" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="170.0" />                
+						<DatePicker fx:id="datepicker_expiried_end" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="210.0" />                  
+						<TextArea fx:id="textarea_expiried_comments" layoutX="93.0" layoutY="350.0" prefWidth="350.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="270.0" />                  
+ 						<Button fx:id="button_expiried_trainee" layoutX="15.0" layoutY="457.0" mnemonicParsing="false" onAction="#SearchTraineeButtonClick" prefHeight="29.0" prefWidth="197.0" text="חפש" />
+						<Label fx:id="label_expiriedsearch" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="חיפוש:" visible="true" AnchorPane.leftAnchor="970.0" AnchorPane.topAnchor="400.0" />
+						<Label fx:id="label_search_expiriedid" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="ת''ז:" visible="true" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="450.0" />
+						<Label fx:id="label_search_expiriedname" layoutX="246.0" layoutY="75.0" prefHeight="17.0" prefWidth="184.0" text="שם:" visible="true" AnchorPane.leftAnchor="550.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_expiriedid" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="645.0" AnchorPane.topAnchor="450.0" />
+						<TextField fx:id="textfield_search_expiriedname" layoutX="500.0" layoutY="76.0" prefWidth="350.0" visible="true" AnchorPane.leftAnchor="198.0" AnchorPane.topAnchor="450.0" />                 
+                  
+                  <TableView fx:id="expiried_table" editable="true" layoutX="104.0" layoutY="114.0" prefHeight="243.0" prefWidth="948.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="50.0">
+					<columns>
+						<TableColumn fx:id="tablecolumn_expiried_subscription_end_date" editable="false" minWidth="50.0" sortable="false" text="תאריך סיום" />
+						<TableColumn fx:id="tablecolumn_expiried_register_date" editable="false" minWidth="50.0" sortable="false" text="תאריך הרשמה" />
+						<TableColumn fx:id="tablecolumn_expiried_group" editable="false" minWidth="50.0" sortable="false" text="קבוצה" />
+						<TableColumn fx:id="tablecolumn_expiried_center" editable="false" minWidth="50.0" sortable="false" text="מרכז" />
+						<TableColumn fx:id="tablecolumn_expiried_last_name" editable="false" minWidth="112.5" sortable="false" text="שם משפחה" />
+						<TableColumn fx:id="tablecolumn_expiried_name" editable="false" minWidth="112.5" sortable="false" text="שם" />
+						<TableColumn fx:id="tablecolumn_expiried_id" editable="false" minWidth="50.0" sortable="false" text="תז" />					
+					</columns>
+						<columnResizePolicy>
+							<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+						</columnResizePolicy>
+                 </TableView>
+               </children></AnchorPane>
+               
+               
+               
+               
+               
+               
 			</children>
 			<BorderPane.margin>
 				<Insets left="5.0" top="5.0" />

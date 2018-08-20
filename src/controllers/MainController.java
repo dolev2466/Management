@@ -1,7 +1,10 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.io.File;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -9,10 +12,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 
 import boundaries.CenterRow;
 import boundaries.GroupsRow;
 import boundaries.ListsRow;
+import boundaries.PaymentRow;
 import boundaries.TraineesRow;
 import boundaries.TrainersRow;
 import controllers.Enums.DataBaseAction;
@@ -40,6 +45,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.StringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.LocalTimeStringConverter;
@@ -49,7 +56,7 @@ public class MainController extends BaseController
 {
 	private String title;
 	
-	private String[] window = { "מאמנים", "מרכזים","רשימות","ספורטאים","פעילויות" };
+	private String[] window = { "מאמנים", "מרכזים","רשימות","ספורטאים","פעילויות","פג תוקף" };
 	
 	public static final String MY_SQL_DRIVER_NAME="net.ucanaccess.jdbc.UcanaccessDriver";
 //------------------------------------------------------------------trainer anchor pane variables-----------------------------------------------//	
@@ -228,6 +235,10 @@ public class MainController extends BaseController
 		
 		private ObservableList<String> trainee_group_list = FXCollections.observableArrayList();
 		
+		private ObservableList<String> trainee_paymentway_list = FXCollections.observableArrayList();
+		
+		private ObservableList<Integer> trainee_paymentway_num = FXCollections.observableArrayList();
+		
 		private @FXML Button button_add_trainee;
 		
 		private @FXML Button button_back_trainee;
@@ -235,6 +246,12 @@ public class MainController extends BaseController
 		private @FXML Button button_delete_trainee;
 		
 		private @FXML Button button_search_trainee;
+		
+		private @FXML Button button_payment_trainee;
+		
+		private @FXML Button button_paymentback_trainee;
+		
+		private @FXML Button button_add_image;
 		
 		private @FXML Label label_traineesearch;
 		
@@ -280,6 +297,43 @@ public class MainController extends BaseController
 		
 		private @FXML Label label_trainee_group;
 		
+		
+		private @FXML Label label_trainee_sum;
+		
+		private @FXML Label label_trainee_cheksnum;
+		
+		private @FXML Label label_trainee_chek1;
+		
+		private @FXML Label label_trainee_chek2;
+		
+		private @FXML Label label_trainee_chek3;
+		
+		private @FXML Label label_trainee_chek4;
+		
+		private @FXML Label label_trainee_chek5;
+		
+		private @FXML Label label_trainee_chek6;
+		
+		private @FXML Label label_trainee_chek7;
+		
+		private @FXML Label label_trainee_chek8;
+		
+		private @FXML Label label_trainee_chek9;
+		
+		private @FXML Label label_trainee_chek10;
+		
+		private @FXML Label label_trainee_chek11;
+		
+		private @FXML Label label_trainee_chek12;
+		
+		private @FXML Label label_trainee_bank;
+		
+		private @FXML Label label_trainee_factory;
+		
+		private @FXML Label label_trainee_number;
+		
+		private @FXML Label label_trainee_eachsum;
+		
 		private @FXML TextField textfield_search_traineeid;
 		
 		private @FXML TextField textfield_search_traineename;
@@ -308,6 +362,38 @@ public class MainController extends BaseController
 		
 		private @FXML TextField textfield_trainee_weight;
 		
+		private @FXML TextField textfield_trainee_sum;
+		
+		private @FXML TextField textfield_trainee_eachsum;
+		
+		private @FXML TextField textfield_trainee_bank;
+		
+		private @FXML TextField textfield_trainee_factory;
+		
+		private @FXML TextField textfield_trainee_chek1;
+		
+		private @FXML TextField textfield_trainee_chek2;
+		
+		private @FXML TextField textfield_trainee_chek3;
+		
+		private @FXML TextField textfield_trainee_chek4;
+		
+		private @FXML TextField textfield_trainee_chek5;
+		
+		private @FXML TextField textfield_trainee_chek6;
+		
+		private @FXML TextField textfield_trainee_chek7;
+		
+		private @FXML TextField textfield_trainee_chek8;
+		
+		private @FXML TextField textfield_trainee_chek9;
+		
+		private @FXML TextField textfield_trainee_chek10;
+		
+		private @FXML TextField textfield_trainee_chek11;
+		
+		private @FXML TextField textfield_trainee_chek12;
+		
 		private @FXML TextArea textarea_trainee_comments;
 		
 		private @FXML ComboBox<String> combobox_trainee_gender;
@@ -317,6 +403,8 @@ public class MainController extends BaseController
 		private @FXML ComboBox<String> combobox_trainee_level;
 		
 		private @FXML ComboBox<String> combobox_trainee_group;
+				
+		private @FXML ComboBox<Integer> combobox_trainee_paymentnum;
 		
 		private @FXML DatePicker datepicker_trainee_start;
 		
@@ -343,6 +431,16 @@ public class MainController extends BaseController
 		private @FXML ImageView image_trainee_email;
 		
 		private @FXML ImageView image_trainee_gender;
+		
+		private @FXML ImageView image_trainee_mainimage;
+		
+		private @FXML RadioButton radio_trainee_chekpayment;
+		
+		private @FXML RadioButton radio_trainee_cashpayment;
+		
+		private @FXML RadioButton radio_trainee_creditpayment;
+		
+		String main_image;
 		
 
 //-------------------------------------------------------------end->trainee anchor pane variables-------------------------------------------//
@@ -490,9 +588,32 @@ public class MainController extends BaseController
 		
 		private @FXML TableColumn<GroupsRow,String> tablecolumn_payment_start_date;
 		
-//-------------------------------------------------------------DataBase Fields-----------------------------------------------------//
-	Connection conn;
-	Statement s;
+//----------------------------------------------------------------------------------------------------------------//
+		private @FXML AnchorPane anchorpane_expiried;
+		
+		private ObservableList<TraineesRow> expiried_row = FXCollections.observableArrayList();
+		
+		private @FXML TableView<TraineesRow> expiried_table;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_id;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_name;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_last_name;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_phone;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_gender;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_center;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_group;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_register_date;
+		
+		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_subscription_end_date;
+//---------------------------------------------------------DataBase Fields------------------------------------------
+	Connection conn;	Statement s;
 	ResultSet rs;
 	String temp; 
 //-------------------------------------------------------------end-> DataBase Fields-----------------------------------------------------//
@@ -540,9 +661,9 @@ public class MainController extends BaseController
         	//------------------Open Connection to Access Data Base--------------------------------	
         		//path.substring(0, path.indexOf("gggggg"))+"Database.accdb" enter this into path;	
         		//jdbc:ucanaccess://C:\\Users\\Dolev\\Desktop\\Management\\src\\Database.accdb"
-        		Class.forName(MY_SQL_DRIVER_NAME).newInstance();
+        	Class.forName(MY_SQL_DRIVER_NAME).newInstance();
         	path = this.getClass().getResource("").toString().substring(9);
-        	path = "C:\\Users\\Dolev\\Desktop\\Management\\src\\Database.accdb";
+        	path = path.substring(0, path.indexOf("Avitan-Dojo"))+"Database.accdb";
         		conn=DriverManager.getConnection(
         			"jdbc:ucanaccess://" + path);
         			 s = conn.createStatement();
@@ -632,6 +753,11 @@ public class MainController extends BaseController
 			Image = new Image(view);
 			image_trainee_gender.setImage(Image);
 		}
+		view = getClass().getResourceAsStream("/boundaries/images/unknow.jpg");
+		if (view != null) {
+			Image = new Image(view);
+			image_trainee_mainimage.setImage(Image);
+		}
 	}
 	
 	public void InitalizeTrainerTable()
@@ -652,6 +778,48 @@ public class MainController extends BaseController
 			return tableRow;
 		});
 		
+	}
+	
+	public void InitalizeExpiriedTable()
+	{
+		tablecolumn_expiried_id.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("id"));
+		tablecolumn_expiried_name.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("name"));
+		tablecolumn_expiried_last_name.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("last_name"));
+		tablecolumn_expiried_center.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("center"));
+		tablecolumn_expiried_group.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("group"));
+		tablecolumn_expiried_register_date.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("register_date"));
+		tablecolumn_expiried_subscription_end_date.setCellValueFactory(new PropertyValueFactory<TraineesRow,String>("subscription_end_date"));
+		String command="select * from Trainees where subscription_end_date <= "+"\""+s_dateForamt.format(LocalDate.now())+"\"";
+		String names="";
+		expiried_row.clear();
+		try {
+			s.execute(command);
+			ResultSet set=s.getResultSet();
+			while((set!=null) && (set.next()))
+			{
+			   TraineesRow temp=new TraineesRow(set.getString(13), set.getString(1), set.getString(2), set.getString(10),set.getString(11),set.getString(18),set.getString(19));
+			   expiried_row.add(temp);   
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		expiried_table.setItems(expiried_row);
+		command="select * from Trainees where subscription_end_date = "+"\""+s_dateForamt.format(LocalDate.now())+"\"";
+		try {
+			s.execute(command);
+			ResultSet set=s.getResultSet();
+			while((set!=null) && (set.next()))
+			{
+				names= names+ "\n" + set.getString(1)+" "+ set.getString(2);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if(names!="")
+		{
+			showAlertMessage("המנויים שנגמרו היום הם:"+ "\n"+names, AlertType.INFORMATION);
+		}
 	}
 	
 	public void InitalizeCenterTable()
@@ -978,7 +1146,8 @@ public class MainController extends BaseController
 	
 	
 	
-//---------------------------------------------------------------------------------------------------------------------------------------//	
+
+	//---------------------------------------------------------------------------------------------------------------------------------------//	
 	
 	@Override
  	protected boolean onSelection(String title) 
@@ -993,6 +1162,7 @@ public class MainController extends BaseController
 				SetInvisableTrainerTab();
 				anchorpane_trainee.setVisible(false);
 				anchorpane_groups.setVisible(false);
+				anchorpane_expiried.setVisible(false);
 			break;
 
 			case "מרכזים":
@@ -1002,6 +1172,7 @@ public class MainController extends BaseController
 				SetCenterTabInVisable();
 				anchorpane_trainee.setVisible(false);
 				anchorpane_groups.setVisible(false);
+				anchorpane_expiried.setVisible(false);
 
 			break;
 
@@ -1011,6 +1182,7 @@ public class MainController extends BaseController
 					anchorpane_lists.setVisible(true);
 					anchorpane_trainee.setVisible(false);
 					anchorpane_groups.setVisible(false);
+					anchorpane_expiried.setVisible(false);
 					InitializeListsTable();
 					ListsTableInitialize();
 			
@@ -1022,7 +1194,9 @@ public class MainController extends BaseController
 				anchorpane_lists.setVisible(false);
 				anchorpane_groups.setVisible(false);
 				anchorpane_trainee.setVisible(true);
+				anchorpane_expiried.setVisible(false);
 				TraineeTabInitialize();
+				SetPaymentTabInvisable();
 				SetTraineeTabInVisable();
 				break;
 			
@@ -1032,10 +1206,20 @@ public class MainController extends BaseController
 				anchorpane_lists.setVisible(false);
 				anchorpane_trainee.setVisible(false);
 				anchorpane_groups.setVisible(true);
+				anchorpane_expiried.setVisible(false);
 				InitializeGroupTable();
 				SetGroupTabInVisable();
 				InitializeTimeSpinner();
 				GroupTabInitialize();
+				break;
+			case "פג תוקף":
+					anchorpane_trainers.setVisible(false);
+					anchorpane_centers.setVisible(false);
+					anchorpane_lists.setVisible(false);
+					anchorpane_trainee.setVisible(false);
+					anchorpane_groups.setVisible(false);
+					anchorpane_expiried.setVisible(true);
+					InitalizeExpiriedTable();
 				break;
 			default:
 				return false;
@@ -1078,13 +1262,13 @@ public class MainController extends BaseController
 		switch(action)
 		{
 		case Get:
-					command="select * from "+table_name+ " where "+title+ " = " + paramter;
+					command="select * from "+table_name+ " where "+title+ " = " + "\""+paramter+"\"";
 					break;
 		case GetAll:
 					command="select * from "+table_name;
 					break;
 		case Delete:
-					command="delete from "+table_name+ " where "+title+ " = " + paramter;
+					command="delete from "+table_name+ " where "+title+ " = " + "\"" + paramter + "\"";
 					break;
 		default:
 				return null;				
@@ -1103,9 +1287,6 @@ public class MainController extends BaseController
 //------------------------------------------------------------end->Override Functions---------------------------------------------//
 
 //-----------------------------------------------------------TrainerTab Functions--------------------------------------------------//	
-	
-	
-	
 	
 
 	@FXML
@@ -1633,14 +1814,14 @@ public class MainController extends BaseController
 			}
 			else
 				{
-				String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,commnts) "+
+				String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,image,commnts) "+
 						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
 						   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
 						   "','"+textfield_trainee_phone.getText()+"','"+textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+
 						   "','"+combobox_trainee_group.getValue()+"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+
 						   "','"+combobox_trainee_level.getValue()+ "','"+textfield_trainee_hight.getText()+ "','"+textfield_trainee_weight.getText()+
 						   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+
-						   "','"+textarea_trainee_comments.getText()+"')";
+						   "','"+main_image+"','"+textarea_trainee_comments.getText()+"')";
 				try {
 					s.execute(command);
 					} catch (SQLException e) {
@@ -1679,13 +1860,13 @@ public class MainController extends BaseController
 				}
 				else
 					{
-					String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,commnts) "+
+					String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,image,commnts) "+
 							   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
 							   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
 							   "','"+textfield_trainee_phone.getText()+"','"+textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+
 							   "','"+combobox_trainee_group.getValue()+"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+
 							   "','"+combobox_trainee_level.getValue()+ "','"+textfield_trainee_hight.getText()+ "','"+textfield_trainee_weight.getText()+
-							   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+
+							   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+"','"+main_image+
 							   "','"+textarea_trainee_comments.getText()+"')";
 					try {
 						s.execute(command);
@@ -1710,6 +1891,7 @@ public class MainController extends BaseController
 	public void DeleteTraineeButtonClick(ActionEvent event)
 	{
 		GetFromDataBase("Trainees", DataBaseAction.Delete, "id", textfield_trainee_id.getText());
+		GetFromDataBase("Payment", DataBaseAction.Delete, "id", textfield_trainee_id.getText());
 		SetTraineeTabInVisable();
 		
 	}
@@ -1723,10 +1905,12 @@ public class MainController extends BaseController
 		textfield_search_traineename.setVisible(false);
 		textfield_search_traineeid.setVisible(false);
 		button_search_trainee.setVisible(false);
+		button_payment_trainee.setVisible(true);
 		button_back_trainee.setVisible(true);
 		button_add_trainee.setLayoutX(310);
 		button_add_trainee.setLayoutY(519);
 		button_delete_trainee.setVisible(true);
+		button_add_image.setVisible(true);
 		label_trainee_id.setVisible(true);
 		label_trainee_name.setVisible(true);
 		label_trainee_lastname.setVisible(true);
@@ -1783,7 +1967,12 @@ public class MainController extends BaseController
 		image_trainee_cellphone.setVisible(true);
 		image_trainee_email.setVisible(true);
 		image_trainee_gender.setVisible(true);
-		
+		image_trainee_mainimage.setVisible(true);
+		InputStream view = getClass().getResourceAsStream("/boundaries/images/unknow.jpg");
+		if (view != null) {
+			Image Image = new Image(view);
+			image_trainee_mainimage.setImage(Image);
+		}
 	}
 	
 	public void SetTraineeTabInVisable()
@@ -1800,6 +1989,8 @@ public class MainController extends BaseController
 		button_add_trainee.setLayoutY(368);
 		button_add_trainee.setText("הוסף ספורטאי חדש");
 		button_delete_trainee.setVisible(false);
+		button_payment_trainee.setVisible(false);
+		button_add_image.setVisible(false);
 		label_trainee_id.setVisible(false);
 		label_trainee_name.setVisible(false);
 		label_trainee_lastname.setVisible(false);
@@ -1829,6 +2020,7 @@ public class MainController extends BaseController
 		image_trainee_phone.setVisible(false);
 		image_trainee_cellphone.setVisible(false);
 		image_trainee_email.setVisible(false);
+		image_trainee_mainimage.setVisible(false);
 		image_trainee_gender.setVisible(false);
 		textfield_trainee_id.setVisible(false);
 		textfield_trainee_name.setVisible(false);
@@ -1919,6 +2111,28 @@ public class MainController extends BaseController
 				combobox_trainee_gender.setValue(set.getString(12));
 				combobox_trainee_center.setValue(set.getString(10));
 				combobox_trainee_level.setValue(set.getString(17));
+				if(set.getString(20)!=null||set.getString(18).equals(""))
+				{
+					try {
+					Image img = new Image(set.getString(20));
+	    			image_trainee_mainimage.setImage(img);
+					}catch(Exception e)
+					{
+						InputStream view = getClass().getResourceAsStream("/boundaries/images/unknow.jpg");
+						if (view != null) {
+							Image Image = new Image(view);
+							image_trainee_mainimage.setImage(Image);
+						}
+					}
+				}
+				else
+				{
+					InputStream view = getClass().getResourceAsStream("/boundaries/images/unknow.jpg");
+					if (view != null) {
+						Image Image = new Image(view);
+						image_trainee_mainimage.setImage(Image);
+					}
+				}
 			}
 		} catch (SQLException e) 
 		{
@@ -1997,8 +2211,919 @@ public class MainController extends BaseController
 				return;
 			}
 	}
+	@FXML
+	public void SetPaymentTabVisable(ActionEvent event)
+	{
+		PaymentRow row;
+		String tempid;
+		if(textfield_trainee_id.isVisible())
+		{
+		button_payment_trainee.setLayoutX(450);
+		button_payment_trainee.setText("הוסף פרטי תשלום"); 
+		button_back_trainee.setVisible(false);
+		button_add_trainee.setVisible(false);
+		button_delete_trainee.setVisible(false);
+		button_paymentback_trainee.setVisible(true);
+		button_add_image.setVisible(false);
+		label_trainee_id.setVisible(false);
+		label_trainee_name.setVisible(false);
+		label_trainee_lastname.setVisible(false);
+		label_trainee_birthday.setVisible(false);
+		label_trainee_city.setVisible(false);
+		label_trainee_address.setVisible(false);
+		label_trainee_postcode.setVisible(false);
+		label_trainee_phone.setVisible(false);
+		label_trainee_cellphone.setVisible(false);
+		label_trainee_email.setVisible(false);
+		label_trainee_gender.setVisible(false);
+		label_trainee_center.setVisible(false);
+		label_trainee_level.setVisible(false);
+		label_trainee_hight.setVisible(false);
+		label_trainee_weight.setVisible(false);
+		label_trainee_start_date.setVisible(false);
+		label_trainee_end_date.setVisible(false);
+		label_trainee_comments.setVisible(false);
+		label_trainee_group.setVisible(false);
+		image_trainee_id.setVisible(false);
+		image_trainee_name.setVisible(false);
+		image_trainee_lastname.setVisible(false);
+		image_trainee_birthday.setVisible(false);
+		image_trainee_city.setVisible(false);
+		image_trainee_address.setVisible(false);
+		image_trainee_postcode.setVisible(false);
+		image_trainee_phone.setVisible(false);
+		image_trainee_cellphone.setVisible(false);
+		image_trainee_email.setVisible(false);
+		image_trainee_gender.setVisible(false);
+		image_trainee_mainimage.setVisible(false);
+		textfield_trainee_id.setVisible(false);
+		textfield_trainee_name.setVisible(false);
+		textfield_trainee_lastname.setVisible(false);
+		textfield_trainee_birthday.setVisible(false);
+		textfield_trainee_city.setVisible(false);
+		textfield_trainee_address.setVisible(false);
+		textfield_trainee_postcode.setVisible(false);
+		textfield_trainee_phone.setVisible(false);
+		textfield_trainee_cellphone.setVisible(false);
+		textfield_trainee_email.setVisible(false);
+		textfield_trainee_hight.setVisible(false);
+		textfield_trainee_weight.setVisible(false);
+		textarea_trainee_comments.setVisible(false);
+		combobox_trainee_gender.setVisible(false);
+		combobox_trainee_center.setVisible(false);
+		combobox_trainee_level.setVisible(false);
+		combobox_trainee_group.setVisible(false);
+		datepicker_trainee_start.setVisible(false);
+		datepicker_trainee_end.setVisible(false);
+		textfield_trainee_id.setEditable(true);
+		label_trainee_sum.setVisible(true);
+		textfield_trainee_sum.setVisible(true);
+		trainee_paymentway_list.clear();
+		trainee_paymentway_list.add("מזומן");
+		trainee_paymentway_list.add("אשראי");
+		trainee_paymentway_list.add("צקים");
+		radio_trainee_cashpayment.setVisible(true);
+		radio_trainee_chekpayment.setVisible(true);
+		radio_trainee_creditpayment.setVisible(true);
+			if(button_add_trainee.getText().equals("ערוך ספורטאי"))
+			{
+				String commend="select * from Payment where id = "+"\""+textfield_trainee_id.getText()+"\"";
+				try {
+					s.execute(commend);
+					ResultSet rs=s.getResultSet();
+					while((rs!=null) && (rs.next()))
+					{
+						if(rs.getString(16).equals("cash"))
+						{
+							textfield_trainee_sum.setText(rs.getString(17));
+							radio_trainee_cashpayment.setSelected(true);
+						}
+						else if(rs.getString(16).equals("creditcard"))
+						{
+							radio_trainee_creditpayment.setSelected(true);
+							RadioTraineeCreditPaymentClick();
+							textfield_trainee_sum.setText(rs.getString(17));
+							switch(rs.getString(18))
+							{
+							case "1":
+									combobox_trainee_paymentnum.setValue(1);
+									textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/1));
+									break;
+							case "2":
+								combobox_trainee_paymentnum.setValue(2);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/2));
+								break;
+							case "3":
+								combobox_trainee_paymentnum.setValue(3);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/3));
+								break;	
+							case "4":
+								combobox_trainee_paymentnum.setValue(4);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/4));
+								break;	
+							case "5":
+								combobox_trainee_paymentnum.setValue(5);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/5));
+								break;	
+							case "6":
+								combobox_trainee_paymentnum.setValue(6);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/6));
+								break;	
+							case "7":
+								combobox_trainee_paymentnum.setValue(7);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/7));
+								break;	
+							case "8":
+								combobox_trainee_paymentnum.setValue(8);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/8));
+								break;	
+							case "9":
+								combobox_trainee_paymentnum.setValue(9);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/9));
+								break;	
+							case "10":
+								combobox_trainee_paymentnum.setValue(10);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/10));
+								break;	
+							case "11":
+								combobox_trainee_paymentnum.setValue(11);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/11));
+								break;	
+							case "12":
+								combobox_trainee_paymentnum.setValue(12);
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/12));
+								break;				
+							}
+						}
+						else
+						{
+							textfield_trainee_sum.setText(rs.getString(17));
+							radio_trainee_chekpayment.setSelected(true);
+							RadioTraineeChekPaymentClick();
+							textfield_trainee_bank.setText(rs.getString(1));
+							textfield_trainee_factory.setText(rs.getString(2));
+							switch(rs.getString(18))
+							{
+							case "1":
+									combobox_trainee_paymentnum.setValue(1);
+									ComboboxPaymentNumSelect();
+									textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/1));
+									textfield_trainee_chek1.setText(rs.getString(3));
+									break;
+							case "2":
+								combobox_trainee_paymentnum.setValue(2);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/2));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								break;
+							case "3":
+								combobox_trainee_paymentnum.setValue(3);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/3));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								break;	
+							case "4":
+								combobox_trainee_paymentnum.setValue(4);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/4));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								break;	
+							case "5":
+								combobox_trainee_paymentnum.setValue(5);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/5));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								textfield_trainee_chek5.setText(rs.getString(7));
+								break;	
+							case "6":
+								combobox_trainee_paymentnum.setValue(6);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/6));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								textfield_trainee_chek5.setText(rs.getString(7));
+								textfield_trainee_chek6.setText(rs.getString(8));
+								break;	
+							case "7":
+								combobox_trainee_paymentnum.setValue(7);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/7));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								textfield_trainee_chek5.setText(rs.getString(7));
+								textfield_trainee_chek6.setText(rs.getString(8));
+								textfield_trainee_chek7.setText(rs.getString(9));
+								break;	
+							case "8":
+								combobox_trainee_paymentnum.setValue(8);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/8));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								textfield_trainee_chek5.setText(rs.getString(7));
+								textfield_trainee_chek6.setText(rs.getString(8));
+								textfield_trainee_chek7.setText(rs.getString(9));
+								textfield_trainee_chek8.setText(rs.getString(10));
+								break;	
+							case "9":
+								combobox_trainee_paymentnum.setValue(9);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/9));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								textfield_trainee_chek5.setText(rs.getString(7));
+								textfield_trainee_chek6.setText(rs.getString(8));
+								textfield_trainee_chek7.setText(rs.getString(9));
+								textfield_trainee_chek8.setText(rs.getString(10));
+								textfield_trainee_chek9.setText(rs.getString(11));
+								break;	
+							case "10":
+								combobox_trainee_paymentnum.setValue(10);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/10));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								textfield_trainee_chek5.setText(rs.getString(7));
+								textfield_trainee_chek6.setText(rs.getString(8));
+								textfield_trainee_chek7.setText(rs.getString(9));
+								textfield_trainee_chek8.setText(rs.getString(10));
+								textfield_trainee_chek9.setText(rs.getString(11));
+								textfield_trainee_chek10.setText(rs.getString(12));
+								break;	
+							case "11":
+								combobox_trainee_paymentnum.setValue(11);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/11));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								textfield_trainee_chek5.setText(rs.getString(7));
+								textfield_trainee_chek6.setText(rs.getString(8));
+								textfield_trainee_chek7.setText(rs.getString(9));
+								textfield_trainee_chek8.setText(rs.getString(10));
+								textfield_trainee_chek9.setText(rs.getString(11));
+								textfield_trainee_chek10.setText(rs.getString(12));
+								textfield_trainee_chek11.setText(rs.getString(13));
+								break;	
+							case "12":
+								combobox_trainee_paymentnum.setValue(12);
+								ComboboxPaymentNumSelect();
+								textfield_trainee_eachsum.setText(Integer.toString(Integer.parseInt(rs.getString(17))/12));
+								textfield_trainee_chek1.setText(rs.getString(3));
+								textfield_trainee_chek2.setText(rs.getString(4));
+								textfield_trainee_chek3.setText(rs.getString(5));
+								textfield_trainee_chek4.setText(rs.getString(6));
+								textfield_trainee_chek5.setText(rs.getString(7));
+								textfield_trainee_chek6.setText(rs.getString(8));
+								textfield_trainee_chek7.setText(rs.getString(9));
+								textfield_trainee_chek8.setText(rs.getString(10));
+								textfield_trainee_chek9.setText(rs.getString(11));
+								textfield_trainee_chek10.setText(rs.getString(12));
+								textfield_trainee_chek11.setText(rs.getString(13));
+								textfield_trainee_chek12.setText(rs.getString(14));
+								break;		
+						}
+						}	
+					}
+				} catch (SQLException e) {
+
+				}
+			}
+			}
+		else
+		{
+			String commend;
+			if(radio_trainee_cashpayment.isSelected())
+			{
+				if(textfield_trainee_sum.getText().equals(""))
+				{
+					showAlertMessage("אתה חייב להקליד סכום", AlertType.ERROR);
+					return;
+				}
+				if(textfield_trainee_id.getText().equals(""))
+				{
+					showAlertMessage("בבקשה חזור לחלון הקודם והכנס תז", AlertType.ERROR);
+					return;
+				}
+				commend="Insert into Payment(id,sum)"+
+						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_sum.getText()+"','"+"cash"+"')";
+				
+				try {
+					s.execute(commend);
+				} catch (SQLException e) {
+					commend="delete * from Payment where id ="+"\""+textfield_trainee_id.getText()+"\"";
+					try {
+						s.execute(commend);
+						commend="Insert into Payment(id,sum,paymentway)"+
+								   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_sum.getText()+"','"+"cash"+"')";
+						s.execute(commend);
+					} catch (SQLException e1) {
+						showAlertMessage("משו עבד לא טוב", AlertType.ERROR);
+						return;
+					}
+				}
+			}
+			else if(radio_trainee_chekpayment.isSelected())
+			{
+				if(textfield_trainee_sum.getText().equals(""))
+				{
+					showAlertMessage("אתה חייב להקליד סכום", AlertType.ERROR);
+				}
+				if(textfield_trainee_id.getText().equals(""))
+				{
+					showAlertMessage("חזור לחלון הקודם והקלד תז", AlertType.ERROR);
+				}
+				commend="Insert into Payment(id,sum,bank,factory,chek1,chek2,chek3,chek4,chek5,chek6,chek7,chek8,chek9,chek10,chek11,chek12,numpayment,paymentway)"+
+						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_sum.getText()+"','"+textfield_trainee_bank.getText()+"','"+textfield_trainee_factory.getText()
+						   			+"','"+textfield_trainee_chek1.getText()+"','"+textfield_trainee_chek2.getText()+"','"+textfield_trainee_chek3.getText()+
+						   			"','"+textfield_trainee_chek4.getText()+"','"+textfield_trainee_chek5.getText()+"','"+textfield_trainee_chek6.getText()+
+						   			"','"+textfield_trainee_chek7.getText()+"','"+textfield_trainee_chek8.getText()+"','"+textfield_trainee_chek9.getText()+
+						   			"','"+textfield_trainee_chek10.getText()+"','"+textfield_trainee_chek11.getText()+"','"+textfield_trainee_chek12.getText()+"','"+
+						   			combobox_trainee_paymentnum.getValue()+"','"+"chek"+"')";
+				try {
+					s.execute(commend);
+				} catch (SQLException e) {
+					commend="delete * from Payment where id ="+"\""+textfield_trainee_id.getText()+"\"";
+					try {
+						s.execute(commend);
+						commend="Insert into Payment(id,sum,bank,factory,chek1,chek2,chek3,chek4,chek5,chek6,chek7,chek8,chek9,chek10,chek11,chek12,numpayment,paymentway)"+
+								   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_sum.getText()+"','"+textfield_trainee_bank.getText()+"','"+textfield_trainee_factory.getText()
+								   			+"','"+textfield_trainee_chek1.getText()+"','"+textfield_trainee_chek2.getText()+"','"+textfield_trainee_chek3.getText()+
+								   			"','"+textfield_trainee_chek4.getText()+"','"+textfield_trainee_chek5.getText()+"','"+textfield_trainee_chek6.getText()+
+								   			"','"+textfield_trainee_chek7.getText()+"','"+textfield_trainee_chek8.getText()+"','"+textfield_trainee_chek9.getText()+
+								   			"','"+textfield_trainee_chek10.getText()+"','"+textfield_trainee_chek11.getText()+"','"+textfield_trainee_chek12.getText()+"','"+
+								   			combobox_trainee_paymentnum.getValue()+"','"+"chek"+"')";
+						s.execute(commend);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+						showAlertMessage("משו לא עבד", AlertType.ERROR);
+						return;
+					}
+				}
+			}
+			else if(radio_trainee_creditpayment.isSelected())
+			{
+				if(textfield_trainee_sum.getText().equals(""))
+				{
+					showAlertMessage("אתה חייב להקליד סכום", AlertType.ERROR);
+				}
+				if(textfield_trainee_id.getText().equals(""))
+				{
+					showAlertMessage("חזור לחלון הקודם והקלד תז", AlertType.ERROR);
+				}
+				commend="Insert into Payment(id,sum,numpayment,paymentway)"+
+						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_sum.getText()+"','"+combobox_trainee_paymentnum.getValue()
+						   +"','"+"creditcard"+"')";
+				try {
+					s.execute(commend);
+				} catch (SQLException e) {
+					commend="delete * from Payment where id ="+"\""+textfield_trainee_id.getText()+"\"";
+					try {
+						s.execute(commend);
+						commend="Insert into Payment(id,sum,numpayment,paymentway)"+
+								   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_sum.getText()+"','"+combobox_trainee_paymentnum.getValue()
+								   +"','"+"creditcard"+"')";
+						s.execute(commend);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+						showAlertMessage("משו לא עבד", AlertType.ERROR);
+						return;
+				}
+			}
+				}
+			else 
+			{
+				showAlertMessage("אתה חייב לבחור אחת מהאפשרויות", AlertType.ERROR);
+			}
+			PaymentTabCleaner();
+			SetPaymentTabInvisable();
+			
+		}
+	}
 	
+	public void SetPaymentTabInvisable()
+	{
+		button_payment_trainee.setLayoutX(310);
+		button_payment_trainee.setText("תשלומים");
+		radio_trainee_cashpayment.setVisible(false);
+		radio_trainee_chekpayment.setVisible(false);
+		radio_trainee_creditpayment.setVisible(false);
+		button_paymentback_trainee.setVisible(false);
+		button_back_trainee.setVisible(true);
+		button_add_trainee.setVisible(true);
+		button_delete_trainee.setVisible(true);
+		button_add_image.setVisible(true);
+		label_trainee_id.setVisible(true);
+		label_trainee_name.setVisible(true);
+		label_trainee_lastname.setVisible(true);
+		label_trainee_birthday.setVisible(true);
+		label_trainee_city.setVisible(true);
+		label_trainee_address.setVisible(true);
+		label_trainee_postcode.setVisible(true);
+		label_trainee_phone.setVisible(true);
+		label_trainee_cellphone.setVisible(true);
+		label_trainee_email.setVisible(true);
+		label_trainee_gender.setVisible(true);
+		label_trainee_center.setVisible(true);
+		label_trainee_level.setVisible(true);
+		label_trainee_hight.setVisible(true);
+		label_trainee_weight.setVisible(true);
+		label_trainee_start_date.setVisible(true);
+		label_trainee_end_date.setVisible(true);
+		label_trainee_comments.setVisible(true);
+		label_trainee_group.setVisible(true);
+		image_trainee_id.setVisible(true);
+		image_trainee_name.setVisible(true);
+		image_trainee_lastname.setVisible(true);
+		image_trainee_birthday.setVisible(true);
+		image_trainee_city.setVisible(true);
+		image_trainee_address.setVisible(true);
+		image_trainee_postcode.setVisible(true);
+		image_trainee_phone.setVisible(true);
+		image_trainee_cellphone.setVisible(true);
+		image_trainee_email.setVisible(true);
+		image_trainee_mainimage.setVisible(true);
+		image_trainee_gender.setVisible(true);
+		textfield_trainee_id.setVisible(true);
+		textfield_trainee_name.setVisible(true);
+		textfield_trainee_lastname.setVisible(true);
+		textfield_trainee_birthday.setVisible(true);
+		textfield_trainee_city.setVisible(true);
+		textfield_trainee_address.setVisible(true);
+		textfield_trainee_postcode.setVisible(true);
+		textfield_trainee_phone.setVisible(true);
+		textfield_trainee_cellphone.setVisible(true);
+		textfield_trainee_email.setVisible(true);
+		textfield_trainee_hight.setVisible(true);
+		textfield_trainee_weight.setVisible(true);
+		textarea_trainee_comments.setVisible(true);
+		combobox_trainee_gender.setVisible(true);
+		combobox_trainee_center.setVisible(true);
+		combobox_trainee_level.setVisible(true);
+		combobox_trainee_group.setVisible(true);
+		datepicker_trainee_start.setVisible(true);
+		datepicker_trainee_end.setVisible(true);
+		textfield_trainee_id.setEditable(true);
+		label_trainee_sum.setVisible(false);
+		textfield_trainee_sum.setVisible(false);
+		label_trainee_chek1.setVisible(false);
+		label_trainee_chek2.setVisible(false);
+		textfield_trainee_bank.setVisible(false);
+		textfield_trainee_factory.setVisible(false);
+		textfield_trainee_chek1.setVisible(false);
+		textfield_trainee_chek2.setVisible(false);
+		label_trainee_chek3.setVisible(false);
+		textfield_trainee_chek3.setVisible(false);
+		label_trainee_chek4.setVisible(false);
+		textfield_trainee_chek4.setVisible(false);
+		label_trainee_chek5.setVisible(false);
+		textfield_trainee_chek5.setVisible(false);
+		label_trainee_chek6.setVisible(false);
+		textfield_trainee_chek6.setVisible(false);
+		label_trainee_chek7.setVisible(false);
+		textfield_trainee_chek7.setVisible(false);
+		label_trainee_chek8.setVisible(false);
+		textfield_trainee_chek8.setVisible(false);
+		label_trainee_chek9.setVisible(false);
+		textfield_trainee_chek9.setVisible(false);
+		label_trainee_chek10.setVisible(false);
+		textfield_trainee_chek10.setVisible(false);
+		label_trainee_chek11.setVisible(false);
+		textfield_trainee_chek11.setVisible(false);
+		label_trainee_chek12.setVisible(false);
+		textfield_trainee_chek12.setVisible(false);
+		label_trainee_eachsum.setVisible(false);
+		textfield_trainee_eachsum.setVisible(false);
+		label_trainee_bank.setVisible(false);
+		label_trainee_factory.setVisible(false);
+		label_trainee_number.setVisible(false);
+		label_trainee_cheksnum.setVisible(false);
+		combobox_trainee_paymentnum.setVisible(false);
+		textfield_trainee_sum.clear();
+		radio_trainee_cashpayment.setSelected(false);
+		radio_trainee_chekpayment.setSelected(false);
+		radio_trainee_creditpayment.setSelected(false);
+		textfield_trainee_eachsum.clear();
+	}
 	
+	@FXML
+	public void BackPaymentButtonClick(ActionEvent event)
+	{
+		SetPaymentTabInvisable();
+	}
+	
+	@FXML
+    public void RadioTraineeChekPaymentClick()
+    {
+		textfield_trainee_eachsum.clear();
+    	if(radio_trainee_chekpayment.isSelected())
+    	{
+        	radio_trainee_cashpayment.setSelected(false);
+        	radio_trainee_creditpayment.setSelected(false);
+    		PaymentTabCleaner();
+    		label_trainee_eachsum.setVisible(true);
+    		textfield_trainee_eachsum.setVisible(true);
+    		combobox_trainee_paymentnum.setVisible(true);
+    		label_trainee_cheksnum.setVisible(true);
+    		trainee_paymentway_num.clear();
+    		trainee_paymentway_num.add(1);
+    		trainee_paymentway_num.add(2);
+    		trainee_paymentway_num.add(3);
+    		trainee_paymentway_num.add(4);
+    		trainee_paymentway_num.add(5);
+    		trainee_paymentway_num.add(6);
+    		trainee_paymentway_num.add(7);
+    		trainee_paymentway_num.add(8);
+    		trainee_paymentway_num.add(9);
+    		trainee_paymentway_num.add(10);
+    		trainee_paymentway_num.add(11);
+    		trainee_paymentway_num.add(12);
+    		combobox_trainee_paymentnum.setItems(trainee_paymentway_num);
+    		
+    	}
+    	else PaymentTabCleaner();
+    }
+    
+    @FXML
+    public void RadioTraineeCashPaymentClick(ActionEvent event)
+    {
+    	radio_trainee_chekpayment.setSelected(false);
+    	radio_trainee_creditpayment.setSelected(false);
+    	PaymentTabCleaner(); 	
+    }
+    
+    @FXML
+    public void RadioTraineeCreditPaymentClick()
+    {
+    	
+    	radio_trainee_chekpayment.setSelected(false);
+    	radio_trainee_cashpayment.setSelected(false);
+    	PaymentTabCleaner();
+    	if(radio_trainee_creditpayment.isSelected())
+    	{
+    	label_trainee_eachsum.setVisible(true);
+		textfield_trainee_eachsum.setVisible(true);
+		combobox_trainee_paymentnum.setVisible(true);
+		label_trainee_cheksnum.setVisible(true);
+		trainee_paymentway_num.clear();
+		trainee_paymentway_num.add(1);
+		trainee_paymentway_num.add(2);
+		trainee_paymentway_num.add(3);
+		trainee_paymentway_num.add(4);
+		trainee_paymentway_num.add(5);
+		trainee_paymentway_num.add(6);
+		trainee_paymentway_num.add(7);
+		trainee_paymentway_num.add(8);
+		trainee_paymentway_num.add(9);
+		trainee_paymentway_num.add(10);
+		trainee_paymentway_num.add(11);
+		trainee_paymentway_num.add(12);
+		combobox_trainee_paymentnum.setItems(trainee_paymentway_num);
+    	}    
+    }
+    
+    @FXML
+    public void ComboboxPaymentNumSelect()
+    {
+    	if(radio_trainee_chekpayment.isSelected())
+    	{
+    		int temp;
+    		try {
+    		 temp=Integer.parseInt((textfield_trainee_sum.getText()))/combobox_trainee_paymentnum.getValue();
+    		}catch(Exception e)
+    		{
+    			showAlertMessage("אתה חייב להקליד ספרות בלבד", AlertType.ERROR);
+    			return;
+    		}
+    		textfield_trainee_eachsum.setText(Integer.toString(temp));
+			label_trainee_chek1.setVisible(false);
+			label_trainee_chek2.setVisible(false);
+			textfield_trainee_bank.setVisible(false);
+			textfield_trainee_factory.setVisible(false);
+			textfield_trainee_chek1.setVisible(false);
+			textfield_trainee_chek2.setVisible(false);
+			label_trainee_chek3.setVisible(false);
+			textfield_trainee_chek3.setVisible(false);
+			label_trainee_chek4.setVisible(false);
+			textfield_trainee_chek4.setVisible(false);
+			label_trainee_chek5.setVisible(false);
+			textfield_trainee_chek5.setVisible(false);
+			label_trainee_chek6.setVisible(false);
+			textfield_trainee_chek6.setVisible(false);
+			label_trainee_chek7.setVisible(false);
+			textfield_trainee_chek7.setVisible(false);
+			label_trainee_chek8.setVisible(false);
+			textfield_trainee_chek8.setVisible(false);
+			label_trainee_chek9.setVisible(false);
+			textfield_trainee_chek9.setVisible(false);
+			label_trainee_chek10.setVisible(false);
+			textfield_trainee_chek10.setVisible(false);
+			label_trainee_chek11.setVisible(false);
+			textfield_trainee_chek11.setVisible(false);
+			label_trainee_chek12.setVisible(false);
+			textfield_trainee_chek12.setVisible(false);
+    		switch(combobox_trainee_paymentnum.getValue())
+			{
+				case 1:
+						label_trainee_chek1.setVisible(true);
+						textfield_trainee_bank.setVisible(true);
+						textfield_trainee_factory.setVisible(true);
+						textfield_trainee_chek1.setVisible(true);
+						break;
+				case 2:
+						label_trainee_chek1.setVisible(true);
+						label_trainee_chek2.setVisible(true);
+						textfield_trainee_bank.setVisible(true);
+						textfield_trainee_factory.setVisible(true);
+						textfield_trainee_chek1.setVisible(true);
+						textfield_trainee_chek2.setVisible(true);
+						break;
+				case 3:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					break;
+				case 4:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					break;
+				case 5:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					label_trainee_chek5.setVisible(true);
+					textfield_trainee_chek5.setVisible(true);
+					break;
+				case 6:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					label_trainee_chek5.setVisible(true);
+					textfield_trainee_chek5.setVisible(true);
+					label_trainee_chek6.setVisible(true);
+					textfield_trainee_chek6.setVisible(true);
+					break;
+				case 7:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					label_trainee_chek5.setVisible(true);
+					textfield_trainee_chek5.setVisible(true);
+					label_trainee_chek6.setVisible(true);
+					textfield_trainee_chek6.setVisible(true);
+					label_trainee_chek7.setVisible(true);
+					textfield_trainee_chek7.setVisible(true);
+					break;		
+				case 8:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					label_trainee_chek5.setVisible(true);
+					textfield_trainee_chek5.setVisible(true);
+					label_trainee_chek6.setVisible(true);
+					textfield_trainee_chek6.setVisible(true);
+					label_trainee_chek7.setVisible(true);
+					textfield_trainee_chek7.setVisible(true);
+					label_trainee_chek8.setVisible(true);
+					textfield_trainee_chek8.setVisible(true);
+					break;	
+				case 9:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					label_trainee_chek5.setVisible(true);
+					textfield_trainee_chek5.setVisible(true);
+					label_trainee_chek6.setVisible(true);
+					textfield_trainee_chek6.setVisible(true);
+					label_trainee_chek7.setVisible(true);
+					textfield_trainee_chek7.setVisible(true);
+					label_trainee_chek8.setVisible(true);
+					textfield_trainee_chek8.setVisible(true);
+					label_trainee_chek9.setVisible(true);
+					textfield_trainee_chek9.setVisible(true);
+					break;
+				case 10:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					label_trainee_chek5.setVisible(true);
+					textfield_trainee_chek5.setVisible(true);
+					label_trainee_chek6.setVisible(true);
+					textfield_trainee_chek6.setVisible(true);
+					label_trainee_chek7.setVisible(true);
+					textfield_trainee_chek7.setVisible(true);
+					label_trainee_chek8.setVisible(true);
+					textfield_trainee_chek8.setVisible(true);
+					label_trainee_chek9.setVisible(true);
+					textfield_trainee_chek9.setVisible(true);
+					label_trainee_chek10.setVisible(true);
+					textfield_trainee_chek10.setVisible(true);
+					break;
+				case 11:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					label_trainee_chek5.setVisible(true);
+					textfield_trainee_chek5.setVisible(true);
+					label_trainee_chek6.setVisible(true);
+					textfield_trainee_chek6.setVisible(true);
+					label_trainee_chek7.setVisible(true);
+					textfield_trainee_chek7.setVisible(true);
+					label_trainee_chek8.setVisible(true);
+					textfield_trainee_chek8.setVisible(true);
+					label_trainee_chek9.setVisible(true);
+					textfield_trainee_chek9.setVisible(true);
+					label_trainee_chek10.setVisible(true);
+					textfield_trainee_chek10.setVisible(true);
+					label_trainee_chek11.setVisible(true);
+					textfield_trainee_chek11.setVisible(true);
+					break;
+				case 12:
+					label_trainee_chek1.setVisible(true);
+					label_trainee_chek2.setVisible(true);
+					textfield_trainee_bank.setVisible(true);
+					textfield_trainee_factory.setVisible(true);
+					textfield_trainee_chek1.setVisible(true);
+					textfield_trainee_chek2.setVisible(true);
+					label_trainee_chek3.setVisible(true);
+					textfield_trainee_chek3.setVisible(true);
+					label_trainee_chek4.setVisible(true);
+					textfield_trainee_chek4.setVisible(true);
+					label_trainee_chek5.setVisible(true);
+					textfield_trainee_chek5.setVisible(true);
+					label_trainee_chek6.setVisible(true);
+					textfield_trainee_chek6.setVisible(true);
+					label_trainee_chek7.setVisible(true);
+					textfield_trainee_chek7.setVisible(true);
+					label_trainee_chek8.setVisible(true);
+					textfield_trainee_chek8.setVisible(true);
+					label_trainee_chek9.setVisible(true);
+					textfield_trainee_chek9.setVisible(true);
+					label_trainee_chek10.setVisible(true);
+					textfield_trainee_chek10.setVisible(true);
+					label_trainee_chek11.setVisible(true);
+					textfield_trainee_chek11.setVisible(true);
+					label_trainee_chek12.setVisible(true);
+					textfield_trainee_chek12.setVisible(true);
+					break;		
+			}
+    	}
+    	else
+    	{
+    		textfield_trainee_eachsum.clear();
+    		int temp;
+    		try {
+    		 temp=Integer.parseInt((textfield_trainee_sum.getText()))/combobox_trainee_paymentnum.getValue();
+    		 textfield_trainee_eachsum.setText(Integer.toString(temp));
+    		}catch(Exception e)
+    		{
+    			showAlertMessage("אתה חייב להקליד ספרות בלבד", AlertType.ERROR);
+    			return;
+    		}
+    	}
+    }
+    
+    public void PaymentTabCleaner()
+    {
+		label_trainee_chek1.setVisible(false);
+		label_trainee_chek2.setVisible(false);
+		textfield_trainee_bank.setVisible(false);
+		textfield_trainee_factory.setVisible(false);
+		textfield_trainee_chek1.setVisible(false);
+		textfield_trainee_chek2.setVisible(false);
+		label_trainee_chek3.setVisible(false);
+		textfield_trainee_chek3.setVisible(false);
+		label_trainee_chek4.setVisible(false);
+		textfield_trainee_chek4.setVisible(false);
+		label_trainee_chek5.setVisible(false);
+		textfield_trainee_chek5.setVisible(false);
+		label_trainee_chek6.setVisible(false);
+		textfield_trainee_chek6.setVisible(false);
+		label_trainee_chek7.setVisible(false);
+		textfield_trainee_chek7.setVisible(false);
+		label_trainee_chek8.setVisible(false);
+		textfield_trainee_chek8.setVisible(false);
+		label_trainee_chek9.setVisible(false);
+		textfield_trainee_chek9.setVisible(false);
+		label_trainee_chek10.setVisible(false);
+		textfield_trainee_chek10.setVisible(false);
+		label_trainee_chek11.setVisible(false);
+		textfield_trainee_chek11.setVisible(false);
+		label_trainee_chek12.setVisible(false);
+		textfield_trainee_chek12.setVisible(false);
+		label_trainee_eachsum.setVisible(false);
+		textfield_trainee_eachsum.setVisible(false);
+		combobox_trainee_paymentnum.setVisible(false);
+		label_trainee_cheksnum.setVisible(false);
+    }
+    @FXML
+    public void AddImageButtonClick()
+    {
+    	FileChooser fc=new FileChooser();
+    	fc.getExtensionFilters().addAll(new ExtensionFilter("jpg File","*.jpg"),new ExtensionFilter("png File","*.png"));
+    	File selected_file=fc.showOpenDialog(null);
+    	if(selected_file!=null)
+    	{
+    		Image Image;
+    		
+    			try {
+					Image = new Image(selected_file.toURI().toURL().toExternalForm());
+	    			image_trainee_mainimage.setImage(Image);
+	    			image_trainee_mainimage.setVisible(false);
+	    			image_trainee_mainimage.setVisible(true);
+	    			main_image=selected_file.toURI().toURL().toExternalForm();
+				} catch (MalformedURLException e) {
+					InputStream view = getClass().getResourceAsStream("/boundaries/images/unknow.jpg");
+					if (view != null) {
+						Image = new Image(view);
+						image_trainee_mainimage.setImage(Image);
+					}
+				}
+    			
+    	}
+    }
 	//Lists Functions
 //---------------------------------------------------------end->Trainee tab Functions------------------------------------------------//	
 
@@ -2250,6 +3375,7 @@ public class MainController extends BaseController
 			}
     }
     
+    
     //Group Functions
 
 //-------------------------------------------------------end->List tab Functions------------------------------------------------//	
@@ -2298,6 +3424,7 @@ public class MainController extends BaseController
     	button_search_group.setVisible(true);
     	FillGroupCenterCombobox();
     	button_add_group.setLayoutX(420);
+    	button_add_group.setText("הוסף שיעור חדש");
     	button_back_group.setVisible(false);
     	combobox_group_center.setItems(group_center_list);
     	combobox_group_center.setVisible(true);
@@ -2408,7 +3535,10 @@ public class MainController extends BaseController
     						return;
     					}
     				}
-    				
+    				spinner_group_start.increment();
+    				spinner_group_start.decrement();
+    				spinner_group_end.increment();
+    				spinner_group_end.decrement();
     				String times="יום"+" "+combobox_group_days.getValue()+" "+"בשעה "+spinner_group_start.getValue().toString().substring(0, 5)+"-"+spinner_group_end.getValue().toString().substring(0, 5);
     				if(radio_group_add.isSelected())
     				{
@@ -2518,7 +3648,7 @@ public class MainController extends BaseController
     	
     	
     }
-    //----------------------------------------------------end->group tab Functions------------------------------------------------//	
+    
     @FXML
     public void SearchGroupButtonClick(ActionEvent event)
     {
@@ -2565,5 +3695,6 @@ public class MainController extends BaseController
 			}
     }
     	
+    
     
 }

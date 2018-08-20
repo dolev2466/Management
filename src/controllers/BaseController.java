@@ -268,6 +268,11 @@ public abstract class BaseController implements Initializable
 			loginStage.setTitle("Managment");
 			loginStage.setResizable(false);
 			//controller.intializeKeyHandler(scene);
+			InputStream iconResource = getClass().getResourceAsStream("/boundaries/images/Avitan.png");
+			if (iconResource != null) {
+				Image icon = new Image(iconResource);
+				loginStage.getIcons().add(icon);
+			}
 			loginStage.show();
 		}
 		catch (Exception ex) {

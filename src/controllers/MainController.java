@@ -2,8 +2,11 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Formatter;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.sql.*;
 import java.text.DateFormat;
@@ -16,6 +19,7 @@ import java.time.temporal.TemporalAccessor;
 
 import boundaries.CenterRow;
 import boundaries.GroupsRow;
+import boundaries.LevelsRow;
 import boundaries.ListsRow;
 import boundaries.PaymentRow;
 import boundaries.TraineesRow;
@@ -27,9 +31,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterAttributes;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -45,6 +57,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.transform.Scale;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.util.StringConverter;
@@ -241,6 +254,8 @@ public class MainController extends BaseController
 		
 		private @FXML Button button_add_trainee;
 		
+		private @FXML Button button_level_trainee;
+		
 		private @FXML Button button_back_trainee;
 		
 		private @FXML Button button_delete_trainee;
@@ -252,6 +267,12 @@ public class MainController extends BaseController
 		private @FXML Button button_paymentback_trainee;
 		
 		private @FXML Button button_add_image;
+		
+		private @FXML Button button_print_trainee;
+		
+		private @FXML Button button_search_traineecenter;
+		
+		private @FXML Button button_print_traineeinfo;
 		
 		private @FXML Label label_traineesearch;
 		
@@ -297,7 +318,6 @@ public class MainController extends BaseController
 		
 		private @FXML Label label_trainee_group;
 		
-		
 		private @FXML Label label_trainee_sum;
 		
 		private @FXML Label label_trainee_cheksnum;
@@ -334,9 +354,25 @@ public class MainController extends BaseController
 		
 		private @FXML Label label_trainee_eachsum;
 		
+		private @FXML Label label_search_traineegroup;
+		
+		private @FXML Label label_search_traineecenter;
+		
+		private @FXML Label label_trainee_num;
+		
+		private @FXML Label label_trainee_acc;
+		
+		private @FXML CheckBox checkbox_trainee_acc;
+		
+		private @FXML TextField textfield_trainee_num;
+		
 		private @FXML TextField textfield_search_traineeid;
 		
 		private @FXML TextField textfield_search_traineename;
+		
+		private @FXML TextField textfield_search_traineegroup;
+		
+		private @FXML TextField textfield_search_traineecenter;
 		
 		private @FXML TextField textfield_trainee_id;
 		
@@ -440,6 +476,8 @@ public class MainController extends BaseController
 		
 		private @FXML RadioButton radio_trainee_creditpayment;
 		
+		String correct_id;
+		
 		String main_image;
 		
 
@@ -512,6 +550,10 @@ public class MainController extends BaseController
 		
 		private @FXML TableColumn<GroupsRow,String> tablecolumn_group_trainer;
 		
+		private @FXML TableColumn<GroupsRow,String> tablecolumn_group_males;
+		
+		private @FXML TableColumn<GroupsRow,String> tablecolumn_group_females;
+		
 		private @FXML Button button_add_group;
 		
 		private @FXML Button button_back_group;
@@ -538,7 +580,15 @@ public class MainController extends BaseController
 		
 		private @FXML Label label_group_end;
 		
+		private @FXML Label label_group_males;
+		
+		private @FXML Label label_group_females;
+		
 		private @FXML TextField textfield_group_name;
+		
+		private @FXML TextField textfield_group_males;
+		
+		private @FXML TextField textfield_group_females;
 		
 		private @FXML TextField textfield_search_groupcenter;
 		
@@ -612,6 +662,39 @@ public class MainController extends BaseController
 		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_register_date;
 		
 		private @FXML TableColumn<TraineesRow,String> tablecolumn_expiried_subscription_end_date;
+		
+//anchor pane level
+		private @FXML AnchorPane anchorpane_level;
+		
+		private @FXML TableView<LevelsRow> levels_table;
+		
+		private @FXML TableColumn<LevelsRow,String> tablecolumn_level_name;
+		
+		private @FXML TableColumn<LevelsRow,String> tablecolumn_level_date;
+		
+		private @FXML TableColumn<LevelsRow,String> tablecolumn_level_number;
+		
+		private @FXML Button button_add_level;
+		
+		private @FXML Button button_back_level;
+		
+		private @FXML Label label_level_level;
+		
+		private @FXML Label label_level_date;
+		
+		private @FXML Label label_level_number;
+		
+		private @FXML TextField textfield_level_number;
+		
+		private @FXML ComboBox<String> combobox_level_levels;
+		
+		private @FXML DatePicker datepicker_level_date;
+		
+		private ObservableList<LevelsRow> levels_list = FXCollections.observableArrayList();
+		
+		public LevelsRow correct_level;
+		
+//end--> anchor pane level		
 //---------------------------------------------------------DataBase Fields------------------------------------------
 	Connection conn;	Statement s;
 	ResultSet rs;
@@ -630,6 +713,7 @@ public class MainController extends BaseController
 		InitalizeCenterTable();
 		InitalizeLevelList();
 		InitalizeTraineeTable();
+		LevelTableInitalize();
 	}
 	
 	private void TrainersTabInitialize()
@@ -659,11 +743,11 @@ public class MainController extends BaseController
         try
         {
         	//------------------Open Connection to Access Data Base--------------------------------	
-        		//path.substring(0, path.indexOf("gggggg"))+"Database.accdb" enter this into path;	
+        		//path.substring(0, path.indexOf("Avitan-Dojo"))+"Database.accdb" enter this into path;	
         		//jdbc:ucanaccess://C:\\Users\\Dolev\\Desktop\\Management\\src\\Database.accdb"
         	Class.forName(MY_SQL_DRIVER_NAME).newInstance();
         	path = this.getClass().getResource("").toString().substring(9);
-        	path = path.substring(0, path.indexOf("Avitan-Dojo"))+"Database.accdb";
+        	path =path.substring(0, path.indexOf("Avitan-Dojo"))+"Database.accdb";
         		conn=DriverManager.getConnection(
         			"jdbc:ucanaccess://" + path);
         			 s = conn.createStatement();
@@ -789,7 +873,7 @@ public class MainController extends BaseController
 		tablecolumn_expiried_group.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("group"));
 		tablecolumn_expiried_register_date.setCellValueFactory(new PropertyValueFactory<TraineesRow, String>("register_date"));
 		tablecolumn_expiried_subscription_end_date.setCellValueFactory(new PropertyValueFactory<TraineesRow,String>("subscription_end_date"));
-		String command="select * from Trainees where subscription_end_date <= "+"\""+s_dateForamt.format(LocalDate.now())+"\"";
+		String command="select * from Trainees";
 		String names="";
 		expiried_row.clear();
 		try {
@@ -797,8 +881,11 @@ public class MainController extends BaseController
 			ResultSet set=s.getResultSet();
 			while((set!=null) && (set.next()))
 			{
+				if(DateCompare(set.getString(19), s_dateForamt.format(LocalDate.now())))
+				{	
 			   TraineesRow temp=new TraineesRow(set.getString(13), set.getString(1), set.getString(2), set.getString(10),set.getString(11),set.getString(18),set.getString(19));
-			   expiried_row.add(temp);   
+			   expiried_row.add(temp);
+				}
 			}
 			
 		} catch (SQLException e) {
@@ -932,6 +1019,7 @@ public class MainController extends BaseController
 		trainee_level.add("דאן 7");
 		trainee_level.add("דאן 8");
 	}
+	
 
 	public void InitalizeTraineeTable()
 	{
@@ -1000,6 +1088,8 @@ public class MainController extends BaseController
 		tablecolumn_group_trainer.setCellValueFactory(new PropertyValueFactory<GroupsRow, String>("trainer"));
 		tablecolumn_group_group.setCellValueFactory(new PropertyValueFactory<GroupsRow, String>("group"));
 		tablecolumn_group_activity_time.setCellValueFactory(new PropertyValueFactory<GroupsRow, String>("activity_time"));
+		tablecolumn_group_males.setCellValueFactory(new PropertyValueFactory<GroupsRow, String>("males"));
+		tablecolumn_group_females.setCellValueFactory(new PropertyValueFactory<GroupsRow, String>("females"));
 		list_row = FXCollections.observableArrayList();
 		Platform.runLater(() -> {
 			lists_table.refresh();
@@ -1144,7 +1234,43 @@ public class MainController extends BaseController
 		});
 	}
 	
+	public void InitializeLevelsTab()
+	{
+		tablecolumn_level_name.setCellValueFactory(new PropertyValueFactory<LevelsRow, String>("level"));
+		tablecolumn_level_date.setCellValueFactory(new PropertyValueFactory<LevelsRow, String>("date"));
+		tablecolumn_level_number.setCellValueFactory(new PropertyValueFactory<LevelsRow, String>("number"));
+		trainer_row = FXCollections.observableArrayList();		
+	}
 	
+	public void LevelTableInitalize()
+	{
+		levels_table.setRowFactory(param -> {
+			TableRow<LevelsRow> tableRow = new TableRow<>();
+			tableRow.setOnMouseClicked(event -> {
+				if (event.getClickCount() == 2 && (!tableRow.isEmpty())) {
+					 LevelsRow rowData = tableRow.getItem();
+
+					if (rowData.getId() == " ") {
+						return;
+					}
+					correct_level=rowData;
+					String command="delete from Levels where id = "+"\""+correct_level.getId()+"\""+"and level = "+"\""+correct_level.getLevel()+"\""+" and level_date = "+"\""+correct_level.getDate()+"\""+
+							" and level_info = "+"\""+correct_level.getNumber()+"\"";
+					try {
+						s.execute(command);
+						LevelsButtonClick();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return;
+					}
+					
+				}
+
+			});
+			return tableRow;
+		});
+	}
 	
 
 	//---------------------------------------------------------------------------------------------------------------------------------------//	
@@ -1163,6 +1289,7 @@ public class MainController extends BaseController
 				anchorpane_trainee.setVisible(false);
 				anchorpane_groups.setVisible(false);
 				anchorpane_expiried.setVisible(false);
+				anchorpane_level.setVisible(false);
 			break;
 
 			case "מרכזים":
@@ -1173,6 +1300,7 @@ public class MainController extends BaseController
 				anchorpane_trainee.setVisible(false);
 				anchorpane_groups.setVisible(false);
 				anchorpane_expiried.setVisible(false);
+				anchorpane_level.setVisible(false);
 
 			break;
 
@@ -1183,6 +1311,7 @@ public class MainController extends BaseController
 					anchorpane_trainee.setVisible(false);
 					anchorpane_groups.setVisible(false);
 					anchorpane_expiried.setVisible(false);
+					anchorpane_level.setVisible(false);
 					InitializeListsTable();
 					ListsTableInitialize();
 			
@@ -1195,6 +1324,7 @@ public class MainController extends BaseController
 				anchorpane_groups.setVisible(false);
 				anchorpane_trainee.setVisible(true);
 				anchorpane_expiried.setVisible(false);
+				anchorpane_level.setVisible(false);
 				TraineeTabInitialize();
 				SetPaymentTabInvisable();
 				SetTraineeTabInVisable();
@@ -1207,6 +1337,7 @@ public class MainController extends BaseController
 				anchorpane_trainee.setVisible(false);
 				anchorpane_groups.setVisible(true);
 				anchorpane_expiried.setVisible(false);
+				anchorpane_level.setVisible(false);
 				InitializeGroupTable();
 				SetGroupTabInVisable();
 				InitializeTimeSpinner();
@@ -1219,6 +1350,7 @@ public class MainController extends BaseController
 					anchorpane_trainee.setVisible(false);
 					anchorpane_groups.setVisible(false);
 					anchorpane_expiried.setVisible(true);
+					anchorpane_level.setVisible(false);
 					InitalizeExpiriedTable();
 				break;
 			default:
@@ -1802,7 +1934,6 @@ public class MainController extends BaseController
 		{
 			if(button_add_trainee.getText().equals("ערוך ספורטאי"))
 			{
-				GetFromDataBase("Trainees", DataBaseAction.Delete, "id", textfield_trainee_id.getText());
 				if((textfield_trainee_id.getText().equals(""))||(textfield_trainee_name.getText().equals(""))||(textfield_trainee_lastname.getText().equals(""))||
 						(textfield_trainee_birthday.getText().equals(""))||textfield_trainee_address.getText().equals("")||textfield_trainee_city.getText().equals("")||
 						textfield_trainee_postcode.getText().equals("")||textfield_trainee_phone.getText().equals("")||textfield_trainee_cellphone.getText().equals("")
@@ -1814,14 +1945,17 @@ public class MainController extends BaseController
 			}
 			else
 				{
-				String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,image,commnts) "+
+				GetFromDataBase("Trainees", DataBaseAction.Delete, "id", correct_id);
+				if(checkbox_trainee_acc.isSelected())
+				{
+				String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,groupp,gender,center,level,hight,weight,register_date,subscription_end_date,image,num,acc,commnts) "+
 						   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
 						   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
 						   "','"+textfield_trainee_phone.getText()+"','"+textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+
 						   "','"+combobox_trainee_group.getValue()+"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+
 						   "','"+combobox_trainee_level.getValue()+ "','"+textfield_trainee_hight.getText()+ "','"+textfield_trainee_weight.getText()+
 						   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+
-						   "','"+main_image+"','"+textarea_trainee_comments.getText()+"')";
+						   "','"+main_image+"','"+textfield_trainee_num.getText()+"','"+"true"+"','"+textarea_trainee_comments.getText()+"')";
 				try {
 					s.execute(command);
 					} catch (SQLException e) {
@@ -1829,6 +1963,24 @@ public class MainController extends BaseController
 					}
 				SetTraineeTabInVisable();
 				}
+				else
+				{
+					String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,groupp,gender,center,level,hight,weight,register_date,subscription_end_date,image,num,acc,commnts) "+
+							   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
+							   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
+							   "','"+textfield_trainee_phone.getText()+"','"+textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+
+							   "','"+combobox_trainee_group.getValue()+"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+
+							   "','"+combobox_trainee_level.getValue()+ "','"+textfield_trainee_hight.getText()+ "','"+textfield_trainee_weight.getText()+
+							   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+
+							   "','"+main_image+"','"+textfield_trainee_num.getText()+"','"+"false"+"','"+textarea_trainee_comments.getText()+"')";
+					try {
+						s.execute(command);
+						} catch (SQLException e) {
+						e.printStackTrace();
+						}
+					SetTraineeTabInVisable();
+				}
+			}
 			}
 			else
 			{
@@ -1860,20 +2012,40 @@ public class MainController extends BaseController
 				}
 				else
 					{
-					String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,group,gender,center,level,hight,weight,register_date,subscription_end_date,image,commnts) "+
+					if(checkbox_trainee_acc.isSelected())
+					{
+					String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,groupp,gender,center,level,hight,weight,register_date,subscription_end_date,image,num,acc,commnts) "+
 							   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
 							   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
 							   "','"+textfield_trainee_phone.getText()+"','"+textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+
 							   "','"+combobox_trainee_group.getValue()+"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+
 							   "','"+combobox_trainee_level.getValue()+ "','"+textfield_trainee_hight.getText()+ "','"+textfield_trainee_weight.getText()+
 							   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+"','"+main_image+
-							   "','"+textarea_trainee_comments.getText()+"')";
+							   "','"+textfield_trainee_num.getText()+"','"+"true"+"','"+textarea_trainee_comments.getText()+"')";
 					try {
 						s.execute(command);
 						} catch (SQLException e) {
 						e.printStackTrace();
 						}
 					SetTraineeTabInVisable();
+					}
+					else
+					{
+						String command= "INSERT into Trainees(id,name,lastname,birthday,city,address,postcode,phone,cellphone,email,groupp,gender,center,level,hight,weight,register_date,subscription_end_date,image,num,acc,commnts) "+
+								   "VALUES('"+textfield_trainee_id.getText()+"','"+textfield_trainee_name.getText()+"','"+textfield_trainee_lastname.getText()+"','"+textfield_trainee_birthday.getText()+
+								   "','"+textfield_trainee_city.getText()+"','"+textfield_trainee_address.getText()+"','"+textfield_trainee_postcode.getText()+
+								   "','"+textfield_trainee_phone.getText()+"','"+textfield_trainee_cellphone.getText()+"','"+textfield_trainee_email.getText()+
+								   "','"+combobox_trainee_group.getValue()+"','"+combobox_trainee_gender.getValue()+"','"+combobox_trainee_center.getValue()+
+								   "','"+combobox_trainee_level.getValue()+ "','"+textfield_trainee_hight.getText()+ "','"+textfield_trainee_weight.getText()+
+								   "','"+s_dateForamt.format(datepicker_trainee_start.getValue())+"','"+s_dateForamt.format(datepicker_trainee_end.getValue())+"','"+main_image+
+								   "','"+textfield_trainee_num.getText()+"','"+"false"+"','"+textarea_trainee_comments.getText()+"')";
+						try {
+							s.execute(command);
+							} catch (SQLException e) {
+							e.printStackTrace();
+							}
+						SetTraineeTabInVisable();
+					}
 					}
 				}
 			
@@ -1910,7 +2082,13 @@ public class MainController extends BaseController
 		button_add_trainee.setLayoutX(310);
 		button_add_trainee.setLayoutY(519);
 		button_delete_trainee.setVisible(true);
+		button_search_traineecenter.setVisible(false);
+		button_print_trainee.setVisible(false);
 		button_add_image.setVisible(true);
+		button_level_trainee.setVisible(true);
+		button_print_traineeinfo.setVisible(true);
+		label_trainee_num.setVisible(true);
+		label_trainee_acc.setVisible(true);
 		label_trainee_id.setVisible(true);
 		label_trainee_name.setVisible(true);
 		label_trainee_lastname.setVisible(true);
@@ -1930,6 +2108,12 @@ public class MainController extends BaseController
 		label_trainee_end_date.setVisible(true);
 		label_trainee_comments.setVisible(true);
 		label_trainee_group.setVisible(true);
+		label_search_traineecenter.setVisible(false);
+		label_search_traineegroup.setVisible(false);
+		checkbox_trainee_acc.setVisible(true);
+		textfield_trainee_num.setVisible(true);
+		textfield_search_traineecenter.setVisible(false);
+		textfield_search_traineegroup.setVisible(false);
 		textfield_trainee_id.setVisible(true);
 		textfield_trainee_name.setVisible(true);
 		textfield_trainee_lastname.setVisible(true);
@@ -1990,7 +2174,9 @@ public class MainController extends BaseController
 		button_add_trainee.setText("הוסף ספורטאי חדש");
 		button_delete_trainee.setVisible(false);
 		button_payment_trainee.setVisible(false);
+		button_print_traineeinfo.setVisible(false);
 		button_add_image.setVisible(false);
+		button_level_trainee.setVisible(false);
 		label_trainee_id.setVisible(false);
 		label_trainee_name.setVisible(false);
 		label_trainee_lastname.setVisible(false);
@@ -2010,6 +2196,16 @@ public class MainController extends BaseController
 		label_trainee_end_date.setVisible(false);
 		label_trainee_comments.setVisible(false);
 		label_trainee_group.setVisible(false);
+		label_search_traineecenter.setVisible(true);
+		label_search_traineegroup.setVisible(true);
+		label_trainee_num.setVisible(false);
+		label_trainee_acc.setVisible(false);
+		checkbox_trainee_acc.setVisible(false);
+		textfield_trainee_num.setVisible(false);
+		textfield_search_traineecenter.setVisible(true);
+		textfield_search_traineegroup.setVisible(true);
+		button_search_traineecenter.setVisible(true);
+		button_print_trainee.setVisible(true);
 		image_trainee_id.setVisible(false);
 		image_trainee_name.setVisible(false);
 		image_trainee_lastname.setVisible(false);
@@ -2064,7 +2260,15 @@ public class MainController extends BaseController
 		datepicker_trainee_end.setVisible(false);
 		datepicker_trainee_end.setValue(null);
 		textfield_trainee_id.setEditable(true);
+		checkbox_trainee_acc.setSelected(false);
+		textfield_trainee_num.clear();
 		TraineeTabInitialize();
+		InputStream view = getClass().getResourceAsStream("/boundaries/images/unknow.jpg");
+		if (view != null) {
+			Image Image = new Image(view);
+			image_trainee_mainimage.setImage(Image);
+			main_image="/boundaries/images/unknow.jpg";
+		}
 	}
 	
 	public void SetTraineeCenterComboBox()
@@ -2088,6 +2292,7 @@ public class MainController extends BaseController
 		SetTraineeTabVisable();
 		button_add_trainee.setText("ערוך ספורטאי");
 		String id=trainee.getId();
+		correct_id=trainee.getId();
 		ResultSet set =GetFromDataBase("Trainees", DataBaseAction.Get, "id", id);
 		try {
 			while((set!=null) && (set.next()))
@@ -2111,6 +2316,12 @@ public class MainController extends BaseController
 				combobox_trainee_gender.setValue(set.getString(12));
 				combobox_trainee_center.setValue(set.getString(10));
 				combobox_trainee_level.setValue(set.getString(17));
+				main_image=set.getString(20);
+				if(set.getString(22).equals("true"))
+				{
+					checkbox_trainee_acc.setSelected(true);
+				}
+				textfield_trainee_num.setText(set.getString(21));
 				if(set.getString(20)!=null||set.getString(18).equals(""))
 				{
 					try {
@@ -2138,7 +2349,6 @@ public class MainController extends BaseController
 		{
 			e.printStackTrace();
 		}
-		textfield_trainee_id.setEditable(false);
 	}	
 	public void SetTraineegroupCombobox()
 	{
@@ -2223,8 +2433,10 @@ public class MainController extends BaseController
 		button_back_trainee.setVisible(false);
 		button_add_trainee.setVisible(false);
 		button_delete_trainee.setVisible(false);
+		button_level_trainee.setVisible(false);
 		button_paymentback_trainee.setVisible(true);
 		button_add_image.setVisible(false);
+		button_print_traineeinfo.setVisible(false);
 		label_trainee_id.setVisible(false);
 		label_trainee_name.setVisible(false);
 		label_trainee_lastname.setVisible(false);
@@ -2244,6 +2456,9 @@ public class MainController extends BaseController
 		label_trainee_end_date.setVisible(false);
 		label_trainee_comments.setVisible(false);
 		label_trainee_group.setVisible(false);
+		label_trainee_num.setVisible(false);
+		label_trainee_acc.setVisible(false);
+		checkbox_trainee_acc.setVisible(false);
 		image_trainee_id.setVisible(false);
 		image_trainee_name.setVisible(false);
 		image_trainee_lastname.setVisible(false);
@@ -2256,6 +2471,7 @@ public class MainController extends BaseController
 		image_trainee_email.setVisible(false);
 		image_trainee_gender.setVisible(false);
 		image_trainee_mainimage.setVisible(false);
+		textfield_trainee_num.setVisible(false);
 		textfield_trainee_id.setVisible(false);
 		textfield_trainee_name.setVisible(false);
 		textfield_trainee_lastname.setVisible(false);
@@ -2652,6 +2868,10 @@ public class MainController extends BaseController
 		label_trainee_end_date.setVisible(true);
 		label_trainee_comments.setVisible(true);
 		label_trainee_group.setVisible(true);
+		label_trainee_num.setVisible(true);
+		label_trainee_acc.setVisible(true);
+		checkbox_trainee_acc.setVisible(true);
+		textfield_trainee_num.setVisible(true);
 		image_trainee_id.setVisible(true);
 		image_trainee_name.setVisible(true);
 		image_trainee_lastname.setVisible(true);
@@ -2724,6 +2944,8 @@ public class MainController extends BaseController
 		radio_trainee_chekpayment.setSelected(false);
 		radio_trainee_creditpayment.setSelected(false);
 		textfield_trainee_eachsum.clear();
+		button_print_traineeinfo.setVisible(true);
+		button_level_trainee.setVisible(true);
 	}
 	
 	@FXML
@@ -3124,6 +3346,135 @@ public class MainController extends BaseController
     			
     	}
     }
+    @FXML
+    public void printer()
+    {
+    	try {
+			printNode(trainee_table);
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+				| InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    @FXML
+    public void printerinfo()
+    {
+    	try {
+			printNode(anchorpane_trainee);
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException
+				| InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public static  void printNode(final Node node) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    	Printer printer = Printer.getDefaultPrinter();
+        PageLayout pageLayout
+            = printer.createPageLayout(Paper.A4, PageOrientation.LANDSCAPE, Printer.MarginType.HARDWARE_MINIMUM);
+        PrinterAttributes attr = printer.getPrinterAttributes();
+        PrinterJob job = PrinterJob.createPrinterJob();
+        double scaleX
+            = pageLayout.getPrintableWidth() / node.getBoundsInParent().getWidth();
+        double scaleY
+            = pageLayout.getPrintableHeight() / node.getBoundsInParent().getHeight();
+        Scale scale = new Scale(scaleX, scaleY);
+        node.getTransforms().add(scale);
+
+        if (job != null && job.showPrintDialog(node.getScene().getWindow())) {
+          boolean success = job.printPage(pageLayout, node);
+          if (success) {
+            job.endJob();
+
+          }
+        }
+        node.getTransforms().remove(scale);
+    }
+    
+    public void SearchTraineeCenterButtonClick()
+    {
+    	String command="";
+		if(textfield_search_traineecenter.getText().equals("")&&textfield_search_traineegroup.getText().equals(""))
+		{
+			command="select * from Trainees";
+		}
+		else if(textfield_search_traineecenter.getText().equals(""))
+			{
+			 showAlertMessage("אתה חייב לבחור מרכז אם אתה מחפש קבוצה", AlertType.ERROR);
+			 return;
+			}
+			else
+				if(textfield_search_traineegroup.getText().equals(""))
+				{
+					command="select * from Trainees where center = " + "\""+textfield_search_traineecenter.getText()+"\"";
+				}
+				else
+				{
+					command="select * from Trainees where center = " + "\""+textfield_search_traineecenter.getText()+"\""+" "+" and groupp= "+"\""+textfield_search_traineegroup.getText()+"\"";
+				}
+			try {
+				s.execute(command);
+				ResultSet set=s.getResultSet();
+			
+				for ( int i = 0; i<trainee_table.getItems().size(); i++) {
+					trainee_table.getItems().clear();
+				}
+			
+				while((set!=null) && (set.next()))
+				{
+					TraineesRow temp=new TraineesRow(set.getString(13), set.getString(1), set.getString(2), set.getString(10),set.getString(11),set.getString(18),set.getString(19));
+					trainee_row.add(temp);
+				}
+				trainee_table.setItems(trainee_row);
+				trainee_table.refresh();
+			
+			} catch (SQLException e) {
+				showAlertMessage("המאמן לא נימצא במערכת", AlertType.INFORMATION);
+				e.printStackTrace();
+				return;
+			}
+    }
+
+    @FXML
+    public void LevelsButtonClick()
+    {
+    	if(textfield_trainee_id.getText().equals(""))
+    	{
+    		showAlertMessage("אתה חייב למלא תז לפני שתוכל לעבור לחלון זה", AlertType.ERROR);
+    		return;
+    	}
+    	
+    	anchorpane_trainee.setVisible(false);
+    	anchorpane_level.setVisible(true);
+    	InitializeLevelsTab();
+    	combobox_level_levels.setItems(trainee_level);
+    	combobox_level_levels.setValue("");
+    	textfield_level_number.clear();
+    	datepicker_level_date.setValue(null);
+    	if(button_add_trainee.getText().equals("ערוך ספורטאי"))
+    	{
+    		levels_list.clear();
+    		ResultSet set;
+    		String command="Select * From Levels where id = "+"\""+textfield_trainee_id.getText()+"\"";
+    		try {
+				s.execute(command);
+				set=s.getResultSet();
+				while((set!=null) && (set.next()))
+				{
+					LevelsRow row= new LevelsRow(set.getString(4),set.getString(1),set.getString(2),set.getString(3)); 
+					levels_list.add(row);
+				}
+			} catch (SQLException e) {
+				showAlertMessage("Boom", AlertType.ERROR);
+				return;
+			}
+    		levels_table.setItems(levels_list);
+    		levels_table.refresh();
+    	}
+    
+    }
 	//Lists Functions
 //---------------------------------------------------------end->Trainee tab Functions------------------------------------------------//	
 
@@ -3132,12 +3483,31 @@ public class MainController extends BaseController
 	
     public void ListsTableBuilder(ResultSet set)
 	 {
+    	String command;
 		list_row.clear();
 		try {
 			while((set!=null) && (set.next()))
 			{
-			   ListsRow temp=new ListsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(4), set.getString(5));
-			   list_row.add(temp);   
+				command="Select * From Trainees where center = "+"\""+ set.getString(2)+"\""+" And gender = "+"\""+"זכר"+"\"";
+				s.execute(command);
+				int males=0;
+				ResultSet temprs=s.getResultSet();
+				while((temprs!=null) && (temprs.next()))
+				{
+					males++;
+				}
+				command="Select * From Trainees where center = "+"\""+ set.getString(2)+"\""+" And gender = "+"\""+"נקבה"+"\"";
+				s.execute(command);
+				int females=0;
+				temprs=s.getResultSet();
+				while((temprs!=null) && (temprs.next()))
+				{
+					females++;
+				}
+			    ListsRow temp=new ListsRow(set.getInt(1),set.getString(2), Integer.toString(males), Integer.toString(females), set.getString(5));
+			    list_row.add(temp);
+			    command="Update Lists set males = "+"\""+males+"\" , "+ "females = "+"\""+females+"\""+"where id = "+set.getInt(1);
+			    s.execute(command);
 			}
 		} catch (SQLException e) 
 		{
@@ -3393,13 +3763,32 @@ public class MainController extends BaseController
     		groups_table.getItems().clear();
     	}
 		ResultSet set= GetFromDataBase("Groups", DataBaseAction.GetAll, null, null);
+		String command;
 		try {
 				while((set!=null) && (set.next()))
 				{
 					if(set.getString(4).equals(combobox_group_center.getValue()))
 					{
-					GroupsRow temp=new GroupsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(5), set.getString(4));
-					group_list.add(temp);   
+						command="Select * From Trainees where center = "+"\""+ set.getString(4)+"\""+" And gender = "+"\""+"זכר"+"\""+" And groupp = "+"\""+set.getString(3)+"\"";
+						s.execute(command);
+						int males=0;
+						ResultSet temprs=s.getResultSet();
+						while((temprs!=null) && (temprs.next()))
+						{
+							males++;
+						}
+						command="Select * From Trainees where center = "+"\""+ set.getString(4)+"\""+" And gender = "+"\""+"נקבה"+"\""+" And groupp = "+"\""+set.getString(3)+"\"";
+						s.execute(command);
+						int females=0;
+						temprs=s.getResultSet();
+						while((temprs!=null) && (temprs.next()))
+						{
+							females++;
+						}
+					GroupsRow temp=new GroupsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(5), set.getString(4),Integer.toString(males),Integer.toString(females));
+					group_list.add(temp);
+					command="Update Groups set males = "+"\""+males+"\" , "+ "females = "+"\""+females+"\""+"where id = "+set.getInt(1);
+				    s.execute(command);
 					}
 				}
 				if(group_list.isEmpty())
@@ -3434,6 +3823,12 @@ public class MainController extends BaseController
     	label_group_trainer.setVisible(false);
     	label_group_start.setVisible(false);
     	label_group_end.setVisible(false);
+    	textfield_group_males.setVisible(false);
+    	textfield_group_males.clear();
+    	textfield_group_females.setVisible(false);
+    	textfield_group_females.clear();
+    	label_group_males.setVisible(false);
+    	label_group_females.setVisible(false);
     	textfield_group_name.setVisible(false);
     	radio_group_add.setVisible(false);
     	combobox_group_days.setVisible(false);
@@ -3473,6 +3868,10 @@ public class MainController extends BaseController
     	label_group_start.setVisible(true);
     	label_group_end.setVisible(true);
     	textfield_group_name.setVisible(true);
+    	textfield_group_males.setVisible(true);
+    	textfield_group_females.setVisible(true);
+    	label_group_males.setVisible(true);
+    	label_group_females.setVisible(true);
     	radio_group_add.setVisible(true);
     	combobox_group_days.setVisible(true);
     	FillGroupDaysList();
@@ -3483,6 +3882,16 @@ public class MainController extends BaseController
     	spinner_group_start.setVisible(true);
     	spinner_group_end.setVisible(true);
     	InitializeTimeSpinner();
+    	spinner_group_start.increment();
+		spinner_group_start.decrement();
+		spinner_group_end.increment();
+		spinner_group_end.decrement();
+		spinner_group_start2.increment();
+		spinner_group_start2.decrement();
+		spinner_group_end2.increment();
+		spinner_group_end2.decrement();
+		textfield_group_males.setText("0");
+		textfield_group_females.setText("0");
     	
     }
     
@@ -3539,6 +3948,10 @@ public class MainController extends BaseController
     				spinner_group_start.decrement();
     				spinner_group_end.increment();
     				spinner_group_end.decrement();
+    				spinner_group_start2.increment();
+    				spinner_group_start2.decrement();
+    				spinner_group_end2.increment();
+    				spinner_group_end2.decrement();
     				String times="יום"+" "+combobox_group_days.getValue()+" "+"בשעה "+spinner_group_start.getValue().toString().substring(0, 5)+"-"+spinner_group_end.getValue().toString().substring(0, 5);
     				if(radio_group_add.isSelected())
     				{
@@ -3634,7 +4047,9 @@ public class MainController extends BaseController
     	button_delete_group.setVisible(true);
     	textfield_group_name.setText(rowData.getGroup());
     	combobox_group_trainer.setValue(rowData.getTrainer());
-    	combobox_group_days.setValue(rowData.getActivity_time().substring(4,5));	
+    	combobox_group_days.setValue(rowData.getActivity_time().substring(4,5));
+    	textfield_group_males.setText(rowData.getMales());
+    	textfield_group_females.setText(rowData.getFemales());
 		spinner_group_start.getValueFactory().setValue(LocalTime.parse(rowData.getActivity_time().substring(11, 16), fmt));
 		spinner_group_end.getValueFactory().setValue(LocalTime.parse(rowData.getActivity_time().substring(17, 22), fmt));
 		if(rowData.getActivity_time().length()>23)
@@ -3682,7 +4097,7 @@ public class MainController extends BaseController
 			
 				while((set!=null) && (set.next()))
 				{
-					GroupsRow temp=new GroupsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(5), set.getString(4));
+					GroupsRow temp=new GroupsRow(set.getInt(1),set.getString(2), set.getString(3), set.getString(5), set.getString(4),set.getString(6),set.getString(7));
 					group_list.add(temp);
 				}
 				groups_table.setItems(group_list);
@@ -3695,6 +4110,42 @@ public class MainController extends BaseController
 			}
     }
     	
+    public boolean DateCompare(String date,String local)
+    {
+    	int localint =Integer.parseInt(local.substring(6))*10000+Integer.parseInt(local.substring(3,5))*1000+Integer.parseInt(local.substring(0,2));
+    	int dateint =Integer.parseInt(date.substring(6))*10000+Integer.parseInt(date.substring(3,5))*1000+Integer.parseInt(date.substring(0,2));
+    	if(localint>=dateint)
+    		return true;
+    	return false;
+    }
     
     
+    @FXML
+    public void BackLevelButtonClick()
+    {
+    	anchorpane_level.setVisible(false);
+    	anchorpane_trainee.setVisible(true);
+    }
+    
+    @FXML
+    public void AddLevelButtonClick()
+    {
+    	if(combobox_level_levels.getValue().equals("")||datepicker_level_date.getValue()==null||
+    			textfield_level_number.getText().equals(""))
+    	{
+    		showAlertMessage("אתה חייב למלא את כל השדות", AlertType.ERROR);
+    		return;
+    	}
+    	String command="INSERT into Levels(id,level,level_date,level_info) "+
+				   "VALUES('"+textfield_trainee_id.getText()+"','"+combobox_level_levels.getValue()+"','"+s_dateForamt.format(datepicker_level_date.getValue())+
+				   "','"+textfield_level_number.getText()+"')";
+    	try {
+			s.execute(command);
+			LevelsButtonClick();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+
+    }
 }

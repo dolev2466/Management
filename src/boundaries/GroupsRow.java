@@ -12,11 +12,15 @@ public class GroupsRow
 	
 	private String center;
 	
+	private String males;
+	
+	private String females;
+	
 	// end region -> Fields
 
 	// region Constructors
 
-	public GroupsRow(int m_pr_key,String m_trainer,String m_group,String m_activity_time,String m_center)
+	public GroupsRow(int m_pr_key,String m_trainer,String m_group,String m_activity_time,String m_center,String m_males,String m_females)
 	{
 		super();
 		pr_key=m_pr_key;
@@ -24,6 +28,8 @@ public class GroupsRow
 		activity_time=m_activity_time;
 		trainer=m_trainer;
 		center=m_center;
+		males=m_males;
+		females=m_females;
 	}
 	// end region -> Constructors
 	
@@ -66,6 +72,23 @@ public class GroupsRow
 	public void setCenter(String center) {
 		this.center = center;
 	}
+
+	public String getMales() {
+		return males;
+	}
+
+	public void setMales(String males) {
+		this.males = males;
+	}
+
+	public String getFemales() {
+		return females;
+	}
+
+	public void setFemales(String females) {
+		this.females = females;
+	}
+	
 	
 	
 }
